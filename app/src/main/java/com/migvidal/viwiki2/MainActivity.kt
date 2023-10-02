@@ -5,7 +5,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -22,12 +25,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.migvidal.viwiki2.ui.screens.NavGraphs
 import com.migvidal.viwiki2.ui.screens.destinations.SearchScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.TodayScreenDestination
 import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
+import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 
 class MainActivity : ComponentActivity() {
@@ -52,10 +61,14 @@ enum class TopLevelDestination(
     val destination: DirectionDestinationSpec,
 ) {
     Today(label = R.string.today, icon = Icons.Default.Home, destination = TodayScreenDestination),
-    Search(label = R.string.search, icon = Icons.Default.Search, destination = SearchScreenDestination),
+    Search(
+        label = R.string.search,
+        icon = Icons.Default.Search,
+        destination = SearchScreenDestination
+    ),
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ViWikiApp() {
     val navController = rememberNavController()
@@ -67,22 +80,43 @@ fun ViWikiApp() {
         },
         bottomBar = {
             NavigationBar {
-                NavigationBarItem(selected = true, onClick = {}, icon = {
-                    Icon(
-                        imageVector = Icons.Default.Home,
-                        contentDescription = "Home"
+                TopLevelDestination.values().forEach {
+                    val labelText = stringResource(it.label)
+                    NavigationBarItem(
+                        selected = currentDestination.isTopLevelDestinationInHierarchy(it.destination),
+                        onClick = {
+                            navController.popBackStack()
+                            navController.navigate(it.destination.route)
+                        },
+                        label = { Text(text = labelText) },
+                        icon = {
+                            Icon(
+                                imageVector = it.icon,
+                                contentDescription = labelText,
+                            )
+                        }
                     )
-                },
-                    label = { Text(text = "Home") })
+
+                }
             }
         },
-    ) {
-        Text(
-            modifier = Modifier.padding(it),
-            text = "Section screen"
+    ) { innerPadding ->
+        val paddingModifier = Modifier
+            .padding(innerPadding)
+            // to prevent extra space above virtual keyboard: https://slack-chats.kotlinlang.org/t/5034424/how-do-i-use-modifier-imepadding-with-scaffold-material3-if-#9e60da1a-3c8c-4a1a-a20c-fe4d37a54454
+            .consumeWindowInsets(innerPadding)
+            .imePadding()
+            .padding(16.dp)
+        DestinationsNavHost(
+            modifier = paddingModifier, navGraph = NavGraphs.root, navController = navController
         )
     }
 }
+
+private fun NavDestination?.isTopLevelDestinationInHierarchy(topLevelDestination: DirectionDestinationSpec) =
+    this?.hierarchy?.any {
+        it.route?.contains(topLevelDestination.route, true) ?: false
+    } ?: false
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
