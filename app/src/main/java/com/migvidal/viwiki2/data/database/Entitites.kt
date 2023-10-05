@@ -22,7 +22,8 @@ data class Image(
     val height: Int,
 )
 
-@Entity(tableName = "featured_article")
+const val FeaturedArticleTable = "featured_article"
+@Entity(tableName = FeaturedArticleTable)
 data class FeaturedArticle(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val type: String,
@@ -35,7 +36,8 @@ data class FeaturedArticle(
     @ColumnInfo(name = "normalized_title") val normalizedTitle: String,
 )
 
-@Entity(tableName = "most_read")
+const val MostReadTable = "most_read"
+@Entity(tableName = MostReadTable)
 data class MostRead(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val date: String,
@@ -48,7 +50,8 @@ data class Article(
     val foo: String
 )
 
-@Entity(tableName = "day_image")
+const val DayImageTable = "day_image"
+@Entity(tableName = DayImageTable)
 data class DayImage(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val title: String,
@@ -65,7 +68,8 @@ data class Description(
     val lang: String,
 )
 
-@Entity(tableName = "on_this_day")
+const val OnThisDayTable = "on_this_day"
+@Entity(tableName = OnThisDayTable)
 data class OnThisDay(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val foo: String
