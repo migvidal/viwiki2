@@ -5,14 +5,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-/*
+
 data class DayResponse(
     val featuredArticle: FeaturedArticle?,
     val mostRead: MostRead?,
     val image: DayImage?,
     val onThisDay: List<OnThisDay>?,
 )
-*/
+
 
 @Entity
 data class Image(
