@@ -31,17 +31,16 @@ interface MostReadDao {
 }
 
 @Dao
-interface ImageDao {
+interface DayImageDao {
     @Insert
-    fun insertAll(image: Image)
+    fun insertAll(dayImage: DayImage)
 
     @Delete
-    fun delete(image: Image)
+    fun delete(dayImage: DayImage)
 
     @Query("SELECT * FROM $DayImageTable")
-    fun getAll(): Flow<Image>
+    fun getAll(): Flow<DayImage>
 }
-
 
 @Dao
 interface OnThisDayDao {
