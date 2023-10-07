@@ -4,7 +4,9 @@ import com.migvidal.viwiki2.data.database.DayData
 import com.migvidal.viwiki2.data.database.FeaturedArticle
 import com.migvidal.viwiki2.data.database.Image
 import com.migvidal.viwiki2.data.database.ViWikiDatabaseSpec
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.withContext
 
 class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
     /**
@@ -24,7 +26,7 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
         )
     }
 
-    fun refreshDayData() {
+    suspend fun refreshDayData() {
         // to the repo
         val fakeArticle = FeaturedArticle(
             type = "standard",
@@ -36,6 +38,8 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
             extract = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         )
-        viWikiDatabase.featuredArticleDao.insert(featuredArticle = fakeArticle)
+        withContext(context = Dispatchers.IO) {
+            viWikiDatabase.featuredArticleDao.insert(featuredArticle = fakeArticle)
+        }
     }
 }

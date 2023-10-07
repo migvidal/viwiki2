@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FeaturedArticleDao {
     @Insert
-    fun insert(featuredArticle: FeaturedArticle)
+    suspend fun insert(featuredArticle: FeaturedArticle)
 
     @Delete
-    fun delete(featuredArticle: FeaturedArticle)
+    suspend fun delete(featuredArticle: FeaturedArticle)
 
     @Query("SELECT * FROM $FeaturedArticleTable")
     fun getAll(): Flow<FeaturedArticle>
@@ -25,9 +25,8 @@ interface MostReadDao {
     @Delete
     fun delete(mostRead: MostRead)
 
-    @Query("SELECT * FROM $FeaturedArticleTable " +
-            "JOIN article ON $FeaturedArticleTable.id = article.id")
-    fun getMostReadAndArticles(): Flow<Map<MostRead, List<Article>>>
+    @Query("SELECT * FROM $FeaturedArticleTable")
+    fun getMostReadAndArticles(): Flow<FeaturedArticle>
 }
 
 @Dao
@@ -38,7 +37,7 @@ interface DayImageDao {
     @Delete
     fun delete(dayImage: DayImage)
 
-    @Query("SELECT * FROM $DayImageTable")
+    @Query("SELECT * FROM $DayImageTableName")
     fun getAll(): Flow<DayImage>
 }
 
@@ -50,6 +49,7 @@ interface OnThisDayDao {
     @Delete
     fun delete(onThisDay: OnThisDay)
 
-    @Query("SELECT * FROM $OnThisDayTable")
+    @Query("SELECT * FROM $OnThisDayTableName " +
+            "JOIN article")
     fun getAll(): Flow<List<OnThisDay>>
 }
