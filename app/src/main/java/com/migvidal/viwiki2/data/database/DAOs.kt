@@ -4,6 +4,14 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.migvidal.viwiki2.data.database.entities.DayImage
+import com.migvidal.viwiki2.data.database.entities.DayImageTableName
+import com.migvidal.viwiki2.data.database.entities.FeaturedArticle
+import com.migvidal.viwiki2.data.database.entities.FeaturedArticleTableName
+import com.migvidal.viwiki2.data.database.entities.MostRead
+import com.migvidal.viwiki2.data.database.entities.MostReadTableName
+import com.migvidal.viwiki2.data.database.entities.OnThisDay
+import com.migvidal.viwiki2.data.database.entities.OnThisDayTableName
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,8 +33,8 @@ interface MostReadDao {
     @Delete
     fun delete(mostRead: MostRead)
 
-    @Query("SELECT * FROM $FeaturedArticleTableName")
-    fun getMostReadAndArticles(): Flow<FeaturedArticle>
+    @Query("SELECT * FROM $MostReadTableName")
+    fun getMostRead(): Flow<MostRead>
 }
 
 @Dao

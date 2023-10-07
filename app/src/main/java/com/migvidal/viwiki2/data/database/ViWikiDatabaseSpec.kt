@@ -4,6 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.migvidal.viwiki2.data.database.entities.Article
+import com.migvidal.viwiki2.data.database.entities.DayImage
+import com.migvidal.viwiki2.data.database.entities.Description
+import com.migvidal.viwiki2.data.database.entities.FeaturedArticle
+import com.migvidal.viwiki2.data.database.entities.Image
+import com.migvidal.viwiki2.data.database.entities.MostRead
+import com.migvidal.viwiki2.data.database.entities.OnThisDay
 
 @Database(
     entities = [Image::class, FeaturedArticle::class, MostRead::class, Article::class, DayImage::class, Description::class, OnThisDay::class],
