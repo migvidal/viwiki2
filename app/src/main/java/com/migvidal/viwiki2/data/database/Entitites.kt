@@ -25,33 +25,51 @@ data class Image(
     val imageId: Long = 0
 }
 
-const val FeaturedArticleTable = "featured_article"
+const val FeaturedArticleTableName = "featured_article"
+
+const val ArticleIdColumnName = "article_id"
+const val OriginalImageIdColumnName = "original_image_id"
+const val ThumbnailIdColumnName = "thumbnail_id"
 
 @Entity(
-    tableName = FeaturedArticleTable,
+    tableName = FeaturedArticleTableName,
     foreignKeys = [
+        ForeignKey(
+            entity = Article::class,
+            parentColumns = ["id"],
+            childColumns = [ArticleIdColumnName]
+        ),
         ForeignKey(
             entity = Image::class,
             parentColumns = ["id"],
-            childColumns = ["article_id"]
+            childColumns = [OriginalImageIdColumnName]
+        ),
+        ForeignKey(
+            entity = Image::class,
+            parentColumns = ["id"],
+            childColumns = [ThumbnailIdColumnName]
         )
     ],
 )
 data class FeaturedArticle(
-    @ColumnInfo(name = "article_id") val articleId: Int,//foreign key
+    // Foreign keys
+    @ColumnInfo(name = ArticleIdColumnName)
+    val articleId: Long,
+    @ColumnInfo(name = OriginalImageIdColumnName)
+    val originalImageId: Long,
+    @ColumnInfo(name = ThumbnailIdColumnName)
+    val thumbnailId: Long,
+    // /Foreign keys
+
     val type: String = "",
+
     val title: String = "",
 
     @ColumnInfo(name = "display_title")
     val displayTitle: String = "",
 
-    @ColumnInfo(name = "original_image_id")
-    val originalImageId: Long,
-
-    @ColumnInfo(name = "thumbnail_id")
-    val thumbnailId: Long,
-
     val description: String = "",
+
     val extract: String = "",
 
     @ColumnInfo(name = "normalized_title")

@@ -14,7 +14,7 @@ interface FeaturedArticleDao {
     @Delete
     suspend fun delete(featuredArticle: FeaturedArticle)
 
-    @Query("SELECT * FROM $FeaturedArticleTable")
+    @Query("SELECT * FROM $FeaturedArticleTableName")
     fun getAll(): Flow<FeaturedArticle>
 }
 @Dao
@@ -25,7 +25,7 @@ interface MostReadDao {
     @Delete
     fun delete(mostRead: MostRead)
 
-    @Query("SELECT * FROM $FeaturedArticleTable")
+    @Query("SELECT * FROM $FeaturedArticleTableName")
     fun getMostReadAndArticles(): Flow<FeaturedArticle>
 }
 
