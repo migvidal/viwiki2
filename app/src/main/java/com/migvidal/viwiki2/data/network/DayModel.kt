@@ -3,13 +3,13 @@ package com.migvidal.viwiki2.data.network
 import com.migvidal.viwiki2.data.database.entities.Article
 import com.squareup.moshi.Json
 
-internal data class Image(
+data class Image(
     val source: String,
     val width: Int,
     val height: Int,
 )
 
-internal data class DayResponse(
+data class DayResponse(
     @Json(name = "tfa")
     val featuredArticle: FeaturedArticle?,
 
@@ -22,7 +22,7 @@ internal data class DayResponse(
     val onThisDay: List<OnThisDay>,
 )
 
-internal data class FeaturedArticle(
+data class FeaturedArticle(
     val type: String,
     val title: String,
     @Json(name = "displaytitle")
@@ -36,14 +36,14 @@ internal data class FeaturedArticle(
     val normalizedTitle: String,
 )
 
-internal data class MostRead(
+data class MostRead(
     val date: String,
     val articles: List<Article>,
 )
 
-internal class OnThisDay
+class OnThisDay
 
-internal data class DayImage(
+data class DayImage(
     val title: String,
     val thumbnail: Image,
     val image: Image,
