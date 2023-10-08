@@ -7,10 +7,10 @@ import com.migvidal.viwiki2.data.database.entities.OnThisDay
 
 
 data class DayData(
-    val featuredArticle: FeaturedArticle,
-    val mostRead: MostRead,
-    val image: DayImage,
-    val onThisDay: List<OnThisDay>,
+    val featuredArticle: FeaturedArticle?,
+    val mostRead: MostRead?,
+    val image: DayImage?,
+    val onThisDay: List<OnThisDay>?,
 )
 
 

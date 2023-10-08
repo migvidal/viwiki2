@@ -1,24 +1,34 @@
 package com.migvidal.viwiki2.ui
 
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import com.migvidal.viwiki2.ViWikiApplication
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.migvidal.viwiki2.data.Repository
 import com.migvidal.viwiki2.data.database.ViWikiDatabase
 import kotlinx.coroutines.launch
 
-class ViWikiViewModel(viWikiApplication: ViWikiApplication) : AndroidViewModel(viWikiApplication) {
+class ViWikiViewModel(private val repository: Repository) : ViewModel() {
     init {
         refreshDataFromRepository()
     }
 
-    private val repository = Repository(ViWikiDatabase.getInstance(viWikiApplication))
-
     val dayData = repository.dayData
 
-    private fun refreshDataFromRepository() {
+    fun refreshDataFromRepository() {
         viewModelScope.launch {
             repository.refreshDayData()
+        }
+    }
+
+    companion object {
+        val Factory = viewModelFactory {
+            initializer {
+                val applicationContext = this[APPLICATION_KEY]?.applicationContext
+                val database = ViWikiDatabase.getInstance(applicationContext = applicationContext!!)
+                ViWikiViewModel(repository = Repository(database))
+            }
         }
     }
 }

@@ -4,7 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+const val ArticleTableName = "article"
+@Entity(tableName = ArticleTableName)
 data class Article(
     val foo: String = ""
 ) {

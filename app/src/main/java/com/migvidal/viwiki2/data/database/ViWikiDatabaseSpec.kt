@@ -17,6 +17,8 @@ import com.migvidal.viwiki2.data.database.entities.OnThisDay
     version = 1, exportSchema = false
 )
 abstract class ViWikiDatabaseSpec : RoomDatabase() {
+    abstract val imageDao: ImageDao
+    abstract val articleDao: ArticleDao
     abstract val featuredArticleDao: FeaturedArticleDao
     abstract val mostReadDao: MostReadDao
     abstract val dayImageDao: DayImageDao

@@ -4,7 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "image")
+const val ImageTableName = "image"
+@Entity(tableName = ImageTableName)
 data class Image(
     val source: String = "",
     val width: Int = 0,

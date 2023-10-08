@@ -40,11 +40,11 @@ private const val ThumbnailIdColumnName = "thumbnail_id"
 data class FeaturedArticle(
     // Foreign keys
     @ColumnInfo(name = ArticleIdColumnName)
-    val articleId: Long = 0,
+    val articleId: Long,
     @ColumnInfo(name = OriginalImageIdColumnName)
-    val originalImageId: Long = 0,
+    val originalImageId: Long,
     @ColumnInfo(name = ThumbnailIdColumnName)
-    val thumbnailId: Long = 0,
+    val thumbnailId: Long,
     // /Foreign keys
 
     val type: String = "",
