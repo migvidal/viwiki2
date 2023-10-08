@@ -5,88 +5,88 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.migvidal.viwiki2.data.database.entities.Article
 import com.migvidal.viwiki2.data.database.entities.ArticleTableName
-import com.migvidal.viwiki2.data.database.entities.DayImage
+import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
+import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
+import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
+import com.migvidal.viwiki2.data.database.entities.DatabaseImage
+import com.migvidal.viwiki2.data.database.entities.DatabaseMostRead
+import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 import com.migvidal.viwiki2.data.database.entities.DayImageTableName
-import com.migvidal.viwiki2.data.database.entities.FeaturedArticle
 import com.migvidal.viwiki2.data.database.entities.FeaturedArticleTableName
-import com.migvidal.viwiki2.data.database.entities.Image
 import com.migvidal.viwiki2.data.database.entities.ImageTableName
-import com.migvidal.viwiki2.data.database.entities.MostRead
 import com.migvidal.viwiki2.data.database.entities.MostReadTableName
-import com.migvidal.viwiki2.data.database.entities.OnThisDay
 import com.migvidal.viwiki2.data.database.entities.OnThisDayTableName
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ImageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(image: Image): Long
+    suspend fun insert(databaseImage: DatabaseImage): Long
 
     @Delete
-    suspend fun delete(image: Image)
+    suspend fun delete(databaseImage: DatabaseImage)
 
     @Query("SELECT * FROM $ImageTableName")
-    fun getAll(): Flow<Image?>
+    fun getAll(): Flow<DatabaseImage?>
 }
 
 @Dao
 interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(article: Article): Long
+    suspend fun insertAll(vararg databaseArticle: DatabaseArticle)
 
     @Delete
-    suspend fun delete(article: Article)
+    suspend fun delete(databaseArticle: DatabaseArticle)
 
     @Query("SELECT * FROM $ArticleTableName")
-    fun getAll(): Flow<Article?>
+    fun getAll(): Flow<DatabaseArticle?>
 }
 
 @Dao
 interface FeaturedArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(featuredArticle: FeaturedArticle): Long
+    suspend fun insert(featuredArticle: DatabaseFeaturedArticle): Long
 
     @Delete
-    suspend fun delete(featuredArticle: FeaturedArticle)
+    suspend fun delete(databaseFeaturedArticle: DatabaseFeaturedArticle)
 
     @Query("SELECT * FROM $FeaturedArticleTableName")
-    fun getAll(): Flow<FeaturedArticle?>
+    fun getAll(): Flow<DatabaseFeaturedArticle?>
 }
 @Dao
 interface MostReadDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(mostRead: MostRead): Long
+    fun insert(databaseMostRead: DatabaseMostRead): Long
 
     @Delete
-    fun delete(mostRead: MostRead)
+    fun delete(databaseMostRead: DatabaseMostRead)
 
     @Query("SELECT * FROM $MostReadTableName")
-    fun getMostRead(): Flow<MostRead?>
+    fun getMostRead(): Flow<DatabaseMostRead?>
 }
 
 @Dao
 interface DayImageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(dayImage: DayImage): Long
+    fun insert(databaseDayImage: DatabaseDayImage): Long
 
     @Delete
-    fun delete(dayImage: DayImage)
+    fun delete(databaseDayImage: DatabaseDayImage)
 
     @Query("SELECT * FROM $DayImageTableName")
-    fun getAll(): Flow<DayImage?>
+    fun getAll(): Flow<DatabaseDayImage?>
 }
 
 @Dao
 interface OnThisDayDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(onThisDay: OnThisDay): Long
+    fun insert(databaseOnThisDay: DatabaseOnThisDay): Long
 
     @Delete
-    fun delete(onThisDay: OnThisDay)
+    fun delete(databaseOnThisDay: DatabaseOnThisDay)
 
     @Query("SELECT * FROM $OnThisDayTableName " +
             "JOIN article")
-    fun getAll(): Flow<List<OnThisDay>?>
+    fun getAll(): Flow<List<DatabaseOnThisDay>?>
 }

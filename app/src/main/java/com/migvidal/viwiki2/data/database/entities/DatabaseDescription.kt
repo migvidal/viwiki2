@@ -4,13 +4,12 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-const val MostReadTableName = "most_read"
-@Entity(tableName = MostReadTableName)
-data class MostRead(
-    val date: String = "",
-    //val articlesList: List<Article> = emptyList(),
+@Entity(tableName = "description")
+data class DatabaseDescription(
+    val text: String = "",
+    val lang: String = "",
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var mostReadId: Long = 0
+    var descriptionId: Long = 0
 }

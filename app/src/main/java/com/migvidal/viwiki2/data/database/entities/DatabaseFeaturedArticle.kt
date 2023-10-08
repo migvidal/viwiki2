@@ -16,31 +16,23 @@ private const val ThumbnailIdColumnName = "thumbnail_id"
     tableName = FeaturedArticleTableName,
     foreignKeys = [
         ForeignKey(
-            entity = Article::class,
-            parentColumns = ["id"],
-            childColumns = [ArticleIdColumnName]
-        ),
-        ForeignKey(
-            entity = Image::class,
+            entity = DatabaseImage::class,
             parentColumns = ["id"],
             childColumns = [OriginalImageIdColumnName]
         ),
         ForeignKey(
-            entity = Image::class,
+            entity = DatabaseImage::class,
             parentColumns = ["id"],
             childColumns = [ThumbnailIdColumnName]
         )
     ],
     indices = [
-        Index(ArticleIdColumnName),
         Index(OriginalImageIdColumnName),
         Index(ThumbnailIdColumnName),
     ]
 )
-data class FeaturedArticle(
+data class DatabaseFeaturedArticle(
     // Foreign keys
-    @ColumnInfo(name = ArticleIdColumnName)
-    val articleId: Long,
     @ColumnInfo(name = OriginalImageIdColumnName)
     val originalImageId: Long,
     @ColumnInfo(name = ThumbnailIdColumnName)

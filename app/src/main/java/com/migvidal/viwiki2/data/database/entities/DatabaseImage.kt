@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 const val ImageTableName = "image"
 @Entity(tableName = ImageTableName)
-data class Image(
+data class DatabaseImage(
     val source: String = "",
     val width: Int = 0,
     val height: Int = 0,

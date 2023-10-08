@@ -16,17 +16,17 @@ private const val DescriptionIdColumnName = "description_id_column_name"
     tableName = DayImageTableName,
     foreignKeys = [
         ForeignKey(
-            entity = Image::class,
+            entity = DatabaseImage::class,
             parentColumns = ["id"],
             childColumns = [ThumbnailIdColumnName]
         ),
         ForeignKey(
-            entity = Image::class,
+            entity = DatabaseImage::class,
             parentColumns = ["id"],
             childColumns = [ImageIdColumnName]
         ),
         ForeignKey(
-            entity = Description::class,
+            entity = DatabaseDescription::class,
             parentColumns = ["id"],
             childColumns = [DescriptionIdColumnName]
         ),
@@ -37,7 +37,7 @@ private const val DescriptionIdColumnName = "description_id_column_name"
         Index(DescriptionIdColumnName),
     ],
 )
-data class DayImage(
+data class DatabaseDayImage(
     // Foreign keys
     @ColumnInfo(name = ThumbnailIdColumnName)
     val thumbnailId: Long,

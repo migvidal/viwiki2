@@ -4,12 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-const val ArticleTableName = "article"
-@Entity(tableName = ArticleTableName)
-data class Article(
+const val OnThisDayTableName = "on_this_day"
+
+@Entity(tableName = OnThisDayTableName)
+data class DatabaseOnThisDay(
     val foo: String = ""
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var articleId: Long = 0
+    var onThisDayId: Long = 0
 }

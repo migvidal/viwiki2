@@ -48,7 +48,7 @@ interface WikiMediaApiService {
         @Path("yyyy") yyyy: String,
         @Path("mm") mm: String,
         @Path("dd") dd: String
-    ): DayResponse
+    ): NetworkDayResponse
 }
 
 

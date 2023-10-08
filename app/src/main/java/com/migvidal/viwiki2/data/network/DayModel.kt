@@ -1,57 +1,67 @@
 package com.migvidal.viwiki2.data.network
 
-import com.migvidal.viwiki2.data.database.entities.Article
 import com.squareup.moshi.Json
 
-data class Image(
+data class NetworkImage(
     val source: String,
     val width: Int,
     val height: Int,
 )
 
-data class DayResponse(
+data class NetworkDayResponse(
     @Json(name = "tfa")
-    val featuredArticle: FeaturedArticle?,
+    val featuredArticle: NetworkFeaturedArticle?,
 
     @Json(name = "mostread")
-    val mostRead: MostRead?,
+    val mostRead: NetworkMostRead?,
 
-    val image: DayImage?,
+    val image: NetworkDayImage?,
 
     @Json(name = "onthisday")
-    val onThisDay: List<OnThisDay>,
+    val onThisDay: List<NetworkOnThisDay>,
 )
 
-data class FeaturedArticle(
+data class NetworkFeaturedArticle(
     val type: String,
     val title: String,
     @Json(name = "displaytitle")
     val displayTitle: String,
     @Json(name = "originalimage")
-    val originalImage: Image,
-    val thumbnail: Image,
+    val originalImage: NetworkImage,
+    val thumbnail: NetworkImage,
     val description: String,
     val extract: String,
     @Json(name = "normalizedtitle")
     val normalizedTitle: String,
 )
 
-data class MostRead(
+data class NetworkMostRead(
     val date: String,
-    val articles: List<Article>,
+    val articles: List<NetworkArticle>,
 )
 
-class OnThisDay
+data class NetworkArticle(
+    @Json(name = "normalizedtitle")
+    val normalizedTitle: String = "",
+    val description: String,
+    val extract: String,
+)
 
-data class DayImage(
+data class NetworkOnThisDay(
+    val text: String,
+    val year: Int,
+
+)
+
+data class NetworkDayImage(
     val title: String,
-    val thumbnail: Image,
-    val image: Image,
+    val thumbnail: NetworkImage,
+    val image: NetworkImage,
     @Json(name = "filepage")
     val filePage: String,
-    val description: Description,
+    val description: NetworkDescription,
 ) {
-    data class Description(
+    data class NetworkDescription(
         val text: String,
         val lang: String,
     )

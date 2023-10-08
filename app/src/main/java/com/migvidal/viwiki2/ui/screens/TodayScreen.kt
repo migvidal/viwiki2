@@ -23,14 +23,14 @@ fun TodayScreen() {
     Column {
         Text(text = "Today", style = MaterialTheme.typography.headlineLarge)
         val data = viewModel.dayData.collectAsState(initial = null).value
-        if (data?.featuredArticle == null) {
+        if (data?.databaseFeaturedArticle == null) {
             Button(onClick = { viewModel.refreshDataFromRepository() }) {
                 Text(text = "Show data")
             }
         } else {
-            Text(text = data.featuredArticle.normalizedTitle, style = MaterialTheme.typography.headlineSmall)
+            Text(text = data.databaseFeaturedArticle.normalizedTitle, style = MaterialTheme.typography.headlineSmall)
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = data.featuredArticle.description)
+            Text(text = data.databaseFeaturedArticle.description)
         }
     }
 }

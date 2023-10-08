@@ -2,6 +2,8 @@ package com.migvidal.viwiki2.data
 
 import com.migvidal.viwiki2.data.database.DayData
 import com.migvidal.viwiki2.data.database.ViWikiDatabaseSpec
+import com.migvidal.viwiki2.data.database.toDatabaseImage
+import com.migvidal.viwiki2.data.database.toDatabaseModel
 import com.migvidal.viwiki2.data.network.WikiMediaApiImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
@@ -19,10 +21,10 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
         flow4 = viWikiDatabase.onThisDayDao.getAll(),
     ) { featuredArticle, mostRead, image, onThisDay ->
         DayData(
-            featuredArticle = featuredArticle,
-            mostRead = mostRead,
+            databaseFeaturedArticle = featuredArticle,
+            databaseMostRead = mostRead,
             image = image,
-            onThisDay = onThisDay,
+            databaseOnThisDay = onThisDay,
         )
     }
 
@@ -39,14 +41,17 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
             dd = String.format("%02d", day),
         )
         // to the repo
-        val article = todayResponse.featuredArticle
-        val image = todayResponse.featuredArticle?.originalImage
-        val thumbnail = todayResponse.featuredArticle?.thumbnail
+        val article = todayResponse.featuredArticle?: return
+        val image = todayResponse.featuredArticle.originalImage
+        val thumbnail = todayResponse.featuredArticle.thumbnail
+
+        val articles = todayResponse.mostRead?.articles
 
         withContext(context = Dispatchers.IO) {
-            val articleId = viWikiDatabase.articleDao.insert(article = article)
-            val imageId = viWikiDatabase.imageDao.insert(image = image)
-            val thumbnailId = viWikiDatabase.imageDao.insert(image = thumbnail)
+            val insertedImageId =
+                viWikiDatabase.imageDao.insert(databaseImage = image.toDatabaseImage())
+            val insertedThumbnailId =
+                viWikiDatabase.imageDao.insert(databaseImage = thumbnail.toDatabaseImage())
             /*val fakeFeaturedArticle = FeaturedArticle(
                 articleId = articleId,
                 originalImageId = imageId,
@@ -59,7 +64,13 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
                 extract = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
             )*/
 
-            viWikiDatabase.featuredArticleDao.insert(featuredArticle = article)
+            val articlesToInsert = articles?.map {
+                it.toDatabaseModel()
+            } ?: return@withContext
+
+            viWikiDatabase.articleDao.insertAll(
+                *articlesToInsert.toTypedArray()
+            )
         }
     }
 }

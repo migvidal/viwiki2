@@ -4,16 +4,22 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.migvidal.viwiki2.data.database.entities.Article
-import com.migvidal.viwiki2.data.database.entities.DayImage
-import com.migvidal.viwiki2.data.database.entities.Description
-import com.migvidal.viwiki2.data.database.entities.FeaturedArticle
-import com.migvidal.viwiki2.data.database.entities.Image
-import com.migvidal.viwiki2.data.database.entities.MostRead
-import com.migvidal.viwiki2.data.database.entities.OnThisDay
+import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
+import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
+import com.migvidal.viwiki2.data.database.entities.DatabaseDescription
+import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
+import com.migvidal.viwiki2.data.database.entities.DatabaseImage
+import com.migvidal.viwiki2.data.database.entities.DatabaseMostRead
+import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 
 @Database(
-    entities = [Image::class, FeaturedArticle::class, MostRead::class, Article::class, DayImage::class, Description::class, OnThisDay::class],
+    entities = [DatabaseImage::class,
+        DatabaseArticle::class,
+        DatabaseFeaturedArticle::class,
+        DatabaseMostRead::class,
+        DatabaseDayImage::class,
+        DatabaseDescription::class,
+        DatabaseOnThisDay::class],
     version = 1, exportSchema = false
 )
 abstract class ViWikiDatabaseSpec : RoomDatabase() {
