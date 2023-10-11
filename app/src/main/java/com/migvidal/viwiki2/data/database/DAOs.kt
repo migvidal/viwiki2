@@ -5,17 +5,17 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.migvidal.viwiki2.data.database.entities.ArticleTableName
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
+import com.migvidal.viwiki2.data.database.entities.DatabaseArticleTableName
 import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
-import com.migvidal.viwiki2.data.database.entities.DatabaseMostRead
+import com.migvidal.viwiki2.data.database.entities.DatabaseMostReadArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 import com.migvidal.viwiki2.data.database.entities.DayImageTableName
 import com.migvidal.viwiki2.data.database.entities.FeaturedArticleTableName
 import com.migvidal.viwiki2.data.database.entities.ImageTableName
-import com.migvidal.viwiki2.data.database.entities.MostReadTableName
+import com.migvidal.viwiki2.data.database.entities.MostReadArticleTableName
 import com.migvidal.viwiki2.data.database.entities.OnThisDayTableName
 import kotlinx.coroutines.flow.Flow
 
@@ -34,17 +34,17 @@ interface ImageDao {
 @Dao
 interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg databaseArticle: DatabaseArticle)
+    suspend fun insertAll(vararg databaseArticle: DatabaseArticle): List<Long>
 
     @Delete
     suspend fun delete(databaseArticle: DatabaseArticle)
 
-    @Query("SELECT * FROM $ArticleTableName")
+    @Query("SELECT * FROM $DatabaseArticleTableName")
     fun getAll(): Flow<DatabaseArticle?>
 }
 
 @Dao
-interface FeaturedArticleDao {
+interface FeaturedArticlesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(featuredArticle: DatabaseFeaturedArticle): Long
 
@@ -55,15 +55,18 @@ interface FeaturedArticleDao {
     fun getAll(): Flow<DatabaseFeaturedArticle?>
 }
 @Dao
-interface MostReadDao {
+interface MostReadArticleListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(databaseMostRead: DatabaseMostRead): Long
+    fun insertAll(vararg mostReadArticles: DatabaseMostReadArticle): List<Long>
 
     @Delete
-    fun delete(databaseMostRead: DatabaseMostRead)
+    fun delete(mostReadArticles: DatabaseMostReadArticle)
 
-    @Query("SELECT * FROM $MostReadTableName")
-    fun getMostRead(): Flow<DatabaseMostRead?>
+    @Query("SELECT * FROM $MostReadArticleTableName " +
+            "JOIN $DatabaseArticleTableName " +
+            "ON $DatabaseArticleTableName.id = $MostReadArticleTableName.article_id"
+    )
+    fun getMostReadAndArticles(): Flow<Map<DatabaseMostReadArticle, List<DatabaseArticle>>>
 }
 
 @Dao
@@ -86,7 +89,6 @@ interface OnThisDayDao {
     @Delete
     fun delete(databaseOnThisDay: DatabaseOnThisDay)
 
-    @Query("SELECT * FROM $OnThisDayTableName " +
-            "JOIN article")
+    @Query("SELECT * FROM $OnThisDayTableName")
     fun getAll(): Flow<List<DatabaseOnThisDay>?>
 }

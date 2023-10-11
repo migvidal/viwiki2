@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-const val ArticleTableName = "article"
-@Entity(tableName = ArticleTableName)
+const val DatabaseArticleTableName = "article"
+@Entity(tableName = DatabaseArticleTableName)
 data class DatabaseArticle(
     val normalizedTitle: String = "",
     val description: String,

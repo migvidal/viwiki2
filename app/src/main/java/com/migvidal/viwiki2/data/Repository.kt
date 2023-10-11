@@ -2,7 +2,8 @@ package com.migvidal.viwiki2.data
 
 import com.migvidal.viwiki2.data.database.DayData
 import com.migvidal.viwiki2.data.database.ViWikiDatabaseSpec
-import com.migvidal.viwiki2.data.database.toDatabaseImage
+import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
+import com.migvidal.viwiki2.data.database.entities.DatabaseMostReadArticle
 import com.migvidal.viwiki2.data.database.toDatabaseModel
 import com.migvidal.viwiki2.data.network.WikiMediaApiImpl
 import kotlinx.coroutines.Dispatchers
@@ -16,13 +17,13 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
      */
     val dayData = combine(
         flow = viWikiDatabase.featuredArticleDao.getAll(),
-        flow2 = viWikiDatabase.mostReadDao.getMostRead(),
+        flow2 = viWikiDatabase.mostReadArticlesDao.getMostReadAndArticles(),
         flow3 = viWikiDatabase.dayImageDao.getAll(),
         flow4 = viWikiDatabase.onThisDayDao.getAll(),
     ) { featuredArticle, mostRead, image, onThisDay ->
         DayData(
             databaseFeaturedArticle = featuredArticle,
-            databaseMostRead = mostRead,
+            databaseMostReadArticles = mostRead.values.flatten(),
             image = image,
             databaseOnThisDay = onThisDay,
         )
@@ -34,24 +35,25 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
         val month = calendar.get(GregorianCalendar.MONTH)
         val day = calendar.get(GregorianCalendar.DAY_OF_MONTH)
 
-        // from the network
-        val todayResponse = WikiMediaApiImpl.wikiMediaApiService.getFeatured(
+        // Get from the network
+        val networkDayResponse = WikiMediaApiImpl.wikiMediaApiService.getFeatured(
             yyyy = year.toString(),
             mm = String.format("%02d", month),
             dd = String.format("%02d", day),
         )
-        // to the repo
-        val article = todayResponse.featuredArticle?: return
-        val image = todayResponse.featuredArticle.originalImage
-        val thumbnail = todayResponse.featuredArticle.thumbnail
+        val featuredArticle = networkDayResponse.featuredArticle ?: return
+        val image = featuredArticle.originalImage
+        val thumbnail = featuredArticle.thumbnail
+        val mostRead = networkDayResponse.mostRead
 
-        val articles = todayResponse.mostRead?.articles
-
+        // Insert in DB
         withContext(context = Dispatchers.IO) {
+            // Insert "featured article"
+            // - insert full img and thumbnail
             val insertedImageId =
-                viWikiDatabase.imageDao.insert(databaseImage = image.toDatabaseImage())
+                viWikiDatabase.imageDao.insert(databaseImage = image.toDatabaseModel())
             val insertedThumbnailId =
-                viWikiDatabase.imageDao.insert(databaseImage = thumbnail.toDatabaseImage())
+                viWikiDatabase.imageDao.insert(databaseImage = thumbnail.toDatabaseModel())
             /*val fakeFeaturedArticle = FeaturedArticle(
                 articleId = articleId,
                 originalImageId = imageId,
@@ -64,13 +66,29 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
                 extract = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
             )*/
 
-            val articlesToInsert = articles?.map {
-                it.toDatabaseModel()
-            } ?: return@withContext
-
-            viWikiDatabase.articleDao.insertAll(
-                *articlesToInsert.toTypedArray()
+            // - insert the featured article
+            val dbFeaturedArticle = featuredArticle.toDatabaseModel(
+                originalImageId = insertedImageId,
+                thumbnailId = insertedThumbnailId
             )
+            viWikiDatabase.featuredArticleDao.insert(featuredArticle = dbFeaturedArticle)
+
+            // Insert "most read articles"
+            if (mostRead != null) {
+                // - insert articles
+                val dbMostReadArticles: List<DatabaseArticle> = mostRead.articles.map {
+                    it.toDatabaseModel()
+                }
+                val insertedArticlesIDs = viWikiDatabase.articleDao.insertAll(*dbMostReadArticles.toTypedArray())
+
+                // - insert mostReadArticles entity
+                val mostReadArticles = insertedArticlesIDs.map {
+                    DatabaseMostReadArticle(articleId = it, date = mostRead.date)
+                }
+                viWikiDatabase.mostReadArticlesDao.insertAll(
+                    *mostReadArticles.toTypedArray()
+                )
+            }
         }
     }
 }

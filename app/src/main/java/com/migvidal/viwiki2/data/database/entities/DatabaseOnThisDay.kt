@@ -8,7 +8,8 @@ const val OnThisDayTableName = "on_this_day"
 
 @Entity(tableName = OnThisDayTableName)
 data class DatabaseOnThisDay(
-    val foo: String = ""
+    val text: String,
+    val year: Int,
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

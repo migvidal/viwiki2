@@ -42,8 +42,8 @@ data class NetworkMostRead(
 
 data class NetworkArticle(
     @Json(name = "normalizedtitle")
-    val normalizedTitle: String = "",
-    val description: String,
+    val normalizedTitle: String,
+    val description: String?,
     val extract: String,
 )
 
@@ -57,7 +57,7 @@ data class NetworkDayImage(
     val title: String,
     val thumbnail: NetworkImage,
     val image: NetworkImage,
-    @Json(name = "filepage")
+    @Json(name = "file_page")
     val filePage: String,
     val description: NetworkDescription,
 ) {
