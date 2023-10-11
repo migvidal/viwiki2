@@ -54,17 +54,6 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
                 viWikiDatabase.imageDao.insert(databaseImage = image.toDatabaseModel())
             val insertedThumbnailId =
                 viWikiDatabase.imageDao.insert(databaseImage = thumbnail.toDatabaseModel())
-            /*val fakeFeaturedArticle = FeaturedArticle(
-                articleId = articleId,
-                originalImageId = imageId,
-                thumbnailId = thumbnailId,
-                type = "standard",
-                title = "Foo_of_the_bar",
-                displayTitle = "<span class=\"mw-page-title-main\">Foo of the bar</span>",
-                normalizedTitle = "Foo of the bar",
-                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
-                extract = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            )*/
 
             // - insert the featured article
             val dbFeaturedArticle = featuredArticle.toDatabaseModel(

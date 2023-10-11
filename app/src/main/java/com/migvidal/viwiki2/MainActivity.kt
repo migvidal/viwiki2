@@ -23,20 +23,25 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.migvidal.viwiki2.ui.ViWikiViewModel
 import com.migvidal.viwiki2.ui.screens.NavGraphs
+import com.migvidal.viwiki2.ui.screens.TodayScreen
 import com.migvidal.viwiki2.ui.screens.destinations.SearchScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.TodayScreenDestination
 import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 
 class MainActivity : ComponentActivity() {
@@ -71,6 +76,7 @@ enum class TopLevelDestination(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ViWikiApp() {
+    val viewModel: ViWikiViewModel = viewModel(factory = ViWikiViewModel.Factory)
     val navController = rememberNavController()
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
@@ -109,7 +115,14 @@ fun ViWikiApp() {
             .padding(16.dp)
         DestinationsNavHost(
             modifier = paddingModifier, navGraph = NavGraphs.root, navController = navController
-        )
+        ) {
+            composable(TodayScreenDestination) {
+                val dayData = viewModel.dayData.collectAsState(initial = null).value
+                TodayScreen(
+                    dayData = dayData,
+                    onRefreshClicked = { viewModel.refreshDataFromRepository() })
+            }
+        }
     }
 }
 
