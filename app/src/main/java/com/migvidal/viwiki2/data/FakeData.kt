@@ -14,7 +14,11 @@ val fakeFeaturedArticle = DatabaseFeaturedArticle(
     description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     extract = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 )
-val fakeArticles = List(10) {
+val fakeArticles = listOf(
+    DatabaseArticle(
+        normalizedTitle = "Short", description = "Ut enim ad.", extract = "Ut enim ad minim veniam."
+    )
+) + List(10) {
     DatabaseArticle(
         normalizedTitle = "Foo of the bar",
         description = "Ut enim ad.",

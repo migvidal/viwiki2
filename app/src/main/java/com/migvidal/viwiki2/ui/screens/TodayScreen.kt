@@ -1,14 +1,17 @@
 package com.migvidal.viwiki2.ui.screens
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -36,33 +39,43 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 @Destination()
 @RootNavGraph(start = true)
 fun TodayScreen(dayData: DayData?, onRefreshClicked: () -> Unit) {
-    if (dayData == null) {
-        Button(onClick = onRefreshClicked) {
-            Text(text = "Refresh")
+    LazyColumn(state = rememberLazyListState()) {
+        item {
+            Button(onClick = onRefreshClicked) {
+                Text(text = "Refresh")
+            }
         }
-    } else {
-        LazyColumn(state = rememberLazyListState()) {
-            item {
-                SectionHeading("Today's Featured Article")
+        if (dayData == null) return@LazyColumn
+        item {
+            SectionHeading(text = "Today's Featured Article")
+        }
+        item {
+            FeaturedActicleSection(
+                featuredArticle = dayData.databaseFeaturedArticle ?: return@item
+            )
+        }
+        item {
+            SectionHeading(text = "Most read articles")
+        }
+        item {
+            MostReadArticlesSection(
+                mostReadArticles = dayData.databaseMostReadArticles ?: return@item,
+                onArticleClicked = {}
+            )
+        }
+        item {
+            SectionHeading(text = "On this day")
+        }
+        if (dayData.databaseOnThisDay != null) {
+            items(dayData.databaseOnThisDay) { onThisDay ->
+                Text(text = "On ${onThisDay.year}")
+                Text(text = onThisDay.text)
             }
-            item {
-                FeaturedActicleSection(
-                    featuredArticle = dayData.databaseFeaturedArticle ?: return@item
-                )
-            }
-            item {
-                SectionHeading(text = "Most read articles")
-            }
-            item {
-                MostReadArticlesSection(
-                    mostReadArticles = dayData.databaseMostReadArticles ?: return@item,
-                    onArticleClicked = {}
-                )
-            }
+        }
 
 
-        }
     }
+
 }
 
 @Composable
@@ -79,12 +92,19 @@ private fun MostReadArticlesSection(
     ) {
         LazyHorizontalGrid(
             modifier = Modifier.height(240.dp),
-            rows = GridCells.Fixed(3)
+            rows = GridCells.Fixed(3),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(items = mostReadArticles) {
-                Card(modifier = Modifier.padding(8.dp), onClick = onArticleClicked) {
-                    Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
-                        Text(modifier = Modifier.padding(16.dp), text = it.normalizedTitle)
+                Card(modifier = Modifier.aspectRatio(21/9f),onClick = onArticleClicked) {
+                    Box(
+                        modifier = Modifier.weight(1f),
+                        contentAlignment = Alignment.CenterStart) {
+                        Text(
+                            modifier = Modifier.padding(16.dp),
+                            text = it.normalizedTitle
+                        )
                     }
                 }
             }
