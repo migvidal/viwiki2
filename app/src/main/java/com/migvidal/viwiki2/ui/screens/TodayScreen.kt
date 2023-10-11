@@ -12,10 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.migvidal.viwiki2.ui.ViWikiViewModel
+import com.migvidal.viwiki2.ui.components.SectionHeading
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
@@ -33,7 +33,7 @@ fun TodayScreen() {
         } else {
             LazyColumn(state = rememberLazyListState()) {
                 item {
-                    Text(text = "Today's Featured Article".uppercase(), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Light)
+                    SectionHeading("Today's Featured Article")
                     Text(
                         text = data.databaseFeaturedArticle.normalizedTitle,
                         style = MaterialTheme.typography.headlineLarge
