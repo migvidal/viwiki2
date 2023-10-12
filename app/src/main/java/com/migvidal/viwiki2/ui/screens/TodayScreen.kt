@@ -13,9 +13,13 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -24,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.SubcomposeAsyncImage
 import com.migvidal.viwiki2.data.database.DayData
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
@@ -46,6 +51,23 @@ fun TodayScreen(dayData: DayData?, onRefreshClicked: () -> Unit) {
             }
         }
         if (dayData == null) return@LazyColumn
+        item {
+            SectionHeading(text = "Image of the day")
+        }
+        item {
+            SubcomposeAsyncImage(
+                model = dayData.image?.filePage,
+                contentDescription = null,
+                loading = {
+                    CircularProgressIndicator()
+                },
+                error = {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Error loading image"
+                    )
+                })
+        }
         item {
             SectionHeading(text = "Today's Featured Article")
         }
