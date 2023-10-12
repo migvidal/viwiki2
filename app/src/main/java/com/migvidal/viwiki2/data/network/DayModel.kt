@@ -18,7 +18,7 @@ data class NetworkDayResponse(
     val image: NetworkDayImage?,
 
     @Json(name = "onthisday")
-    val onThisDay: List<NetworkOnThisDay>,
+    val onThisDay: List<NetworkOnThisDay>?,
 )
 
 data class NetworkFeaturedArticle(

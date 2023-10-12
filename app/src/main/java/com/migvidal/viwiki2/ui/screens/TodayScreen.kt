@@ -92,15 +92,16 @@ private fun MostReadArticlesSection(
     ) {
         LazyHorizontalGrid(
             modifier = Modifier.height(240.dp),
-            rows = GridCells.Fixed(3),
+            rows = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(items = mostReadArticles) {
-                Card(modifier = Modifier.aspectRatio(21/9f),onClick = onArticleClicked) {
+                Card(modifier = Modifier.aspectRatio(21 / 9f), onClick = onArticleClicked) {
                     Box(
                         modifier = Modifier.weight(1f),
-                        contentAlignment = Alignment.CenterStart) {
+                        contentAlignment = Alignment.CenterStart
+                    ) {
                         Text(
                             modifier = Modifier.padding(16.dp),
                             text = it.normalizedTitle
