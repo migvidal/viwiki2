@@ -1,6 +1,7 @@
 package com.migvidal.viwiki2.data.network
 
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -15,10 +16,13 @@ import retrofit2.http.Path
  */
 private const val WikimediaBaseUrl: String = "https://api.wikimedia.org/"
 
+val interceptor = HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BASIC) }
+
 /**
  * HTTP client
  */
 private val okHttpClient = OkHttpClient.Builder()
+    .addInterceptor(interceptor)
     .build()
 
 /**

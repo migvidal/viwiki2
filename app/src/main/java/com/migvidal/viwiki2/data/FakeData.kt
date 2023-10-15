@@ -1,8 +1,8 @@
 package com.migvidal.viwiki2.data
 
-import com.migvidal.viwiki2.data.database.DayData
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
+import com.migvidal.viwiki2.ui.UiDayData
 
 val fakeFeaturedArticle = DatabaseFeaturedArticle(
     originalImageId = 10000,
@@ -26,7 +26,7 @@ val fakeArticles = listOf(
     )
 }
 
-val fakeDayData = DayData(
+val fakeDayData = UiDayData(
     databaseFeaturedArticle = fakeFeaturedArticle,
     databaseMostReadArticles = fakeArticles,
     image = null,

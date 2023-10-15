@@ -29,10 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
-import com.migvidal.viwiki2.data.database.DayData
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
 import com.migvidal.viwiki2.data.fakeDayData
+import com.migvidal.viwiki2.ui.UiDayData
 import com.migvidal.viwiki2.ui.components.SectionHeading
 import com.migvidal.viwiki2.ui.components.Side
 import com.migvidal.viwiki2.ui.components.withGradientEdge
@@ -43,7 +43,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 @Composable
 @Destination()
 @RootNavGraph(start = true)
-fun TodayScreen(dayData: DayData?, onRefreshClicked: () -> Unit) {
+fun TodayScreen(dayData: UiDayData?, onRefreshClicked: () -> Unit) {
     LazyColumn(state = rememberLazyListState()) {
         item {
             Button(onClick = onRefreshClicked) {
@@ -56,7 +56,7 @@ fun TodayScreen(dayData: DayData?, onRefreshClicked: () -> Unit) {
         }
         item {
             SubcomposeAsyncImage(
-                model = dayData.image?.filePage,
+                model = dayData.image?.fileUrl,
                 contentDescription = null,
                 loading = {
                     CircularProgressIndicator()

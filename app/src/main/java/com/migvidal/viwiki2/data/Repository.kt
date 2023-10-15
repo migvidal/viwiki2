@@ -1,12 +1,14 @@
 package com.migvidal.viwiki2.data
 
-import com.migvidal.viwiki2.data.database.DayData
 import com.migvidal.viwiki2.data.database.ViWikiDatabaseSpec
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseMostReadArticle
 import com.migvidal.viwiki2.data.database.toDatabaseModel
 import com.migvidal.viwiki2.data.network.WikiMediaApiImpl
+import com.migvidal.viwiki2.ui.UiDayData
+import com.migvidal.viwiki2.ui.UiDayImage
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import java.util.GregorianCalendar
@@ -15,16 +17,31 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
     /**
      * Single source of truth for the "today" response
      */
-    val dayData = combine(
+    val dayData: Flow<UiDayData> = combine(
         flow = viWikiDatabase.featuredArticleDao.getAll(),
         flow2 = viWikiDatabase.mostReadArticlesDao.getMostReadAndArticles(),
         flow3 = viWikiDatabase.dayImageDao.getAll(),
         flow4 = viWikiDatabase.onThisDayDao.getAll(),
     ) { featuredArticle, mostRead, image, onThisDay ->
-        DayData(
+        val uiDayImage: UiDayImage? = run {
+            image ?: return@run null
+            val thumbnail =
+                viWikiDatabase.imageDao.getImageById(image.thumbnailId)
+            val fullSize =
+                viWikiDatabase.imageDao.getImageById(image.imageId)
+            val description =
+                viWikiDatabase.descriptionDao.getDescriptionById(image.descriptionId)
+            UiDayImage.fromDatabaseEntity(
+                databaseDayImage = image,
+                thumbnail = thumbnail ?: return@run null,
+                fullSizeImage = fullSize ?: return@run null,
+                description = description ?: return@run null,
+            )
+        }
+        UiDayData(
             databaseFeaturedArticle = featuredArticle,
             databaseMostReadArticles = mostRead.values.flatten(),
-            image = image,
+            image = uiDayImage,
             databaseOnThisDay = onThisDay,
         )
     }
@@ -68,7 +85,8 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
                 val dbMostReadArticles: List<DatabaseArticle> = mostRead.articles.map {
                     it.toDatabaseModel()
                 }
-                val insertedArticlesIDs = viWikiDatabase.articleDao.insertAll(*dbMostReadArticles.toTypedArray())
+                val insertedArticlesIDs =
+                    viWikiDatabase.articleDao.insertAll(*dbMostReadArticles.toTypedArray())
 
                 // - insert mostReadArticles entity
                 val mostReadArticles = insertedArticlesIDs.map {
