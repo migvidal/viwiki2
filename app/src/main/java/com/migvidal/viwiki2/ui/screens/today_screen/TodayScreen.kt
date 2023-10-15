@@ -17,7 +17,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 
 @Composable
-@Destination()
+@Destination
 @RootNavGraph(start = true)
 fun TodayScreen(dayData: UiDayData?, onRefreshClicked: () -> Unit) {
     LazyColumn(state = rememberLazyListState()) {
@@ -33,8 +33,6 @@ fun TodayScreen(dayData: UiDayData?, onRefreshClicked: () -> Unit) {
             }
         }
         item {
-        }
-        item {
             SectionHeading(text = "Today's Featured Article")
             FeaturedActicleSection(
                 featuredArticle = dayData.databaseFeaturedArticle ?: return@item
@@ -45,7 +43,6 @@ fun TodayScreen(dayData: UiDayData?, onRefreshClicked: () -> Unit) {
                 onArticleClicked = {}
             )
         }
-
         item {
             SectionHeading(text = "On this day")
         }
