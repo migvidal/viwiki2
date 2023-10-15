@@ -2,6 +2,7 @@ package com.migvidal.viwiki2.ui.screens.today_screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
+import com.migvidal.viwiki2.ui.components.SectionHeading
 import com.migvidal.viwiki2.ui.components.Side
 import com.migvidal.viwiki2.ui.components.withGradientEdge
 
@@ -26,31 +28,35 @@ internal fun MostReadArticlesSection(
     mostReadArticles: List<DatabaseArticle>,
     onArticleClicked: () -> Unit
 ) {
-    Box(
-        modifier = Modifier.withGradientEdge(
-            side = Side.End,
-            backgroundColor = MaterialTheme.colorScheme.background
-        )
-    ) {
-        LazyHorizontalGrid(
-            modifier = Modifier.height(240.dp),
-            rows = GridCells.Fixed(2),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+    Column {
+        SectionHeading(text = "Most read articles")
+        Box(
+            modifier = Modifier.withGradientEdge(
+                side = Side.End,
+                backgroundColor = MaterialTheme.colorScheme.background
+            )
         ) {
-            items(items = mostReadArticles) {
-                Card(modifier = Modifier.aspectRatio(21 / 9f), onClick = onArticleClicked) {
-                    Box(
-                        modifier = Modifier.weight(1f),
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(16.dp),
-                            text = it.normalizedTitle
-                        )
+            LazyHorizontalGrid(
+                modifier = Modifier.height(240.dp),
+                rows = GridCells.Fixed(2),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                items(items = mostReadArticles) {
+                    Card(modifier = Modifier.aspectRatio(21 / 9f), onClick = onArticleClicked) {
+                        Box(
+                            modifier = Modifier.weight(1f),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(16.dp),
+                                text = it.normalizedTitle
+                            )
+                        }
                     }
                 }
             }
         }
+
     }
 }

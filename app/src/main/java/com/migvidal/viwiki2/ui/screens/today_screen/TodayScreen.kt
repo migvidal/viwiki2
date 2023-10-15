@@ -1,6 +1,7 @@
 package com.migvidal.viwiki2.ui.screens.today_screen
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -32,24 +33,30 @@ fun TodayScreen(dayData: UiDayData?, onRefreshClicked: () -> Unit) {
                 DayImageSection(it)
             }
         }
-        item {
-            SectionHeading(text = "Today's Featured Article")
-            FeaturedActicleSection(
-                featuredArticle = dayData.databaseFeaturedArticle ?: return@item
-            )
-            SectionHeading(text = "Most read articles")
-            MostReadArticlesSection(
-                mostReadArticles = dayData.databaseMostReadArticles ?: return@item,
-                onArticleClicked = {}
-            )
+        dayData.databaseFeaturedArticle?.let {
+            item {
+                FeaturedActicleSection(
+                    featuredArticle = it
+                )
+            }
         }
-        item {
-            SectionHeading(text = "On this day")
+        dayData.databaseMostReadArticles?.let {
+            item {
+                MostReadArticlesSection(
+                    mostReadArticles = it,
+                    onArticleClicked = {}
+                )
+            }
         }
-        if (dayData.databaseOnThisDay != null) {
-            items(dayData.databaseOnThisDay) { onThisDay ->
-                Text(text = "On ${onThisDay.year}")
-                Text(text = onThisDay.text)
+        dayData.databaseOnThisDay?.let {
+            item {
+                SectionHeading(text = "On this day")
+            }
+            items(it) { onThisDay ->
+                Column {
+                    Text(text = "On ${onThisDay.year}")
+                    Text(text = onThisDay.text)
+                }
             }
         }
 
