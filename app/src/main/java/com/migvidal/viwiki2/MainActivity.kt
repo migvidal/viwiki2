@@ -36,9 +36,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.migvidal.viwiki2.ui.ViWikiViewModel
 import com.migvidal.viwiki2.ui.screens.NavGraphs
-import com.migvidal.viwiki2.ui.screens.TodayScreen
 import com.migvidal.viwiki2.ui.screens.destinations.SearchScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.TodayScreenDestination
+import com.migvidal.viwiki2.ui.screens.today_screen.TodayScreen
 import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.manualcomposablecalls.composable

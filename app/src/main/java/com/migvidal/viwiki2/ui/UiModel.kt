@@ -21,7 +21,6 @@ data class UiDayImage(
     val fullSizeImage: DatabaseImage,
     val description: String,
     val title: String,
-    val fileUrl: String,
 ) {
     companion object {
         fun fromDatabaseEntity(
@@ -32,7 +31,6 @@ data class UiDayImage(
         ) = UiDayImage(
             id = databaseDayImage.dayImageId,
             title = databaseDayImage.title,
-            fileUrl = databaseDayImage.filePage,
             thumbnail = thumbnail,
             fullSizeImage = fullSizeImage,
             description = description.text,

@@ -51,9 +51,6 @@ data class DatabaseDayImage(
 
     val title: String = "",
 
-    @ColumnInfo(name = "file_page")
-    val filePage: String = "",
-
     ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

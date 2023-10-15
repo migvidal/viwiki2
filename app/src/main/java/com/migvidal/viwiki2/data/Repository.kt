@@ -2,8 +2,12 @@ package com.migvidal.viwiki2.data
 
 import com.migvidal.viwiki2.data.database.ViWikiDatabaseSpec
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
+import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
+import com.migvidal.viwiki2.data.database.entities.DatabaseDescription
+import com.migvidal.viwiki2.data.database.entities.DatabaseImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseMostReadArticle
 import com.migvidal.viwiki2.data.database.toDatabaseModel
+import com.migvidal.viwiki2.data.network.NetworkDayImage
 import com.migvidal.viwiki2.data.network.WikiMediaApiImpl
 import com.migvidal.viwiki2.ui.UiDayData
 import com.migvidal.viwiki2.ui.UiDayImage
@@ -79,6 +83,12 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
             )
             viWikiDatabase.featuredArticleDao.insert(featuredArticle = dbFeaturedArticle)
 
+            // Insert "image of the day"
+            val dayImage = networkDayResponse.image
+            if (dayImage != null) {
+                cacheDayImage(dayImage)
+            }
+
             // Insert "most read articles"
             if (mostRead != null) {
                 // - insert articles
@@ -97,5 +107,37 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
                 )
             }
         }
+    }
+
+    private suspend fun cacheDayImage(dayImage: NetworkDayImage) = with(dayImage) {
+        //- insert description
+        val dbDescription = DatabaseDescription(
+            text = description.text,
+            lang = description.lang,
+        )
+        val insertedDescriptionId = viWikiDatabase.descriptionDao.insert(dbDescription)
+        //- insert thumbnail
+        val dbThumbnail = DatabaseImage(
+            source = thumbnail.source,
+            width = thumbnail.width,
+            height = thumbnail.height,
+        )
+        val insertedThumbnailId = viWikiDatabase.imageDao.insert(dbThumbnail)
+        //- insert full size image
+        val fullSize = DatabaseImage(
+            source = image.source,
+            width = image.width,
+            height = image.height,
+        )
+        val insertedFullSizeId = viWikiDatabase.imageDao.insert(fullSize)
+
+        // insert DayImage
+        val dbDayImage = DatabaseDayImage(
+            thumbnailId = insertedThumbnailId,
+            imageId = insertedFullSizeId,
+            descriptionId = insertedDescriptionId,
+            title = title,
+        )
+        viWikiDatabase.dayImageDao.insert(dbDayImage)
     }
 }

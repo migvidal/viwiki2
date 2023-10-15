@@ -34,7 +34,7 @@ interface ImageDao {
 
     @Query("SELECT * FROM $ImageTableName " +
             "WHERE $ImageTableName.id = :id")
-    fun getImageById(id: Long): DatabaseImage?
+    suspend fun getImageById(id: Long): DatabaseImage?
 }
 
 @Dao
@@ -47,7 +47,7 @@ interface DescriptionDao {
 
     @Query("SELECT * FROM $DatabaseDescriptionTableName " +
             "WHERE $DatabaseDescriptionTableName.id = :id")
-    fun getDescriptionById(id: Long): DatabaseDescription?
+    suspend fun getDescriptionById(id: Long): DatabaseDescription?
 }
 
 
