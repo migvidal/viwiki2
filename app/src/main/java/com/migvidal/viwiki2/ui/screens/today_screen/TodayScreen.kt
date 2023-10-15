@@ -35,7 +35,7 @@ fun TodayScreen(dayData: UiDayData?, onRefreshClicked: () -> Unit) {
         }
         dayData.databaseFeaturedArticle?.let {
             item {
-                FeaturedActicleSection(
+                FeaturedArticleSection(
                     featuredArticle = it
                 )
             }
