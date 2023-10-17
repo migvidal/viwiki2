@@ -1,5 +1,6 @@
 package com.migvidal.viwiki2.data
 
+import android.util.Log
 import com.migvidal.viwiki2.data.database.ViWikiDatabaseSpec
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
@@ -13,11 +14,23 @@ import com.migvidal.viwiki2.ui.UiDayData
 import com.migvidal.viwiki2.ui.UiDayImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import java.net.UnknownHostException
 import java.util.GregorianCalendar
 
 class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
+
+    enum class DayDataStatus {
+        Error, Success, Loading
+    }
+
+    private val _dayDataStatus = MutableStateFlow(DayDataStatus.Loading)
+    val dayDataStatus = _dayDataStatus.asStateFlow()
+
     /**
      * Single source of truth for the "today" response
      */
@@ -57,12 +70,25 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
         val day = calendar.get(GregorianCalendar.DAY_OF_MONTH)
 
         // Get from the network
-        val networkDayResponse = WikiMediaApiImpl.wikiMediaApiService.getFeatured(
-            yyyy = year.toString(),
-            mm = String.format("%02d", month),
-            dd = String.format("%02d", day),
-        )
-        val featuredArticle = networkDayResponse.featuredArticle ?: return
+        val networkDayResponse = runCatching {
+            return@runCatching WikiMediaApiImpl.wikiMediaApiService.getFeatured(
+                yyyy = year.toString(),
+                mm = String.format("%02d", month),
+                dd = String.format("%02d", day),
+            )
+        }.getOrElse {
+            if (it is UnknownHostException) {
+                Log.e("OkHttp error", it.message.toString())
+            }
+            it.printStackTrace()
+            _dayDataStatus.update { DayDataStatus.Error }
+            return
+        }
+
+        val featuredArticle = networkDayResponse.featuredArticle ?: run {
+            _dayDataStatus.update { DayDataStatus.Error }
+            return
+        }
         val image = featuredArticle.originalImage
         val thumbnail = featuredArticle.thumbnail
         val mostRead = networkDayResponse.mostRead
@@ -107,6 +133,8 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
                 )
             }
         }
+        _dayDataStatus.update { DayDataStatus.Success }
+        return
     }
 
     private suspend fun cacheDayImage(dayImage: NetworkDayImage) = with(dayImage) {

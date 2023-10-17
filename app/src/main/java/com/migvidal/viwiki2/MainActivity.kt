@@ -118,8 +118,10 @@ fun ViWikiApp() {
         ) {
             composable(TodayScreenDestination) {
                 val dayData = viewModel.dayData.collectAsState(initial = null).value
+                val dayDataStatus = viewModel.dayDataStatus.collectAsState(initial = null).value
                 TodayScreen(
                     dayData = dayData,
+                    dayDataStatus = dayDataStatus,
                     onRefreshClicked = { viewModel.refreshDataFromRepository() })
             }
         }

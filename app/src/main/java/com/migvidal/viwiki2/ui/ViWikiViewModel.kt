@@ -15,10 +15,11 @@ class ViWikiViewModel(private val repository: Repository) : ViewModel() {
     }
 
     val dayData = repository.dayData
+    val dayDataStatus = repository.dayDataStatus
 
     fun refreshDataFromRepository() {
         viewModelScope.launch {
-            repository.refreshDayData()
+            val success = repository.refreshDayData()
         }
     }
 
