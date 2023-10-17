@@ -2,7 +2,9 @@ package com.migvidal.viwiki2.data
 
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
+import com.migvidal.viwiki2.data.database.entities.DatabaseImage
 import com.migvidal.viwiki2.ui.UiDayData
+import com.migvidal.viwiki2.ui.UiDayImage
 
 val fakeFeaturedArticle = DatabaseFeaturedArticle(
     originalImageId = 10000,
@@ -31,4 +33,15 @@ val fakeDayData = UiDayData(
     databaseMostReadArticles = fakeArticles,
     image = null,
     databaseOnThisDay = null,
+)
+
+const val DummyImageUrl =
+    "https://upload.wikimedia.org/wikipedia/commons/c/c6/Golden-eyed_tree_frog_%28Agalychnis_annae%29.jpg"
+val fakeDatabaseImage = DatabaseImage(source = DummyImageUrl, width = 300, height = 300)
+val fakeUiDayImage = UiDayImage(
+    id = 1000,
+    thumbnail = fakeDatabaseImage,
+    fullSizeImage = fakeDatabaseImage,
+    description = "Goes boing and ribbit",
+    title = "A frog"
 )
