@@ -36,13 +36,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.migvidal.viwiki2.ui.ViWikiViewModel
 import com.migvidal.viwiki2.ui.screens.NavGraphs
+import com.migvidal.viwiki2.ui.screens.destinations.Destination
 import com.migvidal.viwiki2.ui.screens.destinations.SearchScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.TodayScreenDestination
 import com.migvidal.viwiki2.ui.screens.today_screen.TodayScreen
 import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
-import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
 enum class TopLevelDestination(
     @StringRes val label: Int,
     val icon: ImageVector,
-    val destination: DirectionDestinationSpec,
+    val destination: Destination,
 ) {
     Today(label = R.string.today, icon = Icons.Default.Home, destination = TodayScreenDestination),
     Search(
@@ -128,7 +128,7 @@ fun ViWikiApp() {
     }
 }
 
-private fun NavDestination?.isTopLevelDestinationInHierarchy(topLevelDestination: DirectionDestinationSpec) =
+private fun NavDestination?.isTopLevelDestinationInHierarchy(topLevelDestination: Destination) =
     this?.hierarchy?.any {
         it.route?.contains(topLevelDestination.route, true) ?: false
     } ?: false
