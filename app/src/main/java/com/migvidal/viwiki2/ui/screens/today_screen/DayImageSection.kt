@@ -2,8 +2,11 @@ package com.migvidal.viwiki2.ui.screens.today_screen
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
@@ -12,8 +15,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.migvidal.viwiki2.data.fakeUiDayImage
 import com.migvidal.viwiki2.ui.UiDayImage
@@ -24,9 +30,13 @@ import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 internal fun DayImageSection(uiDayImage: UiDayImage) {
     Column {
         val aspectRatio = uiDayImage.thumbnail.width / uiDayImage.thumbnail.height.toFloat()
+        val screenWidth = LocalConfiguration.current.screenWidthDp
         SectionHeading(text = "Image of the day")
         SubcomposeAsyncImage(
-            modifier = Modifier.aspectRatio(aspectRatio).fillMaxWidth(),
+            modifier = Modifier
+                .aspectRatio(aspectRatio)
+                .wrapContentWidth(unbounded = true)
+                .width(screenWidth.dp),
             model = uiDayImage.thumbnail.source,
             contentScale = ContentScale.FillWidth,
             contentDescription = null,
@@ -39,7 +49,8 @@ internal fun DayImageSection(uiDayImage: UiDayImage) {
                     contentDescription = "Error loading image"
                 )
             })
-        Text(text = uiDayImage.description)
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(modifier = Modifier.alpha(0.7f), text = uiDayImage.description)
     }
 }
 
