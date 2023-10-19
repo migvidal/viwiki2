@@ -3,22 +3,29 @@ package com.migvidal.viwiki2.ui.screens.today_screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.SubcomposeAsyncImage
 import com.migvidal.viwiki2.ui.UiArticle
 import com.migvidal.viwiki2.ui.components.SectionHeading
 import com.migvidal.viwiki2.ui.components.Side
@@ -50,16 +57,35 @@ internal fun MostReadArticlesSection(
                         shape = RectangleShape,
                         onClick = onArticleClicked
                     ) {
-                        Text(
-                            modifier = Modifier.padding(16.dp),
-                            text = it.normalizedTitle,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Text(
-                            modifier = Modifier.padding(16.dp).alpha(0.5f),
-                            text = it.views.toString(),
-                            fontWeight = FontWeight.ExtraBold,
-                        )
+                        Row(modifier = Modifier.weight(1f)) {
+                            SubcomposeAsyncImage(
+                                modifier = Modifier
+                                    .aspectRatio(1f),
+                                model = it.thumbnail?.source,
+                                contentScale = ContentScale.FillWidth,
+                                contentDescription = null,
+                                loading = {
+                                    CircularProgressIndicator()
+                                },
+                                error = {
+                                    Icon(
+                                        imageVector = Icons.Default.Warning,
+                                        contentDescription = "Error loading image"
+                                    )
+                                })
+                            Column {
+                                Text(
+                                    modifier = Modifier.padding(16.dp),
+                                    text = it.normalizedTitle,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    modifier = Modifier.padding(16.dp).alpha(0.5f),
+                                    text = it.views.toString(),
+                                    fontWeight = FontWeight.ExtraBold,
+                                )
+                            }
+                        }
 
                     }
                 }
