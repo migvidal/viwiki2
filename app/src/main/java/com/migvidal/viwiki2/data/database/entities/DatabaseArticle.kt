@@ -23,7 +23,7 @@ data class DatabaseArticle(
     val description: String,
     val extract: String,
     @ColumnInfo(name = ThumbnailIdColumnName)
-    val thumbnailId: Long,
+    val thumbnailId: Long?,
     val isMostRead: Boolean,
     val isOnThisDay: Boolean,
 ) {

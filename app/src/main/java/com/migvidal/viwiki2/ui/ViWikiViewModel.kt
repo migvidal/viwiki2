@@ -19,7 +19,7 @@ class ViWikiViewModel(private val repository: Repository) : ViewModel() {
 
     fun refreshDataFromRepository() {
         viewModelScope.launch {
-            val success = repository.refreshDayData()
+            repository.refreshDayData()
         }
     }
 

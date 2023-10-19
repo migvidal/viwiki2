@@ -46,7 +46,7 @@ data class NetworkArticle(
     val normalizedTitle: String,
     val description: String?,
     val extract: String,
-    val thumbnail: NetworkImage,
+    val thumbnail: NetworkImage?,
 )
 
 data class NetworkOnThisDay(

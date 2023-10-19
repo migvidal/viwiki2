@@ -24,7 +24,7 @@ fun NetworkImage.toDatabaseModel() = DatabaseImage(
     source, width, height
 )
 
-fun NetworkArticle.toDatabaseModel(thumbnailId: Long, isOnThisDay: Boolean, isMostRead: Boolean) = DatabaseArticle(
+fun NetworkArticle.toDatabaseModel(thumbnailId: Long?, isOnThisDay: Boolean, isMostRead: Boolean) = DatabaseArticle(
     views = views,
     normalizedTitle = normalizedTitle,
     description = description ?: "",
