@@ -10,10 +10,31 @@ import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 
 data class UiDayData(
     val databaseFeaturedArticle: DatabaseFeaturedArticle?,
-    val databaseMostReadArticles: List<DatabaseArticle>?,
+    val mostReadArticles: List<UiArticle>?,
     val image: UiDayImage?,
     val databaseOnThisDay: List<DatabaseOnThisDay>?,
 )
+
+data class UiArticle(
+    val views: String?,
+    val normalizedTitle: String = "",
+    val description: String,
+    val extract: String,
+    val thumbnail: DatabaseImage?,
+) {
+    companion object {
+        fun fromDatabaseEntity(
+            databaseArticle: DatabaseArticle,
+            thumbnail: DatabaseImage?,
+        ) = UiArticle(
+            views = databaseArticle.views.toString(),
+            normalizedTitle = databaseArticle.normalizedTitle,
+            description = databaseArticle.description,
+            extract = databaseArticle.extract,
+            thumbnail = thumbnail
+        )
+    }
+}
 
 data class UiDayImage(
     val id: Long,

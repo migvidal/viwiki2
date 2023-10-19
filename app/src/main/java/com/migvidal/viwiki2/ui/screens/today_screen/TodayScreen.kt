@@ -39,7 +39,7 @@ fun TodayScreen(dayData: UiDayData?, dayDataStatus: Repository.DayDataStatus?, o
                 FeaturedArticleSection(featuredArticle = it)
             }
         }
-        dayData.databaseMostReadArticles?.let {
+        dayData.mostReadArticles?.let {
             item {
                 MostReadArticlesSection(
                     mostReadArticles = it,

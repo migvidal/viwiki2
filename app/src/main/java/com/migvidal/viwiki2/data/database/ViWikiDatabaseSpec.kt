@@ -9,7 +9,6 @@ import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseDescription
 import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
-import com.migvidal.viwiki2.data.database.entities.DatabaseMostReadArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 
 @Database(
@@ -19,7 +18,6 @@ import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
         DatabaseDayImage::class,
         DatabaseDescription::class,
         DatabaseFeaturedArticle::class,
-        DatabaseMostReadArticle::class,
         DatabaseOnThisDay::class
     ],
     version = 1, exportSchema = false

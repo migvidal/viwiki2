@@ -41,10 +41,12 @@ data class NetworkMostRead(
 )
 
 data class NetworkArticle(
+    val views: Int?,
     @Json(name = "normalizedtitle")
     val normalizedTitle: String,
     val description: String?,
     val extract: String,
+    val thumbnail: NetworkImage,
 )
 
 data class NetworkOnThisDay(

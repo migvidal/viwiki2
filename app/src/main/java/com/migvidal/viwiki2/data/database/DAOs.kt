@@ -12,12 +12,10 @@ import com.migvidal.viwiki2.data.database.entities.DatabaseDescription
 import com.migvidal.viwiki2.data.database.entities.DatabaseDescriptionTableName
 import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
-import com.migvidal.viwiki2.data.database.entities.DatabaseMostReadArticle
+import com.migvidal.viwiki2.data.database.entities.DatabaseImageTableName
 import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 import com.migvidal.viwiki2.data.database.entities.DayImageTableName
 import com.migvidal.viwiki2.data.database.entities.FeaturedArticleTableName
-import com.migvidal.viwiki2.data.database.entities.ImageTableName
-import com.migvidal.viwiki2.data.database.entities.MostReadArticleTableName
 import com.migvidal.viwiki2.data.database.entities.OnThisDayTableName
 import kotlinx.coroutines.flow.Flow
 
@@ -29,11 +27,11 @@ interface ImageDao {
     @Delete
     suspend fun delete(databaseImage: DatabaseImage)
 
-    @Query("SELECT * FROM $ImageTableName")
+    @Query("SELECT * FROM $DatabaseImageTableName")
     fun getAll(): Flow<DatabaseImage?>
 
-    @Query("SELECT * FROM $ImageTableName " +
-            "WHERE $ImageTableName.id = :id")
+    @Query("SELECT * FROM $DatabaseImageTableName" +
+            " WHERE $DatabaseImageTableName.id = :id")
     suspend fun getImageById(id: Long): DatabaseImage?
 }
 
@@ -45,8 +43,8 @@ interface DescriptionDao {
     @Delete
     suspend fun delete(databaseDescription: DatabaseDescription)
 
-    @Query("SELECT * FROM $DatabaseDescriptionTableName " +
-            "WHERE $DatabaseDescriptionTableName.id = :id")
+    @Query("SELECT * FROM $DatabaseDescriptionTableName" +
+            " WHERE $DatabaseDescriptionTableName.id = :id")
     suspend fun getDescriptionById(id: Long): DatabaseDescription?
 }
 
@@ -76,17 +74,16 @@ interface FeaturedArticlesDao {
 }
 @Dao
 interface MostReadArticleListDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg mostReadArticles: DatabaseMostReadArticle): List<Long>
-
+    fun insertAll(vararg mostReadArticles: DatabaseArticle): List<Long>
     @Delete
-    fun delete(mostReadArticles: DatabaseMostReadArticle)
+    fun delete(mostReadArticles: DatabaseArticle)
 
-    @Query("SELECT * FROM $MostReadArticleTableName " +
-            "JOIN $DatabaseArticleTableName " +
-            "ON $DatabaseArticleTableName.id = $MostReadArticleTableName.article_id"
+    @Query("SELECT * FROM $DatabaseArticleTableName" +
+            " WHERE $DatabaseArticleTableName.isMostRead = 1" //1 is 'true' in Sqlite
     )
-    fun getMostReadAndArticles(): Flow<Map<DatabaseMostReadArticle, List<DatabaseArticle>>>
+    fun getMostRead(): Flow<List<DatabaseArticle>>
 }
 
 @Dao

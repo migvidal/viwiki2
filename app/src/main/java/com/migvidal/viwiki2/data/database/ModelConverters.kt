@@ -3,11 +3,9 @@ package com.migvidal.viwiki2.data.database
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
-import com.migvidal.viwiki2.data.database.entities.DatabaseMostReadArticle
 import com.migvidal.viwiki2.data.network.NetworkArticle
 import com.migvidal.viwiki2.data.network.NetworkFeaturedArticle
 import com.migvidal.viwiki2.data.network.NetworkImage
-import com.migvidal.viwiki2.data.network.NetworkMostRead
 
 fun NetworkFeaturedArticle.toDatabaseModel(originalImageId: Long, thumbnailId: Long) =
     DatabaseFeaturedArticle(
@@ -26,19 +24,12 @@ fun NetworkImage.toDatabaseModel() = DatabaseImage(
     source, width, height
 )
 
-fun NetworkArticle.toDatabaseModel() = DatabaseArticle(
-    normalizedTitle, description ?: "", extract
+fun NetworkArticle.toDatabaseModel(thumbnailId: Long, isOnThisDay: Boolean, isMostRead: Boolean) = DatabaseArticle(
+    views = views,
+    normalizedTitle = normalizedTitle,
+    description = description ?: "",
+    extract = extract,
+    thumbnailId = thumbnailId,
+    isOnThisDay = isOnThisDay,
+    isMostRead = isMostRead,
 )
-
-fun NetworkMostRead.toDatabaseModel(): List<DatabaseMostReadArticle> {
-    val articleList = this.articles.map {
-        DatabaseArticle(
-            normalizedTitle = it.normalizedTitle,
-            description = it.description ?: "",
-            extract = it.extract
-        )
-    }
-    return articleList.map {
-        DatabaseMostReadArticle(date = this.date, articleId = it.articleId)
-    }
-}
