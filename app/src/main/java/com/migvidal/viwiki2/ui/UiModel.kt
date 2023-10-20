@@ -16,7 +16,7 @@ data class UiDayData(
 )
 
 data class UiArticle(
-    val views: String?,
+    val views: Int?,
     val normalizedTitle: String = "",
     val description: String,
     val extract: String,
@@ -27,7 +27,7 @@ data class UiArticle(
             databaseArticle: DatabaseArticle,
             thumbnail: DatabaseImage?,
         ) = UiArticle(
-            views = databaseArticle.views.toString(),
+            views = databaseArticle.views,
             normalizedTitle = databaseArticle.normalizedTitle,
             description = databaseArticle.description,
             extract = databaseArticle.extract,

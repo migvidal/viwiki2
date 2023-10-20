@@ -27,7 +27,7 @@ val fakeFeaturedArticle = DatabaseFeaturedArticle(
 )
 val fakeArticles = listOf(
     UiArticle(
-        views = "300_000",
+        views = 300_000,
         normalizedTitle = "Short",
         description = "Ut enim ad.",
         extract = "Ut enim ad minim veniam.",
@@ -35,7 +35,7 @@ val fakeArticles = listOf(
     )
 ) + List(10) {
     UiArticle(
-        views = "400_000",
+        views = 400_000,
         normalizedTitle = "Foo of the bar",
         description = "Ut enim ad.",
         extract = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
