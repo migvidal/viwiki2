@@ -34,7 +34,7 @@ fun TodayScreen(dayData: UiDayData?, dayDataStatus: Repository.DayDataStatus?, o
                 DayImageSection(it)
             }
         }
-        dayData.databaseFeaturedArticle?.let {
+        dayData.featuredArticle?.let {
             item {
                 FeaturedArticleSection(featuredArticle = it)
             }

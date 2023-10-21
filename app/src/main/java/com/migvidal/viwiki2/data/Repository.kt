@@ -13,6 +13,7 @@ import com.migvidal.viwiki2.data.network.WikiMediaApiImpl
 import com.migvidal.viwiki2.ui.UiArticle
 import com.migvidal.viwiki2.ui.UiDayData
 import com.migvidal.viwiki2.ui.UiDayImage
+import com.migvidal.viwiki2.ui.UiFeaturedArticle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,9 +55,19 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
                 description = description ?: return@run null,
             )
         }
+        // Featured article
+        val uiFeaturedArticle: UiFeaturedArticle? = featuredArticle?.let {
+            val thumbnail = viWikiDatabase.imageDao.getImageById(it.thumbnailId)
+            val fullSize = viWikiDatabase.imageDao.getImageById(it.originalImageId)
+            UiFeaturedArticle.fromDatabaseEntity(
+                databaseFeaturedArticle = featuredArticle,
+                thumbnail = thumbnail ?: return@let null,
+                fullSizeImage = fullSize ?: return@let null,
+            )
+        }
         // Finally, create the UiDay object
         UiDayData(
-            databaseFeaturedArticle = featuredArticle,
+            featuredArticle = uiFeaturedArticle,
             mostReadArticles = mostRead.map { databaseArticle ->
                 val thumbnail = databaseArticle.thumbnailId?.let {
                     viWikiDatabase.imageDao.getImageById(it)

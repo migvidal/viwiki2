@@ -9,7 +9,7 @@ import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 
 
 data class UiDayData(
-    val databaseFeaturedArticle: DatabaseFeaturedArticle?,
+    val featuredArticle: UiFeaturedArticle?,
     val mostReadArticles: List<UiArticle>?,
     val image: UiDayImage?,
     val databaseOnThisDay: List<DatabaseOnThisDay>?,
@@ -58,6 +58,35 @@ data class UiDayImage(
         )
     }
 }
+
+data class UiFeaturedArticle(
+    val thumbnail: DatabaseImage,
+    val fullSizeImage: DatabaseImage,
+    val type: String,
+    val title: String,
+    val displayTitle: String,
+    val normalizedTitle: String,
+    val description: String,
+    val extract: String,
+) {
+    companion object {
+        fun fromDatabaseEntity(
+            databaseFeaturedArticle: DatabaseFeaturedArticle,
+            thumbnail: DatabaseImage,
+            fullSizeImage: DatabaseImage,
+        ) = UiFeaturedArticle(
+            thumbnail = thumbnail,
+            fullSizeImage = fullSizeImage,
+            type = databaseFeaturedArticle.type,
+            title =  databaseFeaturedArticle.title,
+            displayTitle = databaseFeaturedArticle.displayTitle,
+            normalizedTitle = databaseFeaturedArticle.normalizedTitle,
+            description = databaseFeaturedArticle.description,
+            extract = databaseFeaturedArticle.extract,
+        )
+    }
+}
+
 
 
 
