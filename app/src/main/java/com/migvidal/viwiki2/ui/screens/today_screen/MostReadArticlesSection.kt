@@ -124,7 +124,7 @@ private fun ArticleSmallCard(
                             val viewsInThousands = it / 1000
                             Text(
                                 modifier = Modifier,
-                                text = decimalFormat.format(viewsInThousands) + " K views",
+                                text = decimalFormat.format(viewsInThousands) + " K",
                                 fontWeight = FontWeight.Bold,
                             )
                         }
