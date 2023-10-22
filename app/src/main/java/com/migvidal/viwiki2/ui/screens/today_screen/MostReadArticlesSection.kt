@@ -18,24 +18,20 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RemoveRedEye
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.SubcomposeAsyncImage
 import com.migvidal.viwiki2.ui.UiArticle
+import com.migvidal.viwiki2.ui.components.CustomAsyncImage
 import com.migvidal.viwiki2.ui.components.SectionHeading
 import com.migvidal.viwiki2.ui.components.Side
 import com.migvidal.viwiki2.ui.components.withGradientEdge
@@ -78,26 +74,7 @@ internal fun MostReadArticlesSection(
                         onClick = onArticleClicked
                     ) {
                         Row(modifier = Modifier.weight(1f)) {
-                            SubcomposeAsyncImage(
-                                modifier = Modifier
-                                    .aspectRatio(1f),
-                                model = article.thumbnail?.source,
-                                contentScale = ContentScale.FillWidth,
-                                contentDescription = null,
-                                loading = {
-                                    Surface(color = MaterialTheme.colorScheme.onBackground) {}
-                                },
-                                error = {
-                                    Surface(color = MaterialTheme.colorScheme.onBackground) {
-                                        Box(contentAlignment = Alignment.Center) {
-                                            Icon(
-                                                modifier = Modifier.size(24.dp),
-                                                imageVector = Icons.Default.Warning,
-                                                contentDescription = "Error loading image"
-                                            )
-                                        }
-                                    }
-                                })
+                            CustomAsyncImage(model = article.thumbnail?.source, aspectRatio = 1f)
                             Column {
                                 Text(
                                     modifier = Modifier.padding(16.dp),
