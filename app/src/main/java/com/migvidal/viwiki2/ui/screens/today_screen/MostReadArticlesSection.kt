@@ -38,7 +38,6 @@ import com.migvidal.viwiki2.ui.components.withGradientEdge
 import java.util.Locale
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 internal fun MostReadArticlesSection(
     mostReadArticles: List<UiArticle>,
     onArticleClicked: () -> Unit
@@ -65,55 +64,70 @@ internal fun MostReadArticlesSection(
                     items = mostReadArticles,
                 ) { index, article ->
                     val lastArticleIndex = mostReadArticles.size - 1
-                    Card(
+                    ArticleSmallCard(
                         modifier = Modifier
-                            .aspectRatio(9 / 3f)
                             .padding(start = if (index in 0..1) 16.dp else 0.dp)
-                            .padding(end = if (index in lastArticleIndex -1 .. lastArticleIndex) 16.dp else 0.dp),
-                        shape = RectangleShape,
-                        onClick = onArticleClicked
+                            .padding(end = if (index in lastArticleIndex - 1..lastArticleIndex) 16.dp else 0.dp),
+                        article = article,
+                        index = index,
+                        onClick = onArticleClicked,
+                    )
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun ArticleSmallCard(
+    modifier: Modifier = Modifier,
+    article: UiArticle,
+    index: Int,
+    onClick: () -> Unit,
+) {
+    Card(
+        modifier = modifier
+            .aspectRatio(9 / 3f),
+        shape = RectangleShape,
+        onClick = onClick
+    ) {
+        Row(modifier = Modifier.weight(1f)) {
+            CustomAsyncImage(model = article.thumbnail?.source, aspectRatio = 1f)
+            Column {
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = article.normalizedTitle,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                val formatSymbols = DecimalFormatSymbols(Locale.ENGLISH).apply {
+                    groupingSeparator = ' '
+                }
+                val decimalFormat = DecimalFormat("###,###", formatSymbols).apply {
+                    maximumSignificantDigits = 3
+                }
+                val topMostRead = 0..2
+                if (index in topMostRead) {
+                    Row(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .alpha(0.6f),
                     ) {
-                        Row(modifier = Modifier.weight(1f)) {
-                            CustomAsyncImage(model = article.thumbnail?.source, aspectRatio = 1f)
-                            Column {
-                                Text(
-                                    modifier = Modifier.padding(16.dp),
-                                    text = article.normalizedTitle,
-                                    style = MaterialTheme.typography.titleMedium,
-
-                                    )
-                                val formatSymbols = DecimalFormatSymbols(Locale.ENGLISH).apply {
-                                    groupingSeparator = ' '
-                                }
-                                val decimalFormat = DecimalFormat("###,###", formatSymbols).apply {
-                                    maximumSignificantDigits = 3
-                                }
-                                val topMostRead = 0..2
-                                if (index in topMostRead) {
-                                    Row(
-                                        modifier = Modifier
-                                            .padding(16.dp)
-                                            .alpha(0.6f),
-                                    ) {
-                                        article.views?.let {
-                                            Icon(
-                                                modifier = Modifier.size(24.dp),
-                                                imageVector = Icons.Default.RemoveRedEye,
-                                                contentDescription = "Views"
-                                            )
-                                            Spacer(modifier = Modifier.size(4.dp))
-                                            val viewsInThousands = it / 1000
-                                            Text(
-                                                modifier = Modifier,
-                                                text = decimalFormat.format(viewsInThousands) + " K views",
-                                                fontWeight = FontWeight.Bold,
-                                            )
-                                        }
-                                    }
-                                }
-                            }
+                        article.views?.let {
+                            Icon(
+                                modifier = Modifier.size(24.dp),
+                                imageVector = Icons.Default.RemoveRedEye,
+                                contentDescription = "Views"
+                            )
+                            Spacer(modifier = Modifier.size(4.dp))
+                            val viewsInThousands = it / 1000
+                            Text(
+                                modifier = Modifier,
+                                text = decimalFormat.format(viewsInThousands) + " K views",
+                                fontWeight = FontWeight.Bold,
+                            )
                         }
-
                     }
                 }
             }
