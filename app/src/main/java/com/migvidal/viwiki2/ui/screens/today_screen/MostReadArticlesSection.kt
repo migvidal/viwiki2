@@ -1,5 +1,6 @@
 package com.migvidal.viwiki2.ui.screens.today_screen
 
+import android.content.res.Configuration
 import android.icu.text.DecimalFormat
 import android.icu.text.DecimalFormatSymbols
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +23,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,18 +31,20 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.migvidal.viwiki2.data.fakeArticles
 import com.migvidal.viwiki2.ui.UiArticle
 import com.migvidal.viwiki2.ui.components.CustomAsyncImage
 import com.migvidal.viwiki2.ui.components.SectionHeading
 import com.migvidal.viwiki2.ui.components.Side
 import com.migvidal.viwiki2.ui.components.withGradientEdge
+import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 import java.util.Locale
 
 @Composable
 internal fun MostReadArticlesSection(
-    mostReadArticles: List<UiArticle>,
-    onArticleClicked: () -> Unit
+    mostReadArticles: List<UiArticle>, onArticleClicked: () -> Unit
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     Column {
@@ -50,12 +54,11 @@ internal fun MostReadArticlesSection(
                 .wrapContentWidth(unbounded = true)
                 .width(screenWidth.dp)
                 .withGradientEdge(
-                    side = Side.End,
-                    backgroundColor = MaterialTheme.colorScheme.background
+                    side = Side.End, backgroundColor = MaterialTheme.colorScheme.background
                 )
         ) {
             LazyHorizontalGrid(
-                modifier = Modifier.height(240.dp),
+                modifier = Modifier.height(304.dp),
                 rows = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -88,18 +91,20 @@ private fun ArticleSmallCard(
     onClick: () -> Unit,
 ) {
     Card(
-        modifier = modifier
-            .aspectRatio(9 / 3f),
-        shape = RectangleShape,
-        onClick = onClick
+        modifier = modifier.aspectRatio(9 / 4f), shape = RectangleShape, onClick = onClick
     ) {
         Row(modifier = Modifier.weight(1f)) {
-            CustomAsyncImage(model = article.thumbnail?.source, aspectRatio = 1f)
-            Column {
+            CustomAsyncImage(model = article.thumbnail?.source, aspectRatio = 3 / 4f)
+            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
                 Text(
-                    modifier = Modifier.padding(16.dp),
                     text = article.normalizedTitle,
                     style = MaterialTheme.typography.titleMedium,
+                )
+                Text(
+                    modifier = Modifier
+                        .weight(1f),
+                    text = article.description,
+                    maxLines = 3,
                 )
                 val formatSymbols = DecimalFormatSymbols(Locale.ENGLISH).apply {
                     groupingSeparator = ' '
@@ -111,7 +116,6 @@ private fun ArticleSmallCard(
                 if (index in topMostRead) {
                     Row(
                         modifier = Modifier
-                            .padding(16.dp)
                             .alpha(0.6f),
                     ) {
                         article.views?.let {
@@ -133,5 +137,15 @@ private fun ArticleSmallCard(
             }
         }
 
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@Composable
+fun ArticleSmallCardPreview() {
+    ViWiki2Theme {
+        Surface {
+            ArticleSmallCard(article = fakeArticles.first(), index = 0, onClick = {})
+        }
     }
 }
