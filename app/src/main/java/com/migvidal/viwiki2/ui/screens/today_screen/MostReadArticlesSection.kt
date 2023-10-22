@@ -71,7 +71,7 @@ internal fun MostReadArticlesSection(
                     val lastArticleIndex = mostReadArticles.size - 1
                     Card(
                         modifier = Modifier
-                            .aspectRatio(21 / 9f)
+                            .aspectRatio(9 / 3f)
                             .padding(start = if (index in 0..1) 16.dp else 0.dp)
                             .padding(end = if (index in lastArticleIndex -1 .. lastArticleIndex) 16.dp else 0.dp),
                         shape = RectangleShape,

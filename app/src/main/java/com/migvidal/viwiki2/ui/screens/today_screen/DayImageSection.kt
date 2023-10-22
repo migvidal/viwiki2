@@ -1,10 +1,10 @@
 package com.migvidal.viwiki2.ui.screens.today_screen
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
@@ -32,25 +33,30 @@ internal fun DayImageSection(uiDayImage: UiDayImage) {
         val aspectRatio = uiDayImage.thumbnail.width / uiDayImage.thumbnail.height.toFloat()
         val screenWidth = LocalConfiguration.current.screenWidthDp
         SectionHeading(text = "Image of the day")
-        SubcomposeAsyncImage(
+        Box(
             modifier = Modifier
-                .aspectRatio(aspectRatio)
                 .wrapContentWidth(unbounded = true)
-                .width(screenWidth.dp),
-            model = uiDayImage.thumbnail.source,
-            contentScale = ContentScale.FillWidth,
-            contentDescription = null,
-            loading = {
-                CircularProgressIndicator()
-            },
-            error = {
-                Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = "Error loading image"
-                )
-            })
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(modifier = Modifier.alpha(0.7f), text = uiDayImage.description)
+                .width(screenWidth.dp), contentAlignment = Alignment.BottomStart
+        ) {
+            SubcomposeAsyncImage(
+                modifier = Modifier
+                    .aspectRatio(aspectRatio),
+                model = uiDayImage.thumbnail.source,
+                contentScale = ContentScale.FillWidth,
+                contentDescription = null,
+                loading = {
+                    CircularProgressIndicator()
+                },
+                error = {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Error loading image"
+                    )
+                })
+            Surface(modifier = Modifier.alpha(0.6f)) {
+                Text(modifier = Modifier.padding(8.dp), text = uiDayImage.description)
+            }
+        }
     }
 }
 
