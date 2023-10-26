@@ -3,6 +3,7 @@ package com.migvidal.viwiki2.ui.components
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -33,7 +34,7 @@ fun CustomAsyncImage(modifier: Modifier = Modifier, model: Any?) {
         contentScale = ContentScale.FillWidth,
         contentDescription = null,
         loading = {
-            LoadingSkeleton(startColor = MaterialTheme.colorScheme.onBackground)
+            LoadingSkeleton(modifier=Modifier.fillMaxSize(),startColor = MaterialTheme.colorScheme.onBackground)
         },
         error = {
             Surface(color = MaterialTheme.colorScheme.onBackground) {

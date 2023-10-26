@@ -19,8 +19,6 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RemoveRedEye
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.migvidal.viwiki2.data.fakeArticles
 import com.migvidal.viwiki2.ui.UiArticle
 import com.migvidal.viwiki2.ui.components.CustomAsyncImage
+import com.migvidal.viwiki2.ui.components.CustomCard
 import com.migvidal.viwiki2.ui.components.SectionHeading
 import com.migvidal.viwiki2.ui.components.Side
 import com.migvidal.viwiki2.ui.components.withGradientEdge
@@ -58,7 +56,9 @@ internal fun MostReadArticlesSection(
                 )
         ) {
             LazyHorizontalGrid(
-                modifier = Modifier.height(304.dp),
+                modifier = Modifier.height(304.dp)
+                    .padding(vertical = 16.dp)
+                ,
                 rows = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -83,15 +83,14 @@ internal fun MostReadArticlesSection(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun ArticleSmallCard(
     modifier: Modifier = Modifier,
     article: UiArticle,
     index: Int,
     onClick: () -> Unit,
 ) {
-    Card(
-        modifier = modifier.aspectRatio(9 / 4f), shape = RectangleShape, onClick = onClick
+    CustomCard(
+        modifier = modifier.aspectRatio(9 / 4f), onClick = onClick
     ) {
         Row(modifier = Modifier.weight(1f)) {
             CustomAsyncImage(model = article.thumbnail?.source, aspectRatio = 3 / 4f)
@@ -144,7 +143,7 @@ private fun ArticleSmallCard(
 @Composable
 fun ArticleSmallCardPreview() {
     ViWiki2Theme {
-        Surface {
+        Surface(modifier = Modifier.padding(16.dp)) {
             ArticleSmallCard(article = fakeArticles.first(), index = 0, onClick = {})
         }
     }

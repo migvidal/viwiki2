@@ -25,7 +25,7 @@ fun LoadingSkeleton(modifier: Modifier = Modifier, startColor: Color) {
             color.animateTo(startColor, animationSpec = tween(750))
         }
     }
-    Box(modifier.fillMaxSize().background(color.value))
+    Box(modifier.background(color.value))
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
