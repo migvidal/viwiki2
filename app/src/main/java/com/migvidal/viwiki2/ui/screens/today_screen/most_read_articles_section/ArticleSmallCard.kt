@@ -18,6 +18,8 @@ import com.migvidal.viwiki2.ui.components.CustomAsyncImage
 import com.migvidal.viwiki2.ui.components.CustomCard
 import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 
+private val CardTextHorizontalPadding = 16.dp
+
 @Composable
 internal fun ArticleSmallCard(
     modifier: Modifier = Modifier,
@@ -30,21 +32,28 @@ internal fun ArticleSmallCard(
     ) {
         Row(modifier = Modifier.weight(1f)) {
             CustomAsyncImage(model = article.thumbnail?.source, aspectRatio = 3 / 4f)
-            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+            Column {
                 Text(
+                    modifier = Modifier.padding(horizontal = CardTextHorizontalPadding),
                     text = article.normalizedTitle,
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Text(
                     modifier = Modifier
-                        .weight(1f),
+                        .weight(1f)
+                        .padding(horizontal = CardTextHorizontalPadding, vertical = 4.dp),
                     text = article.description,
                     maxLines = 3,
                 )
+
                 val topMostRead = 0..2
                 if (index in topMostRead) {
                     article.views?.let {
-                        ViewsIndicator(it)
+                        ViewsIndicator(
+                            modifier = Modifier.padding(horizontal = CardTextHorizontalPadding, vertical = 2.dp),
+                            views = it,
+                            index = index
+                        )
                     }
                 }
             }
