@@ -14,6 +14,7 @@ import com.migvidal.viwiki2.data.Repository
 import com.migvidal.viwiki2.data.fakeDayData
 import com.migvidal.viwiki2.ui.UiDayData
 import com.migvidal.viwiki2.ui.components.SectionHeading
+import com.migvidal.viwiki2.ui.screens.today_screen.most_read_articles_section.MostReadArticlesSection
 import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
