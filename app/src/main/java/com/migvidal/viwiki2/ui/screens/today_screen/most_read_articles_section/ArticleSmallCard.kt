@@ -32,7 +32,7 @@ internal fun ArticleSmallCard(
     ) {
         Row(modifier = Modifier.weight(1f)) {
             CustomAsyncImage(model = article.thumbnail?.source, aspectRatio = 3 / 4f)
-            Column {
+            Column(modifier = Modifier.padding(top = 8.dp)) {
                 Text(
                     modifier = Modifier.padding(horizontal = CardTextHorizontalPadding),
                     text = article.normalizedTitle,
@@ -45,16 +45,15 @@ internal fun ArticleSmallCard(
                     text = article.description,
                     maxLines = 3,
                 )
-
-                val topMostRead = 0..2
-                if (index in topMostRead) {
-                    article.views?.let {
-                        ViewsIndicator(
-                            modifier = Modifier.padding(horizontal = CardTextHorizontalPadding, vertical = 2.dp),
-                            views = it,
-                            index = index
-                        )
-                    }
+                article.views?.let {
+                    ViewsIndicator(
+                        modifier = Modifier.padding(
+                            horizontal = CardTextHorizontalPadding,
+                            vertical = 2.dp
+                        ),
+                        views = it,
+                        index = index
+                    )
                 }
             }
         }

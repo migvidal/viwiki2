@@ -17,7 +17,7 @@ import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 @Composable
 fun SectionHeading(modifier: Modifier = Modifier, text: String) {
     Text(
-        modifier = modifier.padding(top = 16.dp, bottom = 8.dp),
+        modifier = modifier.padding(top = 24.dp, bottom = 8.dp),
         text = text.uppercase(),
         style = MaterialTheme.typography.titleSmall.copy(letterSpacing = 1.2.sp),
         fontWeight = FontWeight.Light

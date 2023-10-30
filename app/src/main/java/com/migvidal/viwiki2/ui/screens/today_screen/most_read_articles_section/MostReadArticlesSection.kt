@@ -36,9 +36,7 @@ internal fun MostReadArticlesSection(
                 )
         ) {
             LazyHorizontalGrid(
-                modifier = Modifier.height(328.dp)
-                    .padding(vertical = 16.dp)
-                ,
+                modifier = Modifier.height((8 * 40).dp),
                 rows = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
