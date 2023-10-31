@@ -3,7 +3,6 @@ package com.migvidal.viwiki2.ui
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseDescription
-import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 
@@ -62,27 +61,21 @@ data class UiDayImage(
 data class UiFeaturedArticle(
     val thumbnail: DatabaseImage,
     val fullSizeImage: DatabaseImage,
-    val type: String,
-    val title: String,
-    val displayTitle: String,
     val normalizedTitle: String,
     val description: String,
     val extract: String,
 ) {
     companion object {
         fun fromDatabaseEntity(
-            databaseFeaturedArticle: DatabaseFeaturedArticle,
+            featuredArticle: DatabaseArticle,
             thumbnail: DatabaseImage,
             fullSizeImage: DatabaseImage,
         ) = UiFeaturedArticle(
             thumbnail = thumbnail,
             fullSizeImage = fullSizeImage,
-            type = databaseFeaturedArticle.type,
-            title =  databaseFeaturedArticle.title,
-            displayTitle = databaseFeaturedArticle.displayTitle,
-            normalizedTitle = databaseFeaturedArticle.normalizedTitle,
-            description = databaseFeaturedArticle.description,
-            extract = databaseFeaturedArticle.extract,
+            normalizedTitle = featuredArticle.normalizedTitle,
+            description = featuredArticle.description,
+            extract = featuredArticle.extract,
         )
     }
 }

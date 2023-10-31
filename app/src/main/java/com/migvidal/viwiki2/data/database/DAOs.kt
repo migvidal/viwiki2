@@ -10,12 +10,10 @@ import com.migvidal.viwiki2.data.database.entities.DatabaseArticleTableName
 import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseDescription
 import com.migvidal.viwiki2.data.database.entities.DatabaseDescriptionTableName
-import com.migvidal.viwiki2.data.database.entities.DatabaseFeaturedArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseImageTableName
 import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 import com.migvidal.viwiki2.data.database.entities.DayImageTableName
-import com.migvidal.viwiki2.data.database.entities.FeaturedArticleTableName
 import com.migvidal.viwiki2.data.database.entities.OnThisDayTableName
 import kotlinx.coroutines.flow.Flow
 
@@ -59,18 +57,23 @@ interface ArticleDao {
 
     @Query("SELECT * FROM $DatabaseArticleTableName")
     fun getAll(): Flow<DatabaseArticle?>
+
+    @Query("SELECT * FROM $DatabaseArticleTableName" +
+            " WHERE $DatabaseArticleTableName.id = :id")
+    fun getArticleById(id: Long): DatabaseArticle?
 }
 
 @Dao
-interface FeaturedArticlesDao {
+interface FeaturedArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(featuredArticle: DatabaseFeaturedArticle): Long
+    suspend fun insert(featuredArticle: DatabaseArticle): Long
 
     @Delete
-    suspend fun delete(databaseFeaturedArticle: DatabaseFeaturedArticle)
+    suspend fun delete(featuredArticle: DatabaseArticle)
 
-    @Query("SELECT * FROM $FeaturedArticleTableName")
-    fun getAll(): Flow<DatabaseFeaturedArticle?>
+    @Query("SELECT * FROM $DatabaseArticleTableName" +
+            " WHERE $DatabaseArticleTableName.isFeatured = 1")
+    fun getAll(): Flow<DatabaseArticle?>
 }
 @Dao
 interface MostReadArticleListDao {

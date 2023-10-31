@@ -57,10 +57,12 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
         }
         // Featured article
         val uiFeaturedArticle: UiFeaturedArticle? = featuredArticle?.let {
-            val thumbnail = viWikiDatabase.imageDao.getImageById(it.thumbnailId)
-            val fullSize = viWikiDatabase.imageDao.getImageById(it.originalImageId)
+            val thumbnail = viWikiDatabase.imageDao.getImageById(it.thumbnailId ?: return@let null)
+            val fullSize =
+                viWikiDatabase.imageDao.getImageById(it.originalImageId ?: return@let null)
+
             UiFeaturedArticle.fromDatabaseEntity(
-                databaseFeaturedArticle = featuredArticle,
+                featuredArticle = featuredArticle,
                 thumbnail = thumbnail ?: return@let null,
                 fullSizeImage = fullSize ?: return@let null,
             )
@@ -157,12 +159,25 @@ class Repository(private val viWikiDatabase: ViWikiDatabaseSpec) {
                     source = it.source, width = it.width, height = it.height
                 )
             }
+            val originalImage = networkArticle.originalImage?.let {
+                // - insert article image
+                DatabaseImage(
+                    source = it.source, width = it.width, height = it.height
+                )
+            }
             val insertedThumbnailId = thumbnail?.let {
-                viWikiDatabase.imageDao.insert(thumbnail)
+                viWikiDatabase.imageDao.insert(it)
+            }
+            val insertedOriginalImageId = originalImage?.let {
+                viWikiDatabase.imageDao.insert(it)
             }
             // - create Article object
             return@map networkArticle.toDatabaseModel(
-                thumbnailId = insertedThumbnailId, isMostRead = true, isOnThisDay = false
+                thumbnailId = insertedThumbnailId,
+                originalImageId = insertedOriginalImageId,
+                isOnThisDay = false,
+                isMostRead = true,
+                isFeatured = false,
             )
         }
         // - insert mostReadArticles

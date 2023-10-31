@@ -19,9 +19,6 @@ val fakeUiDayImage = UiDayImage(
 val fakeUiFeaturedArticle = UiFeaturedArticle(
     thumbnail = fakeDatabaseImage,
     fullSizeImage = fakeDatabaseImage,
-    type = "standard",
-    title = "Foo_of_the_bar",
-    displayTitle = "<span class=\"mw-page-title-main\">Foo of the bar</span>",
     normalizedTitle = "Foo of the bar",
     description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
     extract = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

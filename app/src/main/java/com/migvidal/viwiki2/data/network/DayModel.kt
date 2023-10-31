@@ -47,6 +47,8 @@ data class NetworkArticle(
     val description: String?,
     val extract: String,
     val thumbnail: NetworkImage?,
+    @Json(name = "originalimage")
+    val originalImage: NetworkImage?,
 )
 
 data class NetworkOnThisDay(
