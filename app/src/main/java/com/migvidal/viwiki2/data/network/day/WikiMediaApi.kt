@@ -1,7 +1,7 @@
-package com.migvidal.viwiki2.data.network
+package com.migvidal.viwiki2.data.network.day
 
+import com.migvidal.viwiki2.data.network.ApiCommons
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -14,22 +14,22 @@ import retrofit2.http.Path
 /**
  * Base URL for the Wikimedia API
  */
-private const val WikimediaBaseUrl: String = "https://api.wikimedia.org/"
+private const val WikiMediaBaseUrl: String = "https://api.wikimedia.org/"
 
-val interceptor = HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BASIC) }
+
 
 /**
  * HTTP client
  */
 private val okHttpClient = OkHttpClient.Builder()
-    .addInterceptor(interceptor)
+    .addInterceptor(ApiCommons.loggingInterceptor)
     .build()
 
 /**
  * Retrofit client, for creating the API service
  */
 private val retrofit = Retrofit.Builder()
-    .baseUrl(WikimediaBaseUrl)
+    .baseUrl(WikiMediaBaseUrl)
     .client(okHttpClient)
     .addConverterFactory(MoshiConverterFactory.create(ApiCommons.moshi))
     .build()

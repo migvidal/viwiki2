@@ -13,6 +13,5 @@ object ApiCommons {
     /**
      * Logs the request URL to console
      */
-    val loggingInterceptor = HttpLoggingInterceptor()
-        .setLevel(HttpLoggingInterceptor.Level.BASIC)
+    val loggingInterceptor = HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BASIC) }
 }

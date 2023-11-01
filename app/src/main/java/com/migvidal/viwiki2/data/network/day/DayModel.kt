@@ -1,4 +1,4 @@
-package com.migvidal.viwiki2.data.network
+package com.migvidal.viwiki2.data.network.day
 
 import com.squareup.moshi.Json
 

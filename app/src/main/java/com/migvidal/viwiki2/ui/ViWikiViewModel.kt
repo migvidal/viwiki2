@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.migvidal.viwiki2.data.Repository
+import com.migvidal.viwiki2.data.DayRepository
 import com.migvidal.viwiki2.data.database.ViWikiDatabase
 import kotlinx.coroutines.launch
 
-class ViWikiViewModel(private val repository: Repository) : ViewModel() {
+class ViWikiViewModel(private val repository: DayRepository) : ViewModel() {
     init {
         refreshDataFromRepository()
     }
@@ -28,7 +28,7 @@ class ViWikiViewModel(private val repository: Repository) : ViewModel() {
             initializer {
                 val applicationContext = this[APPLICATION_KEY]?.applicationContext
                 val database = ViWikiDatabase.getInstance(applicationContext = applicationContext!!)
-                ViWikiViewModel(repository = Repository(database))
+                ViWikiViewModel(repository = DayRepository(database))
             }
         }
     }
