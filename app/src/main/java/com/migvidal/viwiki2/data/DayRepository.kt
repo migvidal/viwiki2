@@ -1,16 +1,18 @@
 package com.migvidal.viwiki2.data
 
 import android.util.Log
+import com.migvidal.viwiki2.adapters.toDatabaseModel
+import com.migvidal.viwiki2.adapters.toUiArticle
+import com.migvidal.viwiki2.adapters.toUiDayImage
+import com.migvidal.viwiki2.adapters.toUiFeaturedArticle
 import com.migvidal.viwiki2.data.database.ViWikiDatabaseSpec
 import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseDescription
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
-import com.migvidal.viwiki2.data.database.toDatabaseModel
 import com.migvidal.viwiki2.data.network.day.NetworkDayImage
 import com.migvidal.viwiki2.data.network.day.NetworkFeaturedArticle
 import com.migvidal.viwiki2.data.network.day.NetworkMostRead
 import com.migvidal.viwiki2.data.network.day.WikiMediaApiImpl
-import com.migvidal.viwiki2.ui.UiArticle
 import com.migvidal.viwiki2.ui.UiDayData
 import com.migvidal.viwiki2.ui.UiDayImage
 import com.migvidal.viwiki2.ui.UiFeaturedArticle
@@ -48,8 +50,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) {
             val thumbnail = viWikiDatabase.imageDao.getImageById(image.thumbnailId)
             val fullSize = viWikiDatabase.imageDao.getImageById(image.imageId)
             val description = viWikiDatabase.descriptionDao.getDescriptionById(image.descriptionId)
-            UiDayImage.fromDatabaseEntity(
-                databaseDayImage = image,
+            image.toUiDayImage(
                 thumbnail = thumbnail ?: return@run null,
                 fullSizeImage = fullSize ?: return@run null,
                 description = description ?: return@run null,
@@ -60,9 +61,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) {
             val thumbnail = viWikiDatabase.imageDao.getImageById(it.thumbnailId ?: return@let null)
             val fullSize =
                 viWikiDatabase.imageDao.getImageById(it.originalImageId ?: return@let null)
-
-            UiFeaturedArticle.fromDatabaseEntity(
-                featuredArticle = featuredArticle,
+            featuredArticle.toUiFeaturedArticle(
                 thumbnail = thumbnail ?: return@let null,
                 fullSizeImage = fullSize ?: return@let null,
             )
@@ -74,9 +73,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) {
                 val thumbnail = databaseArticle.thumbnailId?.let {
                     viWikiDatabase.imageDao.getImageById(it)
                 }
-                UiArticle.fromDatabaseEntity(
-                    databaseArticle = databaseArticle, thumbnail = thumbnail
-                )
+                databaseArticle.toUiArticle(thumbnail = thumbnail)
             },
             image = uiDayImage,
             databaseOnThisDay = onThisDay,

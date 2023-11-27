@@ -1,4 +1,4 @@
-package com.migvidal.viwiki2.data.database
+package com.migvidal.viwiki2.adapters
 
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
