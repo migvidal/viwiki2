@@ -1,4 +1,4 @@
-package com.migvidal.viwiki2.ui.screens.today_screen
+package com.migvidal.viwiki2.ui.screens.search_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -9,7 +9,7 @@ import com.migvidal.viwiki2.data.DayRepository
 import com.migvidal.viwiki2.data.database.ViWikiDatabase
 import kotlinx.coroutines.launch
 
-class TodayViewModel(private val repository: DayRepository) : ViewModel() {
+class SearchViewModel(private val repository: DayRepository) : ViewModel() {
     init {
         refreshDataFromRepository()
     }
@@ -28,7 +28,7 @@ class TodayViewModel(private val repository: DayRepository) : ViewModel() {
             initializer {
                 val applicationContext = this[APPLICATION_KEY]?.applicationContext
                 val database = ViWikiDatabase.getInstance(applicationContext = applicationContext!!)
-                TodayViewModel(repository = DayRepository(database))
+                SearchViewModel(repository = DayRepository(database))
             }
         }
     }

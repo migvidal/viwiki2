@@ -10,7 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.migvidal.viwiki2.data.DayRepository
+import com.migvidal.viwiki2.data.Repository
 import com.migvidal.viwiki2.data.fakeDayData
 import com.migvidal.viwiki2.ui.UiDayData
 import com.migvidal.viwiki2.ui.components.SectionHeading
@@ -22,7 +22,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 @Composable
 @Destination
 @RootNavGraph(start = true)
-fun TodayScreen(dayData: UiDayData?, dayDataStatus: DayRepository.DayDataStatus?, onRefreshClicked: () -> Unit) {
+fun TodayScreen(dayData: UiDayData?, dayDataStatus: Repository.Status?, onRefreshClicked: () -> Unit) {
     LazyColumn(state = rememberLazyListState()) {
         item {
             Button(onClick = onRefreshClicked) {
@@ -70,7 +70,7 @@ fun TodayScreen(dayData: UiDayData?, dayDataStatus: DayRepository.DayDataStatus?
 fun TodayScreenPreview() {
     ViWiki2Theme {
         Surface {
-            TodayScreen(dayData = fakeDayData, dayDataStatus = DayRepository.DayDataStatus.Success, onRefreshClicked = {})
+            TodayScreen(dayData = fakeDayData, dayDataStatus = Repository.Status.Success, onRefreshClicked = {})
         }
 
     }
