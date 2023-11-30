@@ -34,12 +34,13 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.migvidal.viwiki2.ui.ViWikiViewModel
 import com.migvidal.viwiki2.ui.screens.NavGraphs
 import com.migvidal.viwiki2.ui.screens.destinations.Destination
 import com.migvidal.viwiki2.ui.screens.destinations.SearchScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.TodayScreenDestination
+import com.migvidal.viwiki2.ui.screens.search_screen.SearchScreen
 import com.migvidal.viwiki2.ui.screens.today_screen.TodayScreen
+import com.migvidal.viwiki2.ui.screens.today_screen.TodayViewModel
 import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
@@ -50,8 +51,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ViWiki2Theme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     ViWikiApp()
                 }
@@ -65,18 +65,20 @@ enum class TopLevelDestination(
     val icon: ImageVector,
     val destination: Destination,
 ) {
-    Today(label = R.string.today, icon = Icons.Default.Home, destination = TodayScreenDestination),
+    Today(
+        label = R.string.today,
+        icon = Icons.Default.Home,
+        destination = TodayScreenDestination
+    ),
     Search(
-        label = R.string.search,
-        icon = Icons.Default.Search,
-        destination = SearchScreenDestination
+        label = R.string.search, icon = Icons.Default.Search, destination = SearchScreenDestination
     ),
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ViWikiApp() {
-    val viewModel: ViWikiViewModel = viewModel(factory = ViWikiViewModel.Factory)
+    val viewModel: TodayViewModel = viewModel(factory = TodayViewModel.Factory)
     val navController = rememberNavController()
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
@@ -88,8 +90,9 @@ fun ViWikiApp() {
             NavigationBar {
                 TopLevelDestination.values().forEach {
                     val labelText = stringResource(it.label)
-                    NavigationBarItem(
-                        selected = currentDestination.isTopLevelDestinationInHierarchy(it.destination),
+                    NavigationBarItem(selected = currentDestination.isTopLevelDestinationInHierarchy(
+                        it.destination
+                    ),
                         onClick = {
                             navController.popBackStack()
                             navController.navigate(it.destination.route)
@@ -100,8 +103,7 @@ fun ViWikiApp() {
                                 imageVector = it.icon,
                                 contentDescription = labelText,
                             )
-                        }
-                    )
+                        })
 
                 }
             }
@@ -119,10 +121,12 @@ fun ViWikiApp() {
             composable(TodayScreenDestination) {
                 val dayData = viewModel.dayData.collectAsState(initial = null).value
                 val dayDataStatus = viewModel.dayDataStatus.collectAsState(initial = null).value
-                TodayScreen(
-                    dayData = dayData,
+                TodayScreen(dayData = dayData,
                     dayDataStatus = dayDataStatus,
                     onRefreshClicked = { viewModel.refreshDataFromRepository() })
+            }
+            composable(SearchScreenDestination) {
+                SearchScreen(searchResults = listOf("Dummy", "Results"), onSearchClicked = {})
             }
         }
     }
