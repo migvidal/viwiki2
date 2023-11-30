@@ -1,4 +1,4 @@
-package com.migvidal.viwiki2.data
+package com.migvidal.viwiki2.data.repository
 
 import com.migvidal.viwiki2.ui.UiDayData
 import kotlinx.coroutines.flow.Flow

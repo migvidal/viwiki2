@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.migvidal.viwiki2.data.DayRepository
 import com.migvidal.viwiki2.data.database.ViWikiDatabase
+import com.migvidal.viwiki2.data.repository.DayRepository
 import kotlinx.coroutines.launch
 
 class TodayViewModel(private val repository: DayRepository) : ViewModel() {

@@ -1,4 +1,4 @@
-package com.migvidal.viwiki2.data
+package com.migvidal.viwiki2.data.repository
 
 import android.util.Log
 import com.migvidal.viwiki2.adapters.toDatabaseModel
@@ -26,15 +26,19 @@ import kotlinx.coroutines.withContext
 import java.net.UnknownHostException
 import java.util.GregorianCalendar
 
-class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository {
+class SearchRepository(private val viWikiDatabase: ViWikiDatabaseSpec) {
 
-    private val _dataStatus = MutableStateFlow(Repository.Status.Loading)
-    override val dayDataStatus = _dataStatus.asStateFlow()
+    enum class SearchStatus {
+        Error, Success, Loading
+    }
+
+    private val _searchStatus = MutableStateFlow(SearchStatus.Loading)
+    val searchStatus = _searchStatus.asStateFlow()
 
     /**
      * Single source of truth for the "today" response
      */
-    override val data: Flow<UiDayData> = combine(
+    val dayData: Flow<UiDayData> = combine(
         flow = viWikiDatabase.featuredArticleDao.getAll(),
         flow2 = viWikiDatabase.mostReadArticlesDao.getMostRead(),
         flow3 = viWikiDatabase.dayImageDao.getAll(),
@@ -76,7 +80,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
         )
     }
 
-    override suspend fun refreshData() {
+    suspend fun refreshDayData() {
         val calendar = GregorianCalendar.getInstance()
         val year = calendar.get(GregorianCalendar.YEAR)
         val month = calendar.get(GregorianCalendar.MONTH)
@@ -94,7 +98,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
                 Log.e("OkHttp error", it.message.toString())
             }
             it.printStackTrace()
-            _dataStatus.update { Repository.Status.Error }
+            _searchStatus.update { SearchStatus.Error }
             return
         }
 
@@ -103,7 +107,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             // Insert "featured article"
             val featuredArticle = networkDayResponse.featuredArticle
             if (featuredArticle == null) {
-                _dataStatus.update { Repository.Status.Error }
+                _searchStatus.update { SearchStatus.Error }
             } else {
                 cacheFeaturedArticle(featuredArticle)
             }
@@ -111,7 +115,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             // Insert "image of the day"
             val dayImage = networkDayResponse.image
             if (dayImage == null) {
-                _dataStatus.update { Repository.Status.Error }
+                _searchStatus.update { SearchStatus.Error }
             } else {
                 cacheDayImage(dayImage)
             }
@@ -119,12 +123,12 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             // Insert "most read articles"
             val mostRead = networkDayResponse.mostRead
             if (mostRead == null) {
-                _dataStatus.update { Repository.Status.Error }
+                _searchStatus.update { SearchStatus.Error }
             } else {
                 cacheMostRead(mostRead)
             }
         }
-        _dataStatus.update { Repository.Status.Success }
+        _searchStatus.update { SearchStatus.Success }
         return
     }
 

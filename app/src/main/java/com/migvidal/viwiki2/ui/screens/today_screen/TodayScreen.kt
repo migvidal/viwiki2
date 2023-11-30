@@ -10,8 +10,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.migvidal.viwiki2.data.Repository
 import com.migvidal.viwiki2.data.fakeDayData
+import com.migvidal.viwiki2.data.repository.Repository
 import com.migvidal.viwiki2.ui.UiDayData
 import com.migvidal.viwiki2.ui.components.SectionHeading
 import com.migvidal.viwiki2.ui.screens.today_screen.most_read_articles_section.MostReadArticlesSection
