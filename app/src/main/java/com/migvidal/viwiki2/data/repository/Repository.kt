@@ -1,15 +1,14 @@
 package com.migvidal.viwiki2.data.repository
 
-import com.migvidal.viwiki2.ui.UiDayData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface Repository {
-    val dayDataStatus: StateFlow<Status>
+    val dataStatus: StateFlow<Status>
     /**
      * Single source of truth for the "today" response
      */
-    val data: Flow<UiDayData>
+    val data: Flow<Any>
     suspend fun refreshData()
     enum class Status { Error, Success, Loading }
 }

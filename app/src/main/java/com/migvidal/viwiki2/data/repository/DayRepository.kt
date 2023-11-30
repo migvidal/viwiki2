@@ -29,7 +29,7 @@ import java.util.GregorianCalendar
 class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository {
 
     private val _dataStatus = MutableStateFlow(Repository.Status.Loading)
-    override val dayDataStatus = _dataStatus.asStateFlow()
+    override val dataStatus = _dataStatus.asStateFlow()
 
     /**
      * Single source of truth for the "today" response

@@ -15,7 +15,7 @@ class TodayViewModel(private val repository: DayRepository) : ViewModel() {
     }
 
     val dayData = repository.data
-    val dayDataStatus = repository.dayDataStatus
+    val dayDataStatus = repository.dataStatus
 
     fun refreshDataFromRepository() {
         viewModelScope.launch {
