@@ -76,7 +76,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
         )
     }
 
-    override suspend fun refreshData() {
+    suspend fun refreshData() {
         val calendar = GregorianCalendar.getInstance()
         val year = calendar.get(GregorianCalendar.YEAR)
         val month = calendar.get(GregorianCalendar.MONTH)

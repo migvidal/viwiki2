@@ -1,10 +1,9 @@
 package com.migvidal.viwiki2.data.repository
 
 import com.migvidal.viwiki2.data.database.ViWikiDatabaseSpec
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class SearchRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository {
 
@@ -14,7 +13,14 @@ class SearchRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Reposit
     /**
      * Single source of truth for the "today" response
      */
-    override val data: Flow<Any> = listOf<Any>().asFlow()
+    private val _data = MutableStateFlow(emptyList<String>())
+    override val data = _data.asStateFlow()
 
-    override suspend fun refreshData() {}
+
+    fun refreshSearchData(query: String) {
+        _data.update {
+            emptyList()
+            // WikipediaApiImpl.wikipediaApiService.getSearchResults(query = query)
+        }
+    }
 }

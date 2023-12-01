@@ -9,6 +9,5 @@ interface Repository {
      * Single source of truth for the "today" response
      */
     val data: Flow<Any>
-    suspend fun refreshData()
     enum class Status { Error, Success, Loading }
 }
