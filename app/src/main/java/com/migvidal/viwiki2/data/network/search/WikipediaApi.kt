@@ -1,7 +1,6 @@
 package com.migvidal.viwiki2.data.network.search
 
 import com.migvidal.viwiki2.data.network.ApiCommons
-import com.migvidal.viwiki2.data.network.day.NetworkDayResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -62,7 +61,7 @@ interface WikipediaApiService {
      * Fetches the search results for a query
      * @param query Search query
      */
-    suspend fun getSearchResults(@Query("srsearch") query: String): NetworkDayResponse
+    suspend fun getSearchResults(@Query("srsearch") query: String): SearchResponseModel
 }
 
 

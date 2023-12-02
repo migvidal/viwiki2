@@ -6,11 +6,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.migvidal.viwiki2.data.network.search.Query
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
 @Destination
-fun SearchScreen(searchResults: List<String>, onSearchClicked: (query: String) -> Unit) {
+fun SearchScreen(searchResults: List<Query.Search>?, onSearchClicked: (query: String) -> Unit) {
 
     Column {
         // search bar
@@ -18,12 +19,12 @@ fun SearchScreen(searchResults: List<String>, onSearchClicked: (query: String) -
             Text(text = "Search for banana")
         }
         // recent searches
-        if (searchResults.isEmpty()) {
+        if (searchResults.isNullOrEmpty()) {
             Text(text = "Recent searches")
         } else {
             LazyColumn {
                 items(searchResults) { result ->
-                    Text(text = result)
+                    Text(text = result.title)
                 }
             }
         }

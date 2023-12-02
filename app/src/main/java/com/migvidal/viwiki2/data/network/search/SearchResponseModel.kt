@@ -4,9 +4,9 @@ import com.squareup.moshi.Json
 
 data class SearchResponseModel(
     @Json(name = "batchcomplete")
-    val batchComplete: String,
-    val `continue`: Continue,
-    val query: Query
+    val batchComplete: String = "",
+    val `continue`: Continue? = null,
+    val query: Query? = null,
 )
 
 data class Continue(

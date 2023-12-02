@@ -39,6 +39,7 @@ import com.migvidal.viwiki2.ui.screens.destinations.Destination
 import com.migvidal.viwiki2.ui.screens.destinations.SearchScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.TodayScreenDestination
 import com.migvidal.viwiki2.ui.screens.search_screen.SearchScreen
+import com.migvidal.viwiki2.ui.screens.search_screen.SearchViewModel
 import com.migvidal.viwiki2.ui.screens.today_screen.TodayScreen
 import com.migvidal.viwiki2.ui.screens.today_screen.TodayViewModel
 import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
@@ -78,7 +79,8 @@ enum class TopLevelDestination(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ViWikiApp() {
-    val viewModel: TodayViewModel = viewModel(factory = TodayViewModel.Factory)
+    val dayViewModel: TodayViewModel = viewModel(factory = TodayViewModel.Factory)
+    val searchViewModel: SearchViewModel = viewModel(factory = SearchViewModel.Factory)
     val navController = rememberNavController()
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
@@ -119,14 +121,17 @@ fun ViWikiApp() {
             modifier = paddingModifier, navGraph = NavGraphs.root, navController = navController
         ) {
             composable(TodayScreenDestination) {
-                val dayData = viewModel.dayData.collectAsState(initial = null).value
-                val dayDataStatus = viewModel.dayDataStatus.collectAsState(initial = null).value
+                val dayData = dayViewModel.dayData.collectAsState(initial = null).value
+                val dayDataStatus = dayViewModel.dayDataStatus.collectAsState(initial = null).value
                 TodayScreen(dayData = dayData,
                     dayDataStatus = dayDataStatus,
-                    onRefreshClicked = { viewModel.refreshDataFromRepository() })
+                    onRefreshClicked = { dayViewModel.refreshDataFromRepository() })
             }
             composable(SearchScreenDestination) {
-                SearchScreen(searchResults = listOf("Dummy", "Results"), onSearchClicked = {})
+                val searchData = searchViewModel.searchData.collectAsState().value
+                SearchScreen(searchResults = searchData.query?.search, onSearchClicked = {
+                    searchViewModel.refreshSearchDataFromRepository(query = it)
+                })
             }
         }
     }
