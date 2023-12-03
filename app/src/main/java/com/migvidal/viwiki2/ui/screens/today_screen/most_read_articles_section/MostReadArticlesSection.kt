@@ -15,14 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import com.migvidal.viwiki2.ui.UiArticle
+import com.migvidal.viwiki2.ui.UiDayArticle
 import com.migvidal.viwiki2.ui.components.SectionHeading
 import com.migvidal.viwiki2.ui.components.Side
 import com.migvidal.viwiki2.ui.components.withGradientEdge
 
 @Composable
 internal fun MostReadArticlesSection(
-    mostReadArticles: List<UiArticle>, onArticleClicked: () -> Unit
+    mostReadArticles: List<UiDayArticle>, onArticleClicked: () -> Unit
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     Column {

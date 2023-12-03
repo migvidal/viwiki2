@@ -11,9 +11,9 @@ data class ArticleResponseModel(
 )
 
 data class NetworkQuery(
-    val pages: List<NetworkPage>
+    val pages: List<NetworkArticle>
 ) {
-    data class NetworkPage(
+    data class NetworkArticle(
         val extract: String,
         val ns: Int,
         @Json(name = "pageid")

@@ -6,12 +6,12 @@ import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 
 data class UiDayData(
     val featuredArticle: UiFeaturedArticle?,
-    val mostReadArticles: List<UiArticle>?,
+    val mostReadArticles: List<UiDayArticle>?,
     val image: UiDayImage?,
     val databaseOnThisDay: List<DatabaseOnThisDay>?,
 )
 
-data class UiArticle(
+data class UiDayArticle(
     val views: Int?,
     val normalizedTitle: String = "",
     val description: String,

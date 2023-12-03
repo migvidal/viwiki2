@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.migvidal.viwiki2.data.fakeArticles
-import com.migvidal.viwiki2.ui.UiArticle
+import com.migvidal.viwiki2.ui.UiDayArticle
 import com.migvidal.viwiki2.ui.components.CustomAsyncImage
 import com.migvidal.viwiki2.ui.components.CustomCard
 import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
@@ -23,7 +23,7 @@ private val CardTextHorizontalPadding = 16.dp
 @Composable
 internal fun ArticleSmallCard(
     modifier: Modifier = Modifier,
-    article: UiArticle,
+    article: UiDayArticle,
     index: Int,
     onClick: () -> Unit,
 ) {

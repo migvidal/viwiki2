@@ -4,13 +4,13 @@ import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseDescription
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
-import com.migvidal.viwiki2.ui.UiArticle
+import com.migvidal.viwiki2.ui.UiDayArticle
 import com.migvidal.viwiki2.ui.UiDayImage
 import com.migvidal.viwiki2.ui.UiFeaturedArticle
 
 fun DatabaseArticle.toUiArticle(
     thumbnail: DatabaseImage?,
-) = UiArticle(
+) = UiDayArticle(
     views = views,
     normalizedTitle = normalizedTitle,
     description = description,

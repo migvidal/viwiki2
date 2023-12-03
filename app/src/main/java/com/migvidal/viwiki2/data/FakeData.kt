@@ -1,7 +1,7 @@
 package com.migvidal.viwiki2.data
 
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
-import com.migvidal.viwiki2.ui.UiArticle
+import com.migvidal.viwiki2.ui.UiDayArticle
 import com.migvidal.viwiki2.ui.UiDayData
 import com.migvidal.viwiki2.ui.UiDayImage
 import com.migvidal.viwiki2.ui.UiFeaturedArticle
@@ -24,7 +24,7 @@ val fakeUiFeaturedArticle = UiFeaturedArticle(
     extract = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 )
 val fakeArticles = listOf(
-    UiArticle(
+    UiDayArticle(
         views = 300_000,
         normalizedTitle = "Short",
         description = "Ut enim ad.",
@@ -32,7 +32,7 @@ val fakeArticles = listOf(
         thumbnail = fakeDatabaseImage,
     )
 ) + List(10) {
-    UiArticle(
+    UiDayArticle(
         views = 400_000,
         normalizedTitle = "Foo of the bar",
         description = "Ut enim ad.",
