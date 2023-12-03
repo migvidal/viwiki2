@@ -33,7 +33,11 @@ import com.ramcosta.composedestinations.annotation.Destination
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Destination
-fun SearchScreen(searchResults: List<Query.Search>?, onSearchClicked: (query: String) -> Unit) {
+fun SearchScreen(
+    searchResults: List<Query.Search>?,
+    onSearchClicked: (query: String) -> Unit,
+    onResultClicked: (id: Int) -> Unit,
+) {
 
     Column {
         // search bar
@@ -83,7 +87,10 @@ fun SearchScreen(searchResults: List<Query.Search>?, onSearchClicked: (query: St
                                 Modifier
                             }
                             CustomCard(
-                                modifier = cardModifier.padding(4.dp)
+                                modifier = cardModifier.padding(4.dp),
+                                onClick = {
+                                    onResultClicked.invoke(result.pageId)
+                                }
                             ) {
                                 Text(
                                     modifier = Modifier
