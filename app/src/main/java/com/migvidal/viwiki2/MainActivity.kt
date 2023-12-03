@@ -92,12 +92,15 @@ fun ViWikiApp() {
             NavigationBar {
                 TopLevelDestination.values().forEach {
                     val labelText = stringResource(it.label)
-                    NavigationBarItem(selected = currentDestination.isTopLevelDestinationInHierarchy(
+                    val isTopLevel = currentDestination.isTopLevelDestinationInHierarchy(
                         it.destination
-                    ),
+                    )
+                    NavigationBarItem(selected = isTopLevel,
                         onClick = {
-                            navController.popBackStack()
-                            navController.navigate(it.destination.route)
+                            if (!isTopLevel) {
+                                navController.popBackStack()
+                                navController.navigate(it.destination.route)
+                            }
                         },
                         label = { Text(text = labelText) },
                         icon = {
