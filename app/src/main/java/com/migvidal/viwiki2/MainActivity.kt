@@ -36,6 +36,9 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.migvidal.viwiki2.ui.screens.NavGraphs
+import com.migvidal.viwiki2.ui.screens.article_screen.ArticleScreen
+import com.migvidal.viwiki2.ui.screens.article_screen.ArticleViewModel
+import com.migvidal.viwiki2.ui.screens.destinations.ArticleScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.Destination
 import com.migvidal.viwiki2.ui.screens.destinations.SearchScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.TodayScreenDestination
@@ -89,6 +92,7 @@ enum class TopLevelDestination(
 fun ViWikiApp() {
     val dayViewModel: TodayViewModel = viewModel(factory = TodayViewModel.Factory)
     val searchViewModel: SearchViewModel = viewModel(factory = SearchViewModel.Factory)
+    val articleViewModel: ArticleViewModel = viewModel(factory = ArticleViewModel.Factory)
     val navController = rememberNavController()
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
     val currentTitleRes = run {
@@ -153,6 +157,13 @@ fun ViWikiApp() {
                     searchViewModel.refreshSearchDataFromRepository(query = it)
                 })
             }
+            composable(ArticleScreenDestination) {
+                val articleData = articleViewModel.articleData.collectAsState().value
+                articleData.query?.pages?.first()?.let {
+                    ArticleScreen(article = it)
+                }
+            }
+
         }
     }
 }

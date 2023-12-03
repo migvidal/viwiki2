@@ -6,8 +6,8 @@ import com.squareup.moshi.Json
 
 data class ArticleResponseModel(
     @Json(name = "batchcomplete")
-    val batchComplete: Boolean,
-    val query: NetworkQuery,
+    val batchComplete: Boolean? = null,
+    val query: NetworkQuery? = null,
 )
 
 data class NetworkQuery(

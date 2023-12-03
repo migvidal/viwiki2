@@ -2,9 +2,9 @@ package com.migvidal.viwiki2.adapters
 
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
+import com.migvidal.viwiki2.data.network.NetworkImage
 import com.migvidal.viwiki2.data.network.day.NetworkArticle
 import com.migvidal.viwiki2.data.network.day.NetworkFeaturedArticle
-import com.migvidal.viwiki2.data.network.day.NetworkImage
 
 fun NetworkFeaturedArticle.toDatabaseModel(originalImageId: Long, thumbnailId: Long) =
     DatabaseArticle(
