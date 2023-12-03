@@ -1,12 +1,7 @@
 package com.migvidal.viwiki2.data.network.day
 
+import com.migvidal.viwiki2.data.network.NetworkImage
 import com.squareup.moshi.Json
-
-data class NetworkImage(
-    val source: String,
-    val width: Int,
-    val height: Int,
-)
 
 data class NetworkDayResponse(
     @Json(name = "tfa")

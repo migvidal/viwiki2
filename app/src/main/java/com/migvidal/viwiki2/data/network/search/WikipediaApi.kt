@@ -1,6 +1,7 @@
 package com.migvidal.viwiki2.data.network.search
 
 import com.migvidal.viwiki2.data.network.ApiCommons
+import com.migvidal.viwiki2.data.network.article.ArticleResponseModel
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -62,6 +63,15 @@ interface WikipediaApiService {
      * @param query Search query
      */
     suspend fun getSearchResults(@Query("srsearch") query: String): SearchResponseModel
+
+    @GET("/w/api.php")
+    suspend fun getArticleResponse(
+        @Query("titles") title: String,
+        @Query("prop") prop: String = "extracts",
+        @Query("exsentences") exsentences: Int = 30,
+        @Query("explaintext") explaintext: Int = 1,
+        @Query("formatversion") formatVersion: Int = 2
+    ): ArticleResponseModel
 }
 
 
