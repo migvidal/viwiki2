@@ -10,11 +10,11 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 /**
- * WikiMedia API. Used to get the "today" data.
+ * Used to get data from Wikipedia.
  */
 
 /**
- * Base URL for the Wikimedia API
+ * Base URL for the Wikipedia API
  */
 private const val WikipediaBaseUrl: String = "https://en.wikipedia.org/"
 
@@ -57,13 +57,16 @@ private val retrofit = Retrofit.Builder()
  * Interface for Retrofit to handle queries
  */
 interface WikipediaApiService {
-    @GET("/w/api.php")
     /**
      * Fetches the search results for a query
      * @param query Search query
      */
+    @GET("/w/api.php")
     suspend fun getSearchResults(@Query("srsearch") query: String): SearchResponseModel
 
+    /**
+     * Fetches data from an article by its ID
+     */
     @GET("/w/api.php")
     suspend fun getArticleResponse(
         @Query("titles") title: String,
