@@ -30,7 +30,7 @@ fun LoadingSkeleton(modifier: Modifier = Modifier, startColor: Color) {
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
-fun AnimatedBoxPreview() {
+fun LoadingSkeletonPreview() {
     Surface {
         LoadingSkeleton(
             modifier = Modifier.fillMaxSize(),
