@@ -76,6 +76,12 @@ enum class TopLevelDestination(
     Search(
         label = R.string.search, icon = Icons.Default.Search, destination = SearchScreenDestination
     ),
+    ;
+
+    companion object {
+        fun from(navDestination: NavDestination?): TopLevelDestination? =
+            TopLevelDestination.values().find { it.destination.route == navDestination?.route }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -85,10 +91,19 @@ fun ViWikiApp() {
     val searchViewModel: SearchViewModel = viewModel(factory = SearchViewModel.Factory)
     val navController = rememberNavController()
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
+    val currentTitleRes = run {
+        val topLevelDestination = TopLevelDestination.from(navDestination = currentDestination)
+        topLevelDestination?.label ?: R.string.app_name
+    }
+
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(title = { Text(text = "Title") })
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(text = stringResource(id = currentTitleRes))
+                }
+            )
         },
         bottomBar = {
             NavigationBar {
