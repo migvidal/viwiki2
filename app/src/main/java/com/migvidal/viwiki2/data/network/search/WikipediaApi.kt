@@ -68,8 +68,8 @@ interface WikipediaApiService {
      * Fetches data from an article by its ID
      */
     @GET("/w/api.php")
-    suspend fun getArticleResponse(
-        @Query("titles") title: String,
+    suspend fun getArticleById(
+        @Query("pageids") pageId: Int,
         @Query("prop") prop: String = "extracts",
         @Query("exsentences") exsentences: Int = 30,
         @Query("explaintext") explaintext: Int = 1,
