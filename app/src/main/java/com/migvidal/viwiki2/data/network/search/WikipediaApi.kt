@@ -27,8 +27,6 @@ private val paramsInterceptor = Interceptor { chain ->
         .addPathSegments("w/api.php")
         .addQueryParameter("action", "query")
         .addQueryParameter("format", "json")
-        .addQueryParameter("list", "search")
-        .addQueryParameter("srlimit", "20")
         .build()
     request = request.newBuilder()
         .url(newUrl)
@@ -62,7 +60,11 @@ interface WikipediaApiService {
      * @param query Search query
      */
     @GET("/w/api.php")
-    suspend fun getSearchResults(@Query("srsearch") query: String): SearchResponseModel
+    suspend fun getSearchResults(
+        @Query("list") list: String = "search",
+        @Query("srlimit") resultsLimit: Int = 20,
+        @Query("srsearch") query: String,
+    ): SearchResponseModel
 
     /**
      * Fetches data from an article by its ID
@@ -70,10 +72,9 @@ interface WikipediaApiService {
     @GET("/w/api.php")
     suspend fun getArticleById(
         @Query("pageids") pageId: Int,
-        @Query("prop") prop: String = "extracts",
-        @Query("exsentences") exsentences: Int = 30,
+        @Query("prop") prop: String = "extracts|pageimages",
+        @Query("formatversion") formatVersion: Int = 2,
         @Query("explaintext") explaintext: Int = 1,
-        @Query("formatversion") formatVersion: Int = 2
     ): ArticleResponseModel
 }
 

@@ -14,13 +14,13 @@ data class NetworkQuery(
     val pages: List<NetworkArticle>
 ) {
     data class NetworkArticle(
-        val extract: String,
-        val ns: Int,
         @Json(name = "pageid")
         val pageId: Int,
+        val ns: Int,
+        val extract: String,
+        val title: String,
         @Json(name = "pageimage")
-        val pageImage: String,
-        val thumbnail: NetworkImage,
-        val title: String
+        val pageImage: String?,
+        val thumbnail: NetworkImage?,
     )
 }
