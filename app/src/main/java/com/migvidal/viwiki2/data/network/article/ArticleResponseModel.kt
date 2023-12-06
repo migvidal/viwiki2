@@ -21,6 +21,6 @@ data class NetworkQuery(
         val title: String,
         @Json(name = "pageimage")
         val pageImage: String?,
-        val thumbnail: NetworkImage?,
+        val original: NetworkImage?,
     )
 }

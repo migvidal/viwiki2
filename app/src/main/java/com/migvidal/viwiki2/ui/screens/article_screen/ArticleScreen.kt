@@ -22,7 +22,7 @@ fun ArticleScreen(
         LazyColumn(modifier = modifier) {
             item {
                 Text(text = article.title, style = MaterialTheme.typography.displayMedium)
-                article.thumbnail?.let {
+                article.original?.let {
                     val aspectRatio = it.width / it.height.toFloat()
                     CustomAsyncImage(model = it.source, aspectRatio = aspectRatio)
                 }

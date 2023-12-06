@@ -129,7 +129,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
     }
 
     private suspend fun cacheFeaturedArticle(featuredArticle: NetworkFeaturedArticle) {
-        // - insert full img and thumbnail
+        // - insert full img and original
         val image = featuredArticle.originalImage
         val insertedImageId =
             viWikiDatabase.imageDao.insert(databaseImage = image.toDatabaseModel())
@@ -147,7 +147,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
     private suspend fun cacheMostRead(mostRead: NetworkMostRead) {
         val databaseMostRead = mostRead.articles.map { networkArticle ->
             val thumbnail = networkArticle.thumbnail?.let {
-                // - insert article thumbnail
+                // - insert article original
                 DatabaseImage(
                     source = it.source, width = it.width, height = it.height
                 )
@@ -184,7 +184,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             lang = description.lang,
         )
         val insertedDescriptionId = viWikiDatabase.descriptionDao.insert(dbDescription)
-        //- insert thumbnail
+        //- insert original
         val dbThumbnail = DatabaseImage(
             source = thumbnail.source,
             width = thumbnail.width,

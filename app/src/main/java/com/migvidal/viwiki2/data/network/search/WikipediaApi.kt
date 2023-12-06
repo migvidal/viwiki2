@@ -75,6 +75,7 @@ interface WikipediaApiService {
         @Query("prop") prop: String = "extracts|pageimages",
         @Query("formatversion") formatVersion: Int = 2,
         @Query("explaintext") explaintext: Int = 1,
+        @Query("piprop") pageImageProperties: String = "original",
     ): ArticleResponseModel
 }
 
