@@ -17,6 +17,7 @@ val fakeUiDayImage = UiDayImage(
     title = "A frog"
 )
 val fakeUiFeaturedArticle = UiFeaturedArticle(
+    id = 1000,
     thumbnail = fakeDatabaseImage,
     fullSizeImage = fakeDatabaseImage,
     normalizedTitle = "Foo of the bar",

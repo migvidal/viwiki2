@@ -34,6 +34,7 @@ fun DatabaseArticle.toUiFeaturedArticle(
     thumbnail: DatabaseImage,
     fullSizeImage: DatabaseImage,
 ) = UiFeaturedArticle(
+    id = articleId,
     thumbnail = thumbnail,
     fullSizeImage = fullSizeImage,
     normalizedTitle = normalizedTitle,

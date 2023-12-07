@@ -8,6 +8,7 @@ import com.migvidal.viwiki2.data.network.day.NetworkFeaturedArticle
 
 fun NetworkFeaturedArticle.toDatabaseModel(originalImageId: Long, thumbnailId: Long) =
     DatabaseArticle(
+        articleId = pageId,
         originalImageId = originalImageId,
         thumbnailId = thumbnailId,
         description = description,

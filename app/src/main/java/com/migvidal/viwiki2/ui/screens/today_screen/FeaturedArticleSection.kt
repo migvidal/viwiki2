@@ -23,11 +23,14 @@ import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun FeaturedArticleSection(featuredArticle: UiFeaturedArticle) {
+internal fun FeaturedArticleSection(
+    featuredArticle: UiFeaturedArticle,
+    onArticleClicked: (UiFeaturedArticle) -> Unit
+) {
     Column {
         SectionHeading(text = "Today's Featured Article")
         CustomCard(
-            onClick = {}
+            onClick = { onArticleClicked.invoke(featuredArticle) }
         ) {
             CustomAsyncImage(modifier = Modifier.fillMaxWidth(), model = featuredArticle.thumbnail.source)
             Column(modifier = Modifier.padding(16.dp)) {
@@ -47,7 +50,9 @@ internal fun FeaturedArticleSection(featuredArticle: UiFeaturedArticle) {
 fun FeaturedArticleSectionPreview() {
     ViWiki2Theme {
         Surface {
-            FeaturedArticleSection(fakeUiFeaturedArticle)
+            FeaturedArticleSection(
+                featuredArticle = fakeUiFeaturedArticle,
+                onArticleClicked = {})
         }
     }
 }

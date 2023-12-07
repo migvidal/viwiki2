@@ -21,6 +21,8 @@ data class NetworkFeaturedArticle(
     val title: String,
     @Json(name = "displaytitle")
     val displayTitle: String,
+    @Json(name = "pageid")
+    val pageId: Int,
     @Json(name = "originalimage")
     val originalImage: NetworkImage,
     val thumbnail: NetworkImage,

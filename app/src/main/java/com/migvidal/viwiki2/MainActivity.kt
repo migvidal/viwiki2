@@ -148,9 +148,14 @@ fun ViWikiApp() {
             composable(TodayScreenDestination) {
                 val dayData = dayViewModel.dayData.collectAsState(initial = null).value
                 val dayDataStatus = dayViewModel.dayDataStatus.collectAsState(initial = null).value
-                TodayScreen(dayData = dayData,
+                TodayScreen(
+                    dayData = dayData,
                     dayDataStatus = dayDataStatus,
-                    onRefreshClicked = { dayViewModel.refreshDataFromRepository() })
+                    onRefreshClicked = { dayViewModel.refreshDataFromRepository() },
+                    onArticleClicked = { id ->
+                        this.destinationsNavigator.navigate(ArticleScreenDestination(articleId = id))
+                    },
+                )
             }
             composable(SearchScreenDestination) {
                 val searchData = searchViewModel.searchData.collectAsState().value

@@ -22,7 +22,7 @@ import com.migvidal.viwiki2.ui.components.withGradientEdge
 
 @Composable
 internal fun MostReadArticlesSection(
-    mostReadArticles: List<UiDayArticle>, onArticleClicked: () -> Unit
+    mostReadArticles: List<UiDayArticle>, onArticleClicked: (UiDayArticle) -> Unit
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     Column {
@@ -51,7 +51,7 @@ internal fun MostReadArticlesSection(
                             .padding(end = if (index in lastArticleIndex - 1..lastArticleIndex) 16.dp else 0.dp),
                         article = article,
                         index = index,
-                        onClick = onArticleClicked,
+                        onClick = { onArticleClicked.invoke(article) },
                     )
                 }
             }

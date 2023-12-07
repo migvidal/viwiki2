@@ -28,6 +28,7 @@ data class UiDayImage(
 )
 
 data class UiFeaturedArticle(
+    val id: Int,
     val thumbnail: DatabaseImage,
     val fullSizeImage: DatabaseImage,
     val normalizedTitle: String,

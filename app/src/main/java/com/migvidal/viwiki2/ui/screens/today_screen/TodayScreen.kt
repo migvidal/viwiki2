@@ -22,7 +22,12 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 @Composable
 @Destination
 @RootNavGraph(start = true)
-fun TodayScreen(dayData: UiDayData?, dayDataStatus: Repository.Status?, onRefreshClicked: () -> Unit) {
+fun TodayScreen(
+    dayData: UiDayData?,
+    dayDataStatus: Repository.Status?,
+    onRefreshClicked: () -> Unit,
+    onArticleClicked: (articleId: Int) -> Unit
+) {
     LazyColumn(state = rememberLazyListState()) {
         item {
             Button(onClick = onRefreshClicked) {
@@ -37,7 +42,9 @@ fun TodayScreen(dayData: UiDayData?, dayDataStatus: Repository.Status?, onRefres
         }
         dayData.featuredArticle?.let {
             item {
-                FeaturedArticleSection(featuredArticle = it)
+                FeaturedArticleSection(featuredArticle = it, onArticleClicked = {
+                    onArticleClicked.invoke(it.id)
+                })
             }
         }
         dayData.mostReadArticles?.let {
@@ -70,7 +77,11 @@ fun TodayScreen(dayData: UiDayData?, dayDataStatus: Repository.Status?, onRefres
 fun TodayScreenPreview() {
     ViWiki2Theme {
         Surface {
-            TodayScreen(dayData = fakeDayData, dayDataStatus = Repository.Status.Success, onRefreshClicked = {})
+            TodayScreen(
+                dayData = fakeDayData,
+                dayDataStatus = Repository.Status.Success,
+                onRefreshClicked = {},
+                onArticleClicked = {})
         }
 
     }
