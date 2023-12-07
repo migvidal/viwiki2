@@ -30,8 +30,6 @@ private const val OriginalImageIdColumnName = "original_image_id"
     ]
 )
 data class DatabaseArticle(
-    @PrimaryKey
-    @ColumnInfo(name = "id")
     val articleId: Int = 0,
     val views: Int?,
     val normalizedTitle: String = "",
@@ -44,4 +42,8 @@ data class DatabaseArticle(
     val isFeatured: Boolean = false,
     val isMostRead: Boolean = false,
     val isOnThisDay: Boolean = false,
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    var databaseArticleId: Long = 0
+}
