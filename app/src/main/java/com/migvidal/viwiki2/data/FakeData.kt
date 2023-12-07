@@ -8,7 +8,7 @@ import com.migvidal.viwiki2.ui.UiFeaturedArticle
 
 const val DummyImageUrl =
     "https://upload.wikimedia.org/wikipedia/commons/c/c6/Golden-eyed_tree_frog_%28Agalychnis_annae%29.jpg"
-val fakeDatabaseImage = DatabaseImage(source = DummyImageUrl, width = 300, height = 300)
+val fakeDatabaseImage = DatabaseImage(sourceAndId = DummyImageUrl, width = 300, height = 300)
 val fakeUiDayImage = UiDayImage(
     id = 1000,
     thumbnail = fakeDatabaseImage,
@@ -26,6 +26,7 @@ val fakeUiFeaturedArticle = UiFeaturedArticle(
 )
 val fakeArticles = listOf(
     UiDayArticle(
+        id = 0,
         views = 300_000,
         normalizedTitle = "Short",
         description = "Ut enim ad.",
@@ -34,6 +35,7 @@ val fakeArticles = listOf(
     )
 ) + List(10) {
     UiDayArticle(
+        id = 100 * it,
         views = 400_000,
         normalizedTitle = "Foo of the bar",
         description = "Ut enim ad.",

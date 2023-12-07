@@ -32,7 +32,7 @@ internal fun FeaturedArticleSection(
         CustomCard(
             onClick = { onArticleClicked.invoke(featuredArticle) }
         ) {
-            CustomAsyncImage(modifier = Modifier.fillMaxWidth(), model = featuredArticle.thumbnail.source)
+            CustomAsyncImage(modifier = Modifier.fillMaxWidth(), model = featuredArticle.thumbnail.sourceAndId)
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = featuredArticle.normalizedTitle,

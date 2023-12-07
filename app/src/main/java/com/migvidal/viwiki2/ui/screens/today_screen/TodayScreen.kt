@@ -51,7 +51,9 @@ fun TodayScreen(
             item {
                 MostReadArticlesSection(
                     mostReadArticles = it,
-                    onArticleClicked = {}
+                    onArticleClicked = {
+                        onArticleClicked.invoke(it.id)
+                    }
                 )
             }
         }

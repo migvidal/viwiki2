@@ -7,8 +7,8 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 const val DatabaseArticleTableName = "article"
-private const val ThumbnailIdColumnName = "thumbnail_id"
-private const val OriginalImageIdColumnName = "original_image_id"
+private const val ThumbnailIdColumnName = "thumbnail_row_id"
+private const val OriginalImageIdColumnName = "original_image_row_id"
 
 @Entity(
     tableName = DatabaseArticleTableName,
@@ -30,20 +30,20 @@ private const val OriginalImageIdColumnName = "original_image_id"
     ]
 )
 data class DatabaseArticle(
-    val articleId: Int = 0,
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    val articleId: Int,
     val views: Int?,
-    val normalizedTitle: String = "",
+    val normalizedTitle: String,
     val description: String,
     val extract: String,
+    // Foreign keys
     @ColumnInfo(name = ThumbnailIdColumnName)
-    val thumbnailId: Long?,
+    val thumbnailRowId: Long,
     @ColumnInfo(name = OriginalImageIdColumnName)
-    val originalImageId: Long?,
+    val originalImageRowId: Long,
+    // /Foreign keys
     val isFeatured: Boolean = false,
     val isMostRead: Boolean = false,
     val isOnThisDay: Boolean = false,
-) {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    var databaseArticleId: Long = 0
-}
+)

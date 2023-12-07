@@ -31,7 +31,7 @@ internal fun ArticleSmallCard(
         modifier = modifier.aspectRatio(9 / 4f), onClick = onClick
     ) {
         Row(modifier = Modifier.weight(1f)) {
-            CustomAsyncImage(model = article.thumbnail?.source, aspectRatio = 3 / 4f)
+            CustomAsyncImage(model = article.thumbnail?.sourceAndId, aspectRatio = 3 / 4f)
             Column(modifier = Modifier.padding(top = 8.dp)) {
                 Text(
                     modifier = Modifier.padding(horizontal = CardTextHorizontalPadding),

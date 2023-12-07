@@ -32,7 +32,7 @@ internal fun DayImageSection(uiDayImage: UiDayImage) {
                 .wrapContentWidth(unbounded = true)
                 .width(screenWidth.dp), contentAlignment = Alignment.BottomStart
         ) {
-            CustomAsyncImage(model = uiDayImage.thumbnail.source, aspectRatio = aspectRatio)
+            CustomAsyncImage(model = uiDayImage.thumbnail.sourceAndId, aspectRatio = aspectRatio)
             Surface(modifier = Modifier.alpha(0.6f)) {
                 Text(modifier = Modifier.padding(8.dp), text = uiDayImage.description)
             }

@@ -7,11 +7,9 @@ import androidx.room.PrimaryKey
 const val DatabaseImageTableName = "image"
 @Entity(tableName = DatabaseImageTableName)
 data class DatabaseImage(
-    val source: String = "",
-    val width: Int = 0,
-    val height: Int = 0,
-) {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "id")
-    var imageId: Long = 0
-}
+    val sourceAndId: String,
+    val width: Int,
+    val height: Int,
+)

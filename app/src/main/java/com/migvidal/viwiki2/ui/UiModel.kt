@@ -12,6 +12,7 @@ data class UiDayData(
 )
 
 data class UiDayArticle(
+    val id: Int,
     val views: Int?,
     val normalizedTitle: String = "",
     val description: String,

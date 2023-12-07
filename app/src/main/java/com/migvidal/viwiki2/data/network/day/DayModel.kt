@@ -43,6 +43,8 @@ data class NetworkArticle(
     val normalizedTitle: String,
     val description: String?,
     val extract: String,
+    @Json(name = "pageid")
+    val pageId: Int,
     val thumbnail: NetworkImage?,
     @Json(name = "originalimage")
     val originalImage: NetworkImage?,

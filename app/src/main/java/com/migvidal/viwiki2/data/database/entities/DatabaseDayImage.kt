@@ -8,9 +8,9 @@ import androidx.room.PrimaryKey
 
 const val DayImageTableName = "day_image"
 
-private const val ThumbnailIdColumnName = "thumbnail_id"
-private const val ImageIdColumnName = "image_id"
-private const val DescriptionIdColumnName = "description_id_column_name"
+private const val ThumbnailIdColumnName = "thumbnail_row_id"
+private const val ImageIdColumnName = "image_row_id"
+private const val DescriptionIdColumnName = "description_row_id"
 
 @Entity(
     tableName = DayImageTableName,
@@ -40,13 +40,13 @@ private const val DescriptionIdColumnName = "description_id_column_name"
 data class DatabaseDayImage(
     // Foreign keys
     @ColumnInfo(name = ThumbnailIdColumnName)
-    val thumbnailId: Long,
+    val thumbnailRowId: Long,
 
     @ColumnInfo(name = ImageIdColumnName)
-    val imageId: Long,
+    val imageRowId: Long,
 
     @ColumnInfo(name = DescriptionIdColumnName)
-    val descriptionId: Long,
+    val descriptionRowId: Long,
     // /Foreign keys
 
     val title: String = "",

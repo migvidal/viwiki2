@@ -11,6 +11,7 @@ import com.migvidal.viwiki2.ui.UiFeaturedArticle
 fun DatabaseArticle.toUiArticle(
     thumbnail: DatabaseImage?,
 ) = UiDayArticle(
+    id = articleId,
     views = views,
     normalizedTitle = normalizedTitle,
     description = description,
