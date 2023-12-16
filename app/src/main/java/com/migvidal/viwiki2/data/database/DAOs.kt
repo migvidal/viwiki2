@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ImageDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(databaseImage: DatabaseImage): Long
 
     @Delete
@@ -35,7 +35,7 @@ interface ImageDao {
 
 @Dao
 interface DescriptionDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(databaseDescription: DatabaseDescription): Long
 
     @Delete
@@ -49,7 +49,7 @@ interface DescriptionDao {
 
 @Dao
 interface ArticleDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg databaseArticle: DatabaseArticle): List<Long>
 
     @Delete
@@ -65,7 +65,7 @@ interface ArticleDao {
 
 @Dao
 interface FeaturedArticleDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(featuredArticle: DatabaseArticle): Long
 
     @Delete
@@ -78,7 +78,7 @@ interface FeaturedArticleDao {
 @Dao
 interface MostReadArticleListDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg mostReadArticles: DatabaseArticle): List<Long>
     @Delete
     fun delete(mostReadArticles: DatabaseArticle)
@@ -91,7 +91,7 @@ interface MostReadArticleListDao {
 
 @Dao
 interface DayImageDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(databaseDayImage: DatabaseDayImage): Long
 
     @Delete
@@ -103,7 +103,7 @@ interface DayImageDao {
 
 @Dao
 interface OnThisDayDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(databaseOnThisDay: DatabaseOnThisDay): Long
 
     @Delete
