@@ -3,6 +3,7 @@ package com.migvidal.viwiki2.data.database
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticleTableName
@@ -18,7 +19,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ImageDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(databaseImage: DatabaseImage): Long
 
     @Delete
@@ -29,12 +30,12 @@ interface ImageDao {
 
     @Query("SELECT * FROM $DatabaseImageTableName" +
             " WHERE $DatabaseImageTableName.id = :id")
-    suspend fun getImageById(id: Long): DatabaseImage?
+    suspend fun getImageById(id: String): DatabaseImage?
 }
 
 @Dao
 interface DescriptionDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(databaseDescription: DatabaseDescription): Long
 
     @Delete
@@ -48,7 +49,7 @@ interface DescriptionDao {
 
 @Dao
 interface ArticleDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(vararg databaseArticle: DatabaseArticle): List<Long>
 
     @Delete
@@ -64,7 +65,7 @@ interface ArticleDao {
 
 @Dao
 interface FeaturedArticleDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(featuredArticle: DatabaseArticle): Long
 
     @Delete
@@ -77,7 +78,7 @@ interface FeaturedArticleDao {
 @Dao
 interface MostReadArticleListDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(vararg mostReadArticles: DatabaseArticle): List<Long>
     @Delete
     fun delete(mostReadArticles: DatabaseArticle)
@@ -90,7 +91,7 @@ interface MostReadArticleListDao {
 
 @Dao
 interface DayImageDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(databaseDayImage: DatabaseDayImage): Long
 
     @Delete
@@ -102,7 +103,7 @@ interface DayImageDao {
 
 @Dao
 interface OnThisDayDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(databaseOnThisDay: DatabaseOnThisDay): Long
 
     @Delete

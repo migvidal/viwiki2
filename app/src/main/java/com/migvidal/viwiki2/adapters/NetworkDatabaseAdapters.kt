@@ -6,11 +6,11 @@ import com.migvidal.viwiki2.data.network.NetworkImage
 import com.migvidal.viwiki2.data.network.day.NetworkArticle
 import com.migvidal.viwiki2.data.network.day.NetworkFeaturedArticle
 
-fun NetworkFeaturedArticle.toDatabaseModel(originalImageId: Long, thumbnailId: Long) =
+fun NetworkFeaturedArticle.toDatabaseModel() =
     DatabaseArticle(
         articleId = this.pageId,
-        originalImageRowId = originalImageId,
-        thumbnailRowId = thumbnailId,
+        originalImageId = this.originalImage.source,
+        thumbnailId = this.originalImage.source,
         description = this.description,
         extract = this.extract,
         normalizedTitle = this.normalizedTitle,
@@ -25,20 +25,21 @@ fun NetworkImage.toDatabaseModel() = DatabaseImage(
 )
 
 fun NetworkArticle.toDatabaseModel(
-    thumbnailId: Long,
-    originalImageId: Long,
     isOnThisDay: Boolean,
     isMostRead: Boolean,
     isFeatured: Boolean,
-) = DatabaseArticle(
-    articleId = this.pageId,
-    views = this.views,
-    normalizedTitle = this.normalizedTitle,
-    description = this.description ?: "",
-    extract = this.extract,
-    thumbnailRowId = thumbnailId,
-    originalImageRowId = originalImageId,
-    isOnThisDay = isOnThisDay,
-    isMostRead = isMostRead,
-    isFeatured = isFeatured,
-)
+): DatabaseArticle? {
+    this.thumbnail ?: return null
+    return DatabaseArticle(
+        articleId = this.pageId,
+        views = this.views,
+        normalizedTitle = this.normalizedTitle,
+        description = this.description ?: "",
+        extract = this.extract,
+        thumbnailId = this.thumbnail.source,
+        originalImageId = this.thumbnail.source,
+        isOnThisDay = isOnThisDay,
+        isMostRead = isMostRead,
+        isFeatured = isFeatured,
+    )
+}
