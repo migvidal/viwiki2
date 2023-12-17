@@ -2,9 +2,11 @@ package com.migvidal.viwiki2.adapters
 
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
+import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 import com.migvidal.viwiki2.data.network.NetworkImage
 import com.migvidal.viwiki2.data.network.day.NetworkArticle
 import com.migvidal.viwiki2.data.network.day.NetworkFeaturedArticle
+import com.migvidal.viwiki2.data.network.day.NetworkOnThisDay
 
 fun NetworkFeaturedArticle.toDatabaseModel() =
     DatabaseArticle(
@@ -42,5 +44,12 @@ fun NetworkArticle.toDatabaseModel(
         isOnThisDay = isOnThisDay,
         isMostRead = isMostRead,
         isFeatured = isFeatured,
+    )
+}
+
+fun NetworkOnThisDay.toDatabaseModel(): DatabaseOnThisDay {
+    return DatabaseOnThisDay(
+        text = this.text,
+        year = this.year,
     )
 }

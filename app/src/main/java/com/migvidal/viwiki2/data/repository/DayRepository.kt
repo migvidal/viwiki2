@@ -11,6 +11,7 @@ import com.migvidal.viwiki2.data.database.entities.DatabaseImage
 import com.migvidal.viwiki2.data.network.day.NetworkDayImage
 import com.migvidal.viwiki2.data.network.day.NetworkFeaturedArticle
 import com.migvidal.viwiki2.data.network.day.NetworkMostRead
+import com.migvidal.viwiki2.data.network.day.NetworkOnThisDay
 import com.migvidal.viwiki2.data.network.day.WikiMediaApiImpl
 import com.migvidal.viwiki2.ui.UiDayData
 import com.migvidal.viwiki2.ui.UiDayImage
@@ -110,6 +111,9 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             networkDayResponse.mostRead?.let {
                 cacheMostRead(it)
             }
+            networkDayResponse.onThisDay?.let {
+                cacheOnThisDay(it)
+            }
         }
     }
 
@@ -182,5 +186,14 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             )
             viWikiDatabase.dayImageDao.insert(dbDayImage)
         }
+    }
+
+    private suspend fun cacheOnThisDay(onThisDayList: List<NetworkOnThisDay>) {
+        val databaseOnThisDayList = onThisDayList.map {
+            it.toDatabaseModel()
+        }
+        viWikiDatabase.onThisDayDao.insertAll(
+            databaseOnThisDay = databaseOnThisDayList.toTypedArray()
+        )
     }
 }

@@ -88,7 +88,7 @@ interface DayImageDao {
 @Dao
 interface OnThisDayDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(databaseOnThisDay: DatabaseOnThisDay): Long
+    suspend fun insertAll(vararg databaseOnThisDay: DatabaseOnThisDay)
 
     @Delete
     fun delete(databaseOnThisDay: DatabaseOnThisDay)
