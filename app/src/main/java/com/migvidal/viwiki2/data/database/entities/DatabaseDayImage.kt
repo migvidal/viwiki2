@@ -32,6 +32,8 @@ private const val DescriptionColumnName = "description_id"
     ],
 )
 data class DatabaseDayImage(
+    @PrimaryKey
+    val titleAndId: String,
     // Foreign keys
     @ColumnInfo(name = ThumbnailIdColumnName)
     val thumbnailId: String,
@@ -40,11 +42,5 @@ data class DatabaseDayImage(
     val imageId: String,
     // /Foreign keys
 
-    val title: String,
     val description: String,
-
-    ) {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    var dayImageId: Long = 0
-}
+)

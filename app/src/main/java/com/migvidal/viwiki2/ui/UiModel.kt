@@ -21,11 +21,10 @@ data class UiDayArticle(
 )
 
 data class UiDayImage(
-    val id: Long,
+    val idAndTitle: String,
     val thumbnail: DatabaseImage,
     val fullSizeImage: DatabaseImage,
     val description: String,
-    val title: String,
 )
 
 data class UiFeaturedArticle(

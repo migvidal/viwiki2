@@ -10,11 +10,10 @@ const val DummyImageUrl =
     "https://upload.wikimedia.org/wikipedia/commons/c/c6/Golden-eyed_tree_frog_%28Agalychnis_annae%29.jpg"
 val fakeDatabaseImage = DatabaseImage(sourceAndId = DummyImageUrl, width = 300, height = 300)
 val fakeUiDayImage = UiDayImage(
-    id = 1000,
+    idAndTitle = "A frog",
     thumbnail = fakeDatabaseImage,
     fullSizeImage = fakeDatabaseImage,
     description = "Goes boing and ribbit",
-    title = "A frog"
 )
 val fakeUiFeaturedArticle = UiFeaturedArticle(
     id = 1000,

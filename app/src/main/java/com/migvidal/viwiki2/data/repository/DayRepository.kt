@@ -178,7 +178,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
                 thumbnailId = dbThumbnail.sourceAndId,
                 imageId = dbFullSizeImage.sourceAndId,
                 description = it.description.text,
-                title = it.title,
+                titleAndId = it.title,
             )
             viWikiDatabase.dayImageDao.insert(dbDayImage)
         }

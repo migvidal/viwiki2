@@ -22,8 +22,7 @@ fun DatabaseDayImage.toUiDayImage(
     thumbnail: DatabaseImage,
     fullSizeImage: DatabaseImage,
 ) = UiDayImage(
-    id = dayImageId,
-    title = title,
+    idAndTitle = titleAndId,
     thumbnail = thumbnail,
     fullSizeImage = fullSizeImage,
     description = description,
