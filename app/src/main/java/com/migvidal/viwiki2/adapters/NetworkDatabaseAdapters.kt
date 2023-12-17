@@ -15,6 +15,7 @@ fun NetworkFeaturedArticle.toDatabaseModel() =
         extract = this.extract,
         normalizedTitle = this.normalizedTitle,
         views = null,
+        isFeatured = true,
     )
 
 

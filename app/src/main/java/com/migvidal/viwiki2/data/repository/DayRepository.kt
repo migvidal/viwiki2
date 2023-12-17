@@ -57,8 +57,8 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
                 viWikiDatabase.imageDao.getImageById(it)
             }
             featuredArticle.toUiFeaturedArticle(
-                thumbnail = thumbnail ?: return@let null,
-                fullSizeImage = fullSize ?: return@let null,
+                thumbnail = thumbnail,
+                fullSizeImage = fullSize,
             )
         }
         // Finally, create the UiDay object

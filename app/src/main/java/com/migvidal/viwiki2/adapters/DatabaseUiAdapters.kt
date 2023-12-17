@@ -29,8 +29,8 @@ fun DatabaseDayImage.toUiDayImage(
 )
 
 fun DatabaseArticle.toUiFeaturedArticle(
-    thumbnail: DatabaseImage,
-    fullSizeImage: DatabaseImage,
+    thumbnail: DatabaseImage?,
+    fullSizeImage: DatabaseImage?,
 ) = UiFeaturedArticle(
     id = articleId,
     thumbnail = thumbnail,
