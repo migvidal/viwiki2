@@ -39,9 +39,9 @@ data class DatabaseArticle(
     val extract: String,
     // Foreign keys
     @ColumnInfo(name = ThumbnailIdColumnName)
-    val thumbnailId: String,
+    val thumbnailId: String?,
     @ColumnInfo(name = OriginalImageIdColumnName)
-    val originalImageId: String,
+    val originalImageId: String?,
     // /Foreign keys
     val isFeatured: Boolean = false,
     val isMostRead: Boolean = false,

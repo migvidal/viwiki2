@@ -8,8 +8,6 @@ import androidx.room.Query
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseArticleTableName
 import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
-import com.migvidal.viwiki2.data.database.entities.DatabaseDescription
-import com.migvidal.viwiki2.data.database.entities.DatabaseDescriptionTableName
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseImageTableName
 import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
@@ -32,20 +30,6 @@ interface ImageDao {
             " WHERE $DatabaseImageTableName.id = :id")
     suspend fun getImageById(id: String): DatabaseImage?
 }
-
-@Dao
-interface DescriptionDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(databaseDescription: DatabaseDescription): Long
-
-    @Delete
-    suspend fun delete(databaseDescription: DatabaseDescription)
-
-    @Query("SELECT * FROM $DatabaseDescriptionTableName" +
-            " WHERE $DatabaseDescriptionTableName.id = :id")
-    suspend fun getDescriptionById(id: Long): DatabaseDescription?
-}
-
 
 @Dao
 interface ArticleDao {

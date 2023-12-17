@@ -10,7 +10,7 @@ const val DayImageTableName = "day_image"
 
 private const val ThumbnailIdColumnName = "thumbnail_id"
 private const val ImageIdColumnName = "full_size_image_id"
-private const val DescriptionIdColumnName = "description_id"
+private const val DescriptionColumnName = "description_id"
 
 @Entity(
     tableName = DayImageTableName,
@@ -25,16 +25,10 @@ private const val DescriptionIdColumnName = "description_id"
             parentColumns = ["id"],
             childColumns = [ImageIdColumnName]
         ),
-        ForeignKey(
-            entity = DatabaseDescription::class,
-            parentColumns = ["id"],
-            childColumns = [DescriptionIdColumnName]
-        ),
     ],
     indices = [
         Index(ThumbnailIdColumnName),
         Index(ImageIdColumnName),
-        Index(DescriptionIdColumnName),
     ],
 )
 data class DatabaseDayImage(
@@ -44,12 +38,10 @@ data class DatabaseDayImage(
 
     @ColumnInfo(name = ImageIdColumnName)
     val imageId: String,
-
-    @ColumnInfo(name = DescriptionIdColumnName)
-    val descriptionId: Long,
     // /Foreign keys
 
-    val title: String = "",
+    val title: String,
+    val description: String,
 
     ) {
     @PrimaryKey(autoGenerate = true)

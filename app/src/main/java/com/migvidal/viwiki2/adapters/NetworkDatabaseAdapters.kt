@@ -9,8 +9,8 @@ import com.migvidal.viwiki2.data.network.day.NetworkFeaturedArticle
 fun NetworkFeaturedArticle.toDatabaseModel() =
     DatabaseArticle(
         articleId = this.pageId,
-        originalImageId = this.originalImage.source,
-        thumbnailId = this.originalImage.source,
+        originalImageId = this.originalImage?.source,
+        thumbnailId = this.originalImage?.source,
         description = this.description,
         extract = this.extract,
         normalizedTitle = this.normalizedTitle,

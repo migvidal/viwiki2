@@ -7,7 +7,6 @@ import com.migvidal.viwiki2.adapters.toUiDayImage
 import com.migvidal.viwiki2.adapters.toUiFeaturedArticle
 import com.migvidal.viwiki2.data.database.ViWikiDatabaseSpec
 import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
-import com.migvidal.viwiki2.data.database.entities.DatabaseDescription
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
 import com.migvidal.viwiki2.data.network.day.NetworkDayImage
 import com.migvidal.viwiki2.data.network.day.NetworkFeaturedArticle
@@ -44,20 +43,19 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             image ?: return@run null
             val thumbnail = viWikiDatabase.imageDao.getImageById(image.thumbnailId)
             val fullSize = viWikiDatabase.imageDao.getImageById(image.imageId)
-            val description =
-                viWikiDatabase.descriptionDao.getDescriptionById(image.descriptionId)
             image.toUiDayImage(
                 thumbnail = thumbnail ?: return@run null,
                 fullSizeImage = fullSize ?: return@run null,
-                description = description ?: return@run null,
             )
         }
         // Featured article
-        val uiFeaturedArticle = featuredArticle?.let {
-            val thumbnail =
-                viWikiDatabase.imageDao.getImageById(it.thumbnailId)
-            val fullSize =
-                viWikiDatabase.imageDao.getImageById(it.originalImageId)
+        val uiFeaturedArticle = featuredArticle?.let { databaseArticle ->
+            val thumbnail = databaseArticle.thumbnailId?.let {
+                viWikiDatabase.imageDao.getImageById(it)
+            }
+            val fullSize = databaseArticle.originalImageId?.let {
+                viWikiDatabase.imageDao.getImageById(it)
+            }
             featuredArticle.toUiFeaturedArticle(
                 thumbnail = thumbnail ?: return@let null,
                 fullSizeImage = fullSize ?: return@let null,
@@ -67,7 +65,9 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
         UiDayData(
             featuredArticle = uiFeaturedArticle,
             mostReadArticles = mostRead.map { databaseArticle ->
-                val thumbnail = viWikiDatabase.imageDao.getImageById(databaseArticle.thumbnailId)
+                val thumbnail = databaseArticle.thumbnailId?.let {
+                    viWikiDatabase.imageDao.getImageById(id = it)
+                }
                 databaseArticle.toUiArticle(thumbnail = thumbnail)
             },
             image = uiDayImage,
@@ -93,6 +93,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             if (it is UnknownHostException) {
                 Log.e("OkHttp error", it.message.toString())
             }
+            Log.e("Network error", it.message.toString())
             it.printStackTrace()
             _dataStatus.update { Repository.Status.Error }
             return
@@ -114,10 +115,12 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
 
     private suspend fun cacheFeaturedArticle(featuredArticle: NetworkFeaturedArticle) {
         // Insert fields
-        val databaseImage = featuredArticle.originalImage.toDatabaseModel()
-        viWikiDatabase.imageDao.insert(databaseImage = databaseImage)
-        val thumbnail = featuredArticle.thumbnail
-        viWikiDatabase.imageDao.insert(databaseImage = thumbnail.toDatabaseModel())
+        featuredArticle.originalImage?.let {
+            viWikiDatabase.imageDao.insert(databaseImage = it.toDatabaseModel())
+        }
+        featuredArticle.thumbnail?.let {
+            viWikiDatabase.imageDao.insert(databaseImage = it.toDatabaseModel())
+        }
         // Insert
         val dbFeaturedArticle = featuredArticle.toDatabaseModel()
         viWikiDatabase.featuredArticleDao.insert(featuredArticle = dbFeaturedArticle)
@@ -150,17 +153,14 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             )
         }
         // Insert
-        viWikiDatabase.mostReadArticlesDao.insertAll(*databaseMostRead.filterNotNull().toTypedArray())
+        viWikiDatabase.mostReadArticlesDao.insertAll(
+            *databaseMostRead.filterNotNull().toTypedArray()
+        )
     }
 
     private suspend fun cacheDayImage(dayImage: NetworkDayImage) {
         dayImage.let {
             // Insert referenced fields
-            val dbDescription = DatabaseDescription(
-                text = it.description.text,
-                lang = it.description.lang,
-            )
-            viWikiDatabase.descriptionDao.insert(dbDescription)
             val dbThumbnail = DatabaseImage(
                 sourceAndId = it.thumbnail.source,
                 width = it.thumbnail.width,
@@ -177,7 +177,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             val dbDayImage = DatabaseDayImage(
                 thumbnailId = dbThumbnail.sourceAndId,
                 imageId = dbFullSizeImage.sourceAndId,
-                descriptionId = dbDescription.descriptionId,
+                description = it.description.text,
                 title = it.title,
             )
             viWikiDatabase.dayImageDao.insert(dbDayImage)
