@@ -6,17 +6,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+/**
+ * Single source of truth for the "search" response
+ */
 class SearchRepository : Repository {
 
     private val _dataStatus = MutableStateFlow(Repository.Status.Loading)
     override val dataStatus = _dataStatus.asStateFlow()
 
-    /**
-     * Single source of truth for the "search" response
-     */
     private val _data: MutableStateFlow<SearchResponseModel> = MutableStateFlow(SearchResponseModel())
     override val data = _data.asStateFlow()
-
 
     suspend fun refreshSearchData(query: String) {
         _data.update {

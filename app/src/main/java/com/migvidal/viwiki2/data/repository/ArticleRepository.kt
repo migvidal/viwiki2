@@ -6,17 +6,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+/**
+ * Single source of truth for the "article" response
+ */
 class ArticleRepository : Repository {
 
     private val _dataStatus = MutableStateFlow(Repository.Status.Loading)
     override val dataStatus = _dataStatus.asStateFlow()
 
-    /**
-     * Single source of truth for the "article" response
-     */
     private val _data = MutableStateFlow(ArticleResponseModel())
     override val data = _data.asStateFlow()
-
 
     suspend fun refreshArticleData(pageId: Int) {
         _data.update {
