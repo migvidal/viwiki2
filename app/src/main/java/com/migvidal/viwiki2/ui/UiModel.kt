@@ -1,14 +1,13 @@
 package com.migvidal.viwiki2.ui
 
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
-import com.migvidal.viwiki2.data.database.entities.DatabaseOnThisDay
 
 
 data class UiDayData(
-    val featuredArticle: UiFeaturedArticle?,
+    val featuredArticle: UiArticle?,
     val mostReadArticles: List<UiDayArticle>?,
     val image: UiDayImage?,
-    val databaseOnThisDay: List<DatabaseOnThisDay>?,
+    val onThisDay: List<UiOnThisDay>?,
 )
 
 data class UiDayArticle(
@@ -27,13 +26,19 @@ data class UiDayImage(
     val description: String,
 )
 
-data class UiFeaturedArticle(
+data class UiArticle(
     val id: Int,
     val thumbnail: DatabaseImage?,
     val fullSizeImage: DatabaseImage?,
     val normalizedTitle: String,
     val description: String,
     val extract: String,
+)
+
+data class UiOnThisDay(
+    val text: String,
+    val year: Int,
+    val articles: List<UiArticle>?
 )
 
 

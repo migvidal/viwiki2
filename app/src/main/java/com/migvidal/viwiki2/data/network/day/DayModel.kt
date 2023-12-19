@@ -53,7 +53,7 @@ data class NetworkArticle(
 data class NetworkOnThisDay(
     val text: String,
     val year: Int,
-
+    val pages: List<NetworkArticle>,
 )
 
 data class NetworkDayImage(

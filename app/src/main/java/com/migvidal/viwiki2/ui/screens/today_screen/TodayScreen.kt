@@ -57,7 +57,7 @@ fun TodayScreen(
                 )
             }
         }
-        dayData.databaseOnThisDay?.let {
+        dayData.onThisDay?.let {
             item {
                 SectionHeading(text = "On this day")
             }

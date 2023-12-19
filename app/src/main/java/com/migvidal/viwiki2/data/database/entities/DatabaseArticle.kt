@@ -45,5 +45,5 @@ data class DatabaseArticle(
     // /Foreign keys
     val isFeatured: Boolean = false,
     val isMostRead: Boolean = false,
-    val isOnThisDay: Boolean = false,
+    val onThisDayYear: Int? = null,
 )

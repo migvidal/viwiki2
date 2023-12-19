@@ -34,7 +34,7 @@ interface ImageDao {
 @Dao
 interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg databaseArticle: DatabaseArticle): List<Long>
+    suspend fun insertAll(vararg databaseArticle: DatabaseArticle)
 
     @Delete
     suspend fun delete(databaseArticle: DatabaseArticle)
@@ -94,5 +94,9 @@ interface OnThisDayDao {
     fun delete(databaseOnThisDay: DatabaseOnThisDay)
 
     @Query("SELECT * FROM $OnThisDayTableName")
-    fun getAll(): Flow<List<DatabaseOnThisDay>?>
+    fun getAllOnThisDay(): Flow<List<DatabaseOnThisDay>?>
+
+    @Query("SELECT * FROM $DatabaseArticleTableName" +
+            " WHERE $DatabaseArticleTableName.onThisDayYear = :year")
+    suspend fun getArticlesForYear(year: Int): List<DatabaseArticle>?
 }

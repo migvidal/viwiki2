@@ -28,20 +28,19 @@ fun NetworkImage.toDatabaseModel() = DatabaseImage(
 )
 
 fun NetworkArticle.toDatabaseModel(
-    isOnThisDay: Boolean,
-    isMostRead: Boolean,
-    isFeatured: Boolean,
-): DatabaseArticle? {
-    this.thumbnail ?: return null
+    onThisDayYear: Int? = null,
+    isMostRead: Boolean = false,
+    isFeatured: Boolean = false,
+): DatabaseArticle {
     return DatabaseArticle(
         articleId = this.pageId,
         views = this.views,
         normalizedTitle = this.normalizedTitle,
         description = this.description ?: "",
         extract = this.extract,
-        thumbnailId = this.thumbnail.source,
-        originalImageId = this.thumbnail.source,
-        isOnThisDay = isOnThisDay,
+        thumbnailId = this.thumbnail?.source,
+        originalImageId = this.thumbnail?.source,
+        onThisDayYear = onThisDayYear,
         isMostRead = isMostRead,
         isFeatured = isFeatured,
     )

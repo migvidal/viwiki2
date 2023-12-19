@@ -3,9 +3,12 @@ package com.migvidal.viwiki2.data.repository
 import android.util.Log
 import com.migvidal.viwiki2.adapters.toDatabaseModel
 import com.migvidal.viwiki2.adapters.toUiArticle
+import com.migvidal.viwiki2.adapters.toUiDayArticle
 import com.migvidal.viwiki2.adapters.toUiDayImage
 import com.migvidal.viwiki2.adapters.toUiFeaturedArticle
+import com.migvidal.viwiki2.adapters.toUiOnThisDay
 import com.migvidal.viwiki2.data.database.ViWikiDatabaseSpec
+import com.migvidal.viwiki2.data.database.entities.DatabaseArticle
 import com.migvidal.viwiki2.data.database.entities.DatabaseDayImage
 import com.migvidal.viwiki2.data.database.entities.DatabaseImage
 import com.migvidal.viwiki2.data.network.day.NetworkDayImage
@@ -37,7 +40,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
         flow = viWikiDatabase.featuredArticleDao.getAll(),
         flow2 = viWikiDatabase.mostReadArticlesDao.getMostRead(),
         flow3 = viWikiDatabase.dayImageDao.getAll(),
-        flow4 = viWikiDatabase.onThisDayDao.getAll(),
+        flow4 = viWikiDatabase.onThisDayDao.getAllOnThisDay(),
     ) { featuredArticle, mostRead, image, onThisDay ->
         // Image of the day
         val uiDayImage: UiDayImage? = run {
@@ -62,6 +65,24 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
                 fullSizeImage = fullSize,
             )
         }
+        // On this day
+        val uiOnThisDay = onThisDay?.map { databaseOnThisDay ->
+            val yearArticles =
+                viWikiDatabase.onThisDayDao.getArticlesForYear(databaseOnThisDay.year)
+            val uiYearArticles = yearArticles?.map { databaseArticle ->
+                databaseArticle.toUiArticle(
+                    thumbnail = databaseArticle.thumbnailId?.let {
+                        viWikiDatabase.imageDao.getImageById(it)
+                    },
+                    fullSizeImage = databaseArticle.originalImageId?.let {
+                        viWikiDatabase.imageDao.getImageById(it)
+                    },
+                )
+            }
+
+            databaseOnThisDay.toUiOnThisDay(yearArticles = uiYearArticles)
+        }
+
         // Finally, create the UiDay object
         UiDayData(
             featuredArticle = uiFeaturedArticle,
@@ -69,10 +90,10 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
                 val thumbnail = databaseArticle.thumbnailId?.let {
                     viWikiDatabase.imageDao.getImageById(id = it)
                 }
-                databaseArticle.toUiArticle(thumbnail = thumbnail)
+                databaseArticle.toUiDayArticle(thumbnail = thumbnail)
             },
             image = uiDayImage,
-            databaseOnThisDay = onThisDay,
+            onThisDay = uiOnThisDay,
         )
     }
 
@@ -151,9 +172,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
             viWikiDatabase.imageDao.insert(originalImage)
 
             return@map networkArticle.toDatabaseModel(
-                isOnThisDay = false,
                 isMostRead = true,
-                isFeatured = false,
             )
         }
         // Insert
@@ -189,6 +208,24 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
     }
 
     private suspend fun cacheOnThisDay(onThisDayList: List<NetworkOnThisDay>) {
+        // Insert articles' images
+        onThisDayList.forEach { networkOnThisDay ->
+            networkOnThisDay.pages.forEach { networkArticle ->
+                val dbThumbnail = networkArticle.thumbnail?.toDatabaseModel()
+                val dbImage = networkArticle.originalImage?.toDatabaseModel()
+                dbThumbnail?.let { viWikiDatabase.imageDao.insert(it) }
+                dbImage?.let { viWikiDatabase.imageDao.insert(it) }
+            }
+        }
+        // Insert articles
+        val articles = onThisDayList.flatMap { networkOnThisDay ->
+            networkOnThisDay.pages.map { article ->
+                article.toDatabaseModel(onThisDayYear = networkOnThisDay.year)
+            }
+        }
+        val dedupedArticles: List<DatabaseArticle> = articles.distinctBy { it.articleId }
+        viWikiDatabase.articleDao.insertAll(databaseArticle = dedupedArticles.toTypedArray())
+        // Insert
         val databaseOnThisDayList = onThisDayList.map {
             it.toDatabaseModel()
         }

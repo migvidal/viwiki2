@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.migvidal.viwiki2.data.fakeUiFeaturedArticle
-import com.migvidal.viwiki2.ui.UiFeaturedArticle
+import com.migvidal.viwiki2.ui.UiArticle
 import com.migvidal.viwiki2.ui.components.CustomAsyncImage
 import com.migvidal.viwiki2.ui.components.CustomCard
 import com.migvidal.viwiki2.ui.components.SectionHeading
@@ -24,8 +24,8 @@ import com.migvidal.viwiki2.ui.theme.ViWiki2Theme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun FeaturedArticleSection(
-    featuredArticle: UiFeaturedArticle,
-    onArticleClicked: (UiFeaturedArticle) -> Unit
+    featuredArticle: UiArticle,
+    onArticleClicked: (UiArticle) -> Unit
 ) {
     Column {
         SectionHeading(text = "Today's Featured Article")
