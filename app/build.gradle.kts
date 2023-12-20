@@ -64,8 +64,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
     implementation("androidx.compose.material3:material3:1.1.2")
     // compose destinations
-    val composeDestinationsVersion = "1.9.53"
-    implementation ("io.github.raamcosta.compose-destinations:animations-core:$composeDestinationsVersion")
+    val composeDestinationsVersion = "1.9.55"
+    implementation ("io.github.raamcosta.compose-destinations:core:$composeDestinationsVersion")
     ksp("io.github.raamcosta.compose-destinations:ksp:$composeDestinationsVersion")
     // /compose destinations
 

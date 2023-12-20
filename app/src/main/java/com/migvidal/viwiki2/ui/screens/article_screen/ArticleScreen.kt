@@ -1,6 +1,7 @@
 package com.migvidal.viwiki2.ui.screens.article_screen
 
 import android.webkit.WebView
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
@@ -11,12 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
+import com.migvidal.viwiki2.ui.CustomTransitions
 import com.migvidal.viwiki2.ui.components.CustomAsyncImage
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
-@Destination
-fun ArticleScreen(
+@Destination(style = CustomTransitions::class)
+fun AnimatedVisibilityScope.ArticleScreen(
     modifier: Modifier = Modifier,
     viewModel: ArticleViewModel,
     articleId: Int,
