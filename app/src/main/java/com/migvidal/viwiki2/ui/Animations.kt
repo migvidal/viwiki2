@@ -10,17 +10,27 @@ import androidx.navigation.NavBackStackEntry
 import com.ramcosta.composedestinations.spec.DestinationStyle
 
 object CustomTransitions : DestinationStyle.Animated {
-    override fun AnimatedContentTransitionScope<NavBackStackEntry>.enterTransition(): EnterTransition {
-        return slideInHorizontally(
-            initialOffsetX = { 1000 },
-            animationSpec = tween(200)
-        )
+    private val slideOutExitAnimation = slideOutHorizontally(
+        targetOffsetX = { 1000 },
+        animationSpec = tween(200)
+    )
+    private val slideInEnterAnimation = slideInHorizontally(
+        initialOffsetX = { 1000 },
+        animationSpec = tween(200)
+    )
+    override fun AnimatedContentTransitionScope<NavBackStackEntry>.enterTransition(): EnterTransition? {
+        return slideInEnterAnimation
     }
 
     override fun AnimatedContentTransitionScope<NavBackStackEntry>.exitTransition(): ExitTransition {
-        return slideOutHorizontally(
-            targetOffsetX = { -1000 },
-            animationSpec = tween(700)
-        )
+        return slideOutExitAnimation
+    }
+
+    override fun AnimatedContentTransitionScope<NavBackStackEntry>.popEnterTransition(): EnterTransition? {
+        return slideInEnterAnimation
+    }
+
+    override fun AnimatedContentTransitionScope<NavBackStackEntry>.popExitTransition(): ExitTransition? {
+        return slideOutExitAnimation
     }
 }

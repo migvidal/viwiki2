@@ -156,7 +156,7 @@ fun ViWikiApp() {
         },
     ) { innerPadding ->
         val paddingModifier = Modifier
-            .padding(innerPadding)
+            .padding(innerPadding).fillMaxSize()
             // to prevent extra space above virtual keyboard: https://slack-chats.kotlinlang.org/t/5034424/how-do-i-use-modifier-imepadding-with-scaffold-material3-if-#9e60da1a-3c8c-4a1a-a20c-fe4d37a54454
             .consumeWindowInsets(innerPadding)
             .imePadding()
