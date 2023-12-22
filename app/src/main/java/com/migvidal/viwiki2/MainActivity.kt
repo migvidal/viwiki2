@@ -27,6 +27,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -38,6 +42,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.migvidal.viwiki2.data.network.isNetworkAvailable
 import com.migvidal.viwiki2.ui.screens.NavGraphs
 import com.migvidal.viwiki2.ui.screens.article_screen.ArticleScreen
 import com.migvidal.viwiki2.ui.screens.article_screen.ArticleViewModel
@@ -62,7 +67,12 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    ViWikiApp()
+                    var networkIsActive: Boolean by remember {
+                        mutableStateOf(this@MainActivity.isNetworkAvailable())
+                    }
+                    ViWikiApp(
+                        networkIsActive = networkIsActive,
+                        onCheckNetwork = { networkIsActive = this@MainActivity.isNetworkAvailable() })
                 }
             }
         }
@@ -92,7 +102,7 @@ enum class TopLevelDestination(
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun ViWikiApp() {
+fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
     val dayViewModel: TodayViewModel = viewModel(factory = TodayViewModel.Factory)
     val searchViewModel: SearchViewModel = viewModel(factory = SearchViewModel.Factory)
     val articleViewModel = viewModel<ArticleViewModel>(factory = ArticleViewModel.Factory)
@@ -156,7 +166,8 @@ fun ViWikiApp() {
         },
     ) { innerPadding ->
         val paddingModifier = Modifier
-            .padding(innerPadding).fillMaxSize()
+            .padding(innerPadding)
+            .fillMaxSize()
             // to prevent extra space above virtual keyboard: https://slack-chats.kotlinlang.org/t/5034424/how-do-i-use-modifier-imepadding-with-scaffold-material3-if-#9e60da1a-3c8c-4a1a-a20c-fe4d37a54454
             .consumeWindowInsets(innerPadding)
             .imePadding()
@@ -170,17 +181,25 @@ fun ViWikiApp() {
                 TodayScreen(
                     dayData = dayData,
                     dayDataStatus = dayDataStatus,
-                    onRefreshClicked = { dayViewModel.refreshDataFromRepository() },
+                    onRefreshClicked = {
+                        onCheckNetwork.invoke()
+                        dayViewModel.refreshDataFromRepository()
+                    },
                     onArticleClicked = { id ->
                         this.destinationsNavigator.navigate(ArticleScreenDestination(articleId = id))
                     },
                 )
             }
             composable(SearchScreenDestination) {
+                if (!networkIsActive) {
+                    return@composable
+                    // TODO show error dialog
+                }
                 val searchData = searchViewModel.searchData.collectAsState().value
                 SearchScreen(
                     searchResults = searchData.query?.search,
                     onSearchClicked = {
+                        onCheckNetwork.invoke()
                         searchViewModel.refreshSearchDataFromRepository(query = it)
                     },
                     onResultClicked = {
@@ -193,6 +212,7 @@ fun ViWikiApp() {
                 )
             }
             composable(ArticleScreenDestination) {
+                if (!networkIsActive) return@composable
                 ArticleScreen(viewModel = articleViewModel, articleId = this.navArgs.articleId)
             }
 
@@ -210,6 +230,6 @@ private fun NavDestination?.isTopLevelDestinationInHierarchy(topLevelDestination
 @Composable
 fun ViWikiAppPreview() {
     ViWiki2Theme {
-        ViWikiApp()
+        ViWikiApp(true) {}
     }
 }
