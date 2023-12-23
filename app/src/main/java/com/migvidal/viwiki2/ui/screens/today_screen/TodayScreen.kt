@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,78 +39,87 @@ fun TodayScreen(
     onRefreshClicked: () -> Unit,
     onArticleClicked: (articleId: Int) -> Unit
 ) {
-    LazyColumn(state = rememberLazyListState()) {
-        item {
-            Button(onClick = onRefreshClicked) {
-                Text(text = "Refresh")
-            }
-        }
-        if (dayData == null) return@LazyColumn
-        dayData.image?.let {
-            item {
-                DayImageSection(it)
-            }
-        }
-        dayData.featuredArticle?.let {
-            item {
-                FeaturedArticleSection(featuredArticle = it, onArticleClicked = {
-                    onArticleClicked.invoke(it.id)
-                })
-            }
-        }
-        dayData.mostReadArticles?.let {
-            item {
-                MostReadArticlesSection(
-                    mostReadArticles = it,
-                    onArticleClicked = {
-                        onArticleClicked.invoke(it.id)
+    when (dayDataStatus) {
+        Repository.Status.Error -> Text(text = "Error")
+        Repository.Status.Loading -> CircularProgressIndicator()
+        Repository.Status.Success -> {
+            LazyColumn(state = rememberLazyListState()) {
+                item {
+                    Button(onClick = onRefreshClicked) {
+                        Text(text = "Refresh")
                     }
-                )
-            }
-        }
-        dayData.onThisDay?.let { yearContent ->
-            item {
-                SectionHeading(text = "On this day")
-            }
-            items(yearContent) { onThisDay ->
-                Column {
-                    Text(
-                        text = "On ${onThisDay.year}",
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                    Text(text = onThisDay.text)
-                    onThisDay.articles?.let { articles ->
-                        LazyRow(
-                            modifier = Modifier
-                                .height(120.dp)
-                                .padding(vertical = 16.dp)
-                        ) {
-                            items(items = articles) { article ->
-                                CustomCard(
+                }
+                if (dayData == null) return@LazyColumn
+                dayData.image?.let {
+                    item {
+                        DayImageSection(it)
+                    }
+                }
+                dayData.featuredArticle?.let {
+                    item {
+                        FeaturedArticleSection(featuredArticle = it, onArticleClicked = {
+                            onArticleClicked.invoke(it.id)
+                        })
+                    }
+                }
+                dayData.mostReadArticles?.let {
+                    item {
+                        MostReadArticlesSection(
+                            mostReadArticles = it,
+                            onArticleClicked = {
+                                onArticleClicked.invoke(it.id)
+                            }
+                        )
+                    }
+                }
+                dayData.onThisDay?.let { yearContent ->
+                    item {
+                        SectionHeading(text = "On this day")
+                    }
+                    items(yearContent) { onThisDay ->
+                        Column {
+                            Text(
+                                text = "On ${onThisDay.year}",
+                                style = MaterialTheme.typography.titleLarge,
+                            )
+                            Text(text = onThisDay.text)
+                            onThisDay.articles?.let { articles ->
+                                LazyRow(
                                     modifier = Modifier
-                                        .aspectRatio(7 / 2f)
-                                        .padding(horizontal = 4.dp),
-                                    onClick = { onArticleClicked.invoke(article.id) }) {
-                                    Row {
-                                        CustomAsyncImage(
-                                            model = article.thumbnail?.sourceAndId,
-                                            aspectRatio = 3 / 4f
-                                        )
-                                        Text(
-                                            modifier = Modifier.padding(8.dp),
-                                            text = article.normalizedTitle,
-                                        )
+                                        .height(120.dp)
+                                        .padding(vertical = 16.dp)
+                                ) {
+                                    items(items = articles) { article ->
+                                        CustomCard(
+                                            modifier = Modifier
+                                                .aspectRatio(7 / 2f)
+                                                .padding(horizontal = 4.dp),
+                                            onClick = { onArticleClicked.invoke(article.id) }) {
+                                            Row {
+                                                CustomAsyncImage(
+                                                    model = article.thumbnail?.sourceAndId,
+                                                    aspectRatio = 3 / 4f
+                                                )
+                                                Text(
+                                                    modifier = Modifier.padding(8.dp),
+                                                    text = article.normalizedTitle,
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+
+
             }
+
         }
-
-
+        null -> {}
     }
+
 
 }
 

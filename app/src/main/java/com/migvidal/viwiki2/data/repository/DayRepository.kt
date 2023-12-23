@@ -98,6 +98,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
     }
 
     suspend fun refreshData() {
+        _dataStatus.update { Repository.Status.Loading }
         // Get today's date
         val calendar = GregorianCalendar.getInstance()
         val year = calendar.get(GregorianCalendar.YEAR)
@@ -136,6 +137,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
                 cacheOnThisDay(it)
             }
         }
+        _dataStatus.update { Repository.Status.Success }
     }
 
     private suspend fun cacheFeaturedArticle(featuredArticle: NetworkFeaturedArticle) {

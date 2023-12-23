@@ -43,6 +43,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.migvidal.viwiki2.data.network.isNetworkAvailable
+import com.migvidal.viwiki2.data.repository.Repository
 import com.migvidal.viwiki2.ui.screens.NavGraphs
 import com.migvidal.viwiki2.ui.screens.article_screen.ArticleScreen
 import com.migvidal.viwiki2.ui.screens.article_screen.ArticleViewModel
@@ -177,7 +178,7 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
         ) {
             composable(TodayScreenDestination) {
                 val dayData = dayViewModel.dayData.collectAsState(initial = null).value
-                val dayDataStatus = dayViewModel.dayDataStatus.collectAsState(initial = null).value
+                val dayDataStatus = dayViewModel.dayDataStatus.collectAsState(initial = Repository.Status.Loading).value
                 TodayScreen(
                     dayData = dayData,
                     dayDataStatus = dayDataStatus,
