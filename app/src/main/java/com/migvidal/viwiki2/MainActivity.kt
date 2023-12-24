@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
@@ -38,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -51,6 +53,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.migvidal.viwiki2.data.network.isNetworkAvailable
+import com.migvidal.viwiki2.data.network.registerNetworkListener
 import com.migvidal.viwiki2.data.repository.Repository
 import com.migvidal.viwiki2.ui.screens.NavGraphs
 import com.migvidal.viwiki2.ui.screens.article_screen.ArticleScreen
@@ -77,8 +80,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     var networkIsActive: Boolean by remember {
-                        mutableStateOf(this@MainActivity.isNetworkAvailable())
+                        mutableStateOf(false)
                     }
+                    registerNetworkListener(
+                        onConnected = {
+                            networkIsActive = true
+                        },
+                        onDisconnected = {
+                            networkIsActive = false
+                        }
+                    )
                     ViWikiApp(
                         networkIsActive = networkIsActive,
                         onCheckNetwork = {
@@ -222,24 +233,26 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
             }
             composable(SearchScreenDestination) {
                 if (!networkIsActive) {
-                    return@composable
-                    // TODO show error dialog
-                }
-                val searchData = searchViewModel.searchData.collectAsState().value
-                SearchScreen(
-                    searchResults = searchData.query?.search,
-                    onSearchClicked = {
-                        onCheckNetwork.invoke()
-                        searchViewModel.refreshSearchDataFromRepository(query = it)
-                    },
-                    onResultClicked = {
-                        this.destinationsNavigator.navigate(
-                            direction = ArticleScreenDestination(
-                                articleId = it
-                            )
-                        )
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(text = "No internet connection", textAlign = TextAlign.Center)
                     }
-                )
+                } else {
+                    val searchData = searchViewModel.searchData.collectAsState().value
+                    SearchScreen(
+                        searchResults = searchData.query?.search,
+                        onSearchClicked = {
+                            onCheckNetwork.invoke()
+                            searchViewModel.refreshSearchDataFromRepository(query = it)
+                        },
+                        onResultClicked = {
+                            this.destinationsNavigator.navigate(
+                                direction = ArticleScreenDestination(
+                                    articleId = it
+                                )
+                            )
+                        }
+                    )
+                }
             }
             composable(ArticleScreenDestination) {
                 if (!networkIsActive) return@composable
