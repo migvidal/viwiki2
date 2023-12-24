@@ -34,6 +34,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -79,17 +80,17 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    var networkIsActive: Boolean by remember {
-                        mutableStateOf(false)
+                    var networkIsActive: Boolean by remember { mutableStateOf(false) }
+                    SideEffect {
+                        registerNetworkListener(
+                            onConnected = {
+                                networkIsActive = true
+                            },
+                            onDisconnected = {
+                                networkIsActive = false
+                            }
+                        )
                     }
-                    registerNetworkListener(
-                        onConnected = {
-                            networkIsActive = true
-                        },
-                        onDisconnected = {
-                            networkIsActive = false
-                        }
-                    )
                     ViWikiApp(
                         networkIsActive = networkIsActive,
                         onCheckNetwork = {
