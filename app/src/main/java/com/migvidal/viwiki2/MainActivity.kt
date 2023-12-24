@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
@@ -154,6 +155,20 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
                             )
                         }
                     }
+                },
+                actions = {
+                    val isTodayScreen = navController.currentDestination?.route == TopLevelDestination.Today.destination.route
+                    if (isTodayScreen) {
+                        IconButton(onClick = {
+                            onCheckNetwork.invoke()
+                            dayViewModel.refreshDataFromRepository()
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = "Refresh"
+                            )
+                        }
+                    }
                 }
             )
         },
@@ -223,10 +238,6 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
                 TodayScreen(
                     dayData = dayData,
                     dayDataStatus = dayDataStatus,
-                    onRefreshClicked = {
-                        onCheckNetwork.invoke()
-                        dayViewModel.refreshDataFromRepository()
-                    },
                     onArticleClicked = { id ->
                         this.destinationsNavigator.navigate(ArticleScreenDestination(articleId = id))
                     },

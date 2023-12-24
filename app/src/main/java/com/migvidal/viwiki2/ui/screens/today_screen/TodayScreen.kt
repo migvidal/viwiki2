@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,15 +34,9 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 fun TodayScreen(
     dayData: UiDayData?,
     dayDataStatus: Repository.Status?,
-    onRefreshClicked: () -> Unit,
     onArticleClicked: (articleId: Int) -> Unit
 ) {
     LazyColumn(state = rememberLazyListState()) {
-        item {
-            Button(onClick = onRefreshClicked) {
-                Text(text = "Refresh")
-            }
-        }
         if (dayData == null) return@LazyColumn
         dayData.image?.let {
             item {
@@ -120,7 +113,6 @@ fun TodayScreenPreview() {
             TodayScreen(
                 dayData = fakeDayData,
                 dayDataStatus = Repository.Status.Success,
-                onRefreshClicked = {},
                 onArticleClicked = {})
         }
 
