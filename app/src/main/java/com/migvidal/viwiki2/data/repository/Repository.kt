@@ -9,5 +9,5 @@ interface Repository {
      * Single source of truth for the "today" response
      */
     val data: Flow<Any>
-    enum class Status { Error, Success, Loading, Offline }
+    enum class Status { Error, Success, Loading }
 }

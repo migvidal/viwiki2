@@ -18,8 +18,16 @@ class ArticleRepository : Repository {
     override val data = _data.asStateFlow()
 
     suspend fun refreshArticleData(pageId: Int) {
+        _dataStatus.update { Repository.Status.Loading }
         _data.update {
-            WikipediaApiImpl.wikipediaApiService.getArticleById(pageId = pageId)
+            try {
+                val articleResponse = WikipediaApiImpl.wikipediaApiService.getArticleById(pageId = pageId)
+                _dataStatus.update { Repository.Status.Success }
+                articleResponse
+            } catch (e: Exception) {
+                _dataStatus.update { Repository.Status.Error }
+                ArticleResponseModel()
+            }
         }
     }
 }
