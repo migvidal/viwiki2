@@ -63,6 +63,11 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
     implementation("androidx.compose.material3:material3:1.1.2")
+    // testing
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("androidx.test.ext:junit:1.1.5")
+    // /testing
+
     // compose destinations
     val composeDestinationsVersion = "1.9.55"
     implementation ("io.github.raamcosta.compose-destinations:core:$composeDestinationsVersion")

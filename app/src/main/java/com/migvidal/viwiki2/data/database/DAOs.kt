@@ -44,7 +44,7 @@ interface ArticleDao {
 
     @Query("SELECT * FROM $DatabaseArticleTableName" +
             " WHERE $DatabaseArticleTableName.id = :id")
-    fun getArticleById(id: Long): DatabaseArticle?
+    fun getArticleById(id: Int): DatabaseArticle?
 }
 
 @Dao
