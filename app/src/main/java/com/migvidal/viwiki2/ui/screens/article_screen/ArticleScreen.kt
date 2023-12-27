@@ -9,30 +9,31 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
+import com.migvidal.viwiki2.data.network.article.ArticleResponseModel
 import com.migvidal.viwiki2.data.repository.Repository
 import com.migvidal.viwiki2.ui.CustomTransitions
 import com.migvidal.viwiki2.ui.components.CustomAsyncImage
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
+@Destination
+fun ArticleScreenNavWrapper(articleId: Int) {}
+
+@Composable
 @Destination(style = CustomTransitions::class)
 fun AnimatedVisibilityScope.ArticleScreen(
     modifier: Modifier = Modifier,
-    viewModel: ArticleViewModel,
-    articleId: Int,
+    articleData: ArticleResponseModel,
+    articleStatus: Repository.Status,
 ) {
-    viewModel.refreshArticleDataFromRepository(articleId)
-    val articleData = viewModel.articleData.collectAsState().value
-    val status = viewModel.articleDataStatus.collectAsState().value
     articleData.query?.pages?.first()?.let { article ->
         LazyColumn(modifier = modifier) {
             item {
-                if (status == Repository.Status.Loading) {
+                if (articleStatus == Repository.Status.Loading) {
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 }
             }

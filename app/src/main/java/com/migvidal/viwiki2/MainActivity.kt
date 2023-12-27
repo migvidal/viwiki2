@@ -60,7 +60,7 @@ import com.migvidal.viwiki2.data.repository.Repository
 import com.migvidal.viwiki2.ui.screens.NavGraphs
 import com.migvidal.viwiki2.ui.screens.article_screen.ArticleScreen
 import com.migvidal.viwiki2.ui.screens.article_screen.ArticleViewModel
-import com.migvidal.viwiki2.ui.screens.destinations.ArticleScreenDestination
+import com.migvidal.viwiki2.ui.screens.destinations.ArticleScreenNavWrapperDestination
 import com.migvidal.viwiki2.ui.screens.destinations.Destination
 import com.migvidal.viwiki2.ui.screens.destinations.SearchScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.TodayScreenDestination
@@ -157,7 +157,8 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
                     }
                 },
                 actions = {
-                    val isTodayScreen = navController.currentDestination?.route == TopLevelDestination.Today.destination.route
+                    val isTodayScreen =
+                        navController.currentDestination?.route == TopLevelDestination.Today.destination.route
                     if (isTodayScreen) {
                         IconButton(onClick = {
                             onCheckNetwork.invoke()
@@ -239,7 +240,11 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
                     dayData = dayData,
                     dayDataStatus = dayDataStatus,
                     onArticleClicked = { id ->
-                        this.destinationsNavigator.navigate(ArticleScreenDestination(articleId = id))
+                        this.destinationsNavigator.navigate(
+                            ArticleScreenNavWrapperDestination(
+                                articleId = id
+                            )
+                        )
                     },
                 )
             }
@@ -258,7 +263,7 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
                         },
                         onResultClicked = {
                             this.destinationsNavigator.navigate(
-                                direction = ArticleScreenDestination(
+                                direction = ArticleScreenNavWrapperDestination(
                                     articleId = it
                                 )
                             )
@@ -266,9 +271,12 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
                     )
                 }
             }
-            composable(ArticleScreenDestination) {
+            composable(ArticleScreenNavWrapperDestination) {
                 if (!networkIsActive) return@composable
-                ArticleScreen(viewModel = articleViewModel, articleId = this.navArgs.articleId)
+                articleViewModel.refreshArticleDataFromRepository(pageId = this.navArgs.articleId)
+                val articleData = articleViewModel.articleData.collectAsState().value
+                val status = articleViewModel.articleDataStatus.collectAsState().value
+                ArticleScreen(articleData = articleData, articleStatus = status)
             }
 
         }
