@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,8 +22,10 @@ import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
 @Destination
-fun ArticleScreenNavWrapper(articleId: Int) {}
+fun ArticleScreenNavWrapper(articleId: Int) {
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Destination(style = CustomTransitions::class)
 fun AnimatedVisibilityScope.ArticleScreen(

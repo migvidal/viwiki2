@@ -251,7 +251,7 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
             composable(SearchScreenDestination) {
                 if (!networkIsActive) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(text = "No internet connection", textAlign = TextAlign.Center)
+                        Text(text = stringResource(R.string.no_internet_connection), textAlign = TextAlign.Center)
                     }
                 } else {
                     val searchData = searchViewModel.searchData.collectAsState().value
@@ -263,9 +263,7 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
                         },
                         onResultClicked = {
                             this.destinationsNavigator.navigate(
-                                direction = ArticleScreenNavWrapperDestination(
-                                    articleId = it
-                                )
+                                direction = ArticleScreenNavWrapperDestination(articleId = it)
                             )
                         }
                     )
