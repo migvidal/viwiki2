@@ -102,7 +102,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
         // Get today's date
         val calendar = GregorianCalendar.getInstance()
         val year = calendar.get(GregorianCalendar.YEAR)
-        val month = calendar.get(GregorianCalendar.MONTH)
+        val month = calendar.get(GregorianCalendar.MONTH) + 1
         val day = calendar.get(GregorianCalendar.DAY_OF_MONTH)
 
         // Get today data from the network
