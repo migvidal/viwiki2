@@ -38,11 +38,15 @@ internal fun FeaturedArticleSection(
                 aspectRatio = 16 / 9f
             )
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = featuredArticle.normalizedTitle,
-                    style = MaterialTheme.typography.headlineLarge
-                )
-                Text(text = featuredArticle.description)
+                featuredArticle.normalizedTitle?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.headlineLarge
+                    )
+                }
+                featuredArticle.description?.let {
+                    Text(text = it)
+                }
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }

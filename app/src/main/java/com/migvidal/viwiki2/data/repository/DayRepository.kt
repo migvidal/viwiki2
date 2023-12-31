@@ -112,6 +112,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
                 mm = String.format("%02d", month),
                 dd = String.format("%02d", day),
             )
+            // TODO test with multiple dates
         }.getOrElse {
             if (it is UnknownHostException) {
                 Log.e("OkHttp error", it.message.toString())

@@ -17,19 +17,19 @@ data class NetworkDayResponse(
 )
 
 data class NetworkFeaturedArticle(
-    val type: String,
-    val title: String,
+    val type: String?,
+    val title: String?,
     @Json(name = "displaytitle")
-    val displayTitle: String,
+    val displayTitle: String?,
     @Json(name = "pageid")
     val pageId: Int,
     @Json(name = "originalimage")
     val originalImage: NetworkImage?,
     val thumbnail: NetworkImage?,
-    val description: String,
-    val extract: String,
+    val description: String?,
+    val extract: String?,
     @Json(name = "normalizedtitle")
-    val normalizedTitle: String,
+    val normalizedTitle: String?,
 )
 
 data class NetworkMostRead(

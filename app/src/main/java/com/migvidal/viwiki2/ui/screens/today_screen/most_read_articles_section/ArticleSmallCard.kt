@@ -33,18 +33,22 @@ internal fun ArticleSmallCard(
         Row(modifier = Modifier.weight(1f)) {
             CustomAsyncImage(model = article.thumbnail?.sourceAndId, aspectRatio = 3 / 4f)
             Column(modifier = Modifier.padding(top = 8.dp)) {
-                Text(
-                    modifier = Modifier.padding(horizontal = CardTextHorizontalPadding),
-                    text = article.normalizedTitle,
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = CardTextHorizontalPadding, vertical = 4.dp),
-                    text = article.description,
-                    maxLines = 3,
-                )
+                article.normalizedTitle?.let {
+                    Text(
+                        modifier = Modifier.padding(horizontal = CardTextHorizontalPadding),
+                        text = it,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+                article.description?.let {
+                    Text(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = CardTextHorizontalPadding, vertical = 4.dp),
+                        text = it,
+                        maxLines = 3,
+                    )
+                }
                 article.views?.let {
                     ViewsIndicator(
                         modifier = Modifier.padding(

@@ -88,10 +88,12 @@ fun TodayScreen(
                                             model = article.thumbnail?.sourceAndId,
                                             aspectRatio = 3 / 4f
                                         )
-                                        Text(
-                                            modifier = Modifier.padding(8.dp),
-                                            text = article.normalizedTitle,
-                                        )
+                                        article.normalizedTitle?.let {
+                                            Text(
+                                                modifier = Modifier.padding(8.dp),
+                                                text = it,
+                                            )
+                                        }
                                     }
                                 }
                             }

@@ -13,9 +13,9 @@ data class UiDayData(
 data class UiDayArticle(
     val id: Int,
     val views: Int?,
-    val normalizedTitle: String = "",
-    val description: String,
-    val extract: String,
+    val normalizedTitle: String?,
+    val description: String?,
+    val extract: String?,
     val thumbnail: DatabaseImage?,
 )
 
@@ -30,9 +30,9 @@ data class UiArticle(
     val id: Int,
     val thumbnail: DatabaseImage?,
     val fullSizeImage: DatabaseImage?,
-    val normalizedTitle: String,
-    val description: String,
-    val extract: String,
+    val normalizedTitle: String?,
+    val description: String?,
+    val extract: String?,
 )
 
 data class UiOnThisDay(

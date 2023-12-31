@@ -34,9 +34,9 @@ data class DatabaseArticle(
     @ColumnInfo(name = "id")
     val articleId: Int,
     val views: Int?,
-    val normalizedTitle: String,
-    val description: String,
-    val extract: String,
+    val normalizedTitle: String?,
+    val description: String?,
+    val extract: String?,
     // Foreign keys
     @ColumnInfo(name = ThumbnailIdColumnName)
     val thumbnailId: String?,
