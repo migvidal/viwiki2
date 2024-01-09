@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,9 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CloudOff
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,7 +40,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -101,27 +97,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-enum class TopLevelDestination(
-    @StringRes val label: Int,
-    val icon: ImageVector,
-    val destination: Destination,
-) {
-    Today(
-        label = R.string.today,
-        icon = Icons.Default.Home,
-        destination = TodayScreenDestination
-    ),
-    Search(
-        label = R.string.search, icon = Icons.Default.Search, destination = SearchScreenDestination
-    ),
-    ;
-
-    companion object {
-        fun from(navDestination: NavDestination?): TopLevelDestination? =
-            entries.find { it.destination.route == navDestination?.route }
     }
 }
 
