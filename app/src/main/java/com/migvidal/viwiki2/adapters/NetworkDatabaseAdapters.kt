@@ -31,6 +31,7 @@ fun NetworkArticle.toDatabaseModel(
     onThisDayYear: Int? = null,
     isMostRead: Boolean = false,
     isFeatured: Boolean = false,
+    isSaved: Boolean = false,
 ): DatabaseArticle {
     return DatabaseArticle(
         articleId = this.pageId,
@@ -43,6 +44,7 @@ fun NetworkArticle.toDatabaseModel(
         onThisDayYear = onThisDayYear,
         isMostRead = isMostRead,
         isFeatured = isFeatured,
+        isSaved = isSaved,
     )
 }
 

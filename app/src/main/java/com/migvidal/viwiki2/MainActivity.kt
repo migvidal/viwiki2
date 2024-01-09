@@ -64,6 +64,7 @@ import com.migvidal.viwiki2.ui.screens.destinations.ArticleScreenNavWrapperDesti
 import com.migvidal.viwiki2.ui.screens.destinations.Destination
 import com.migvidal.viwiki2.ui.screens.destinations.SearchScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.TodayScreenDestination
+import com.migvidal.viwiki2.ui.screens.saved_articles_screen.SavedArticlesViewModel
 import com.migvidal.viwiki2.ui.screens.search_screen.SearchScreen
 import com.migvidal.viwiki2.ui.screens.search_screen.SearchViewModel
 import com.migvidal.viwiki2.ui.screens.today_screen.TodayScreen
@@ -130,6 +131,8 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
     val dayViewModel: TodayViewModel = viewModel(factory = TodayViewModel.Factory)
     val searchViewModel: SearchViewModel = viewModel(factory = SearchViewModel.Factory)
     val articleViewModel = viewModel<ArticleViewModel>(factory = ArticleViewModel.Factory)
+    val savedArticlesViewModel =
+        viewModel<SavedArticlesViewModel>(factory = SavedArticlesViewModel.Factory)
 
     val navController = rememberNavController()
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
@@ -251,7 +254,10 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
             composable(SearchScreenDestination) {
                 if (!networkIsActive) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(text = stringResource(R.string.no_internet_connection), textAlign = TextAlign.Center)
+                        Text(
+                            text = stringResource(R.string.no_internet_connection),
+                            textAlign = TextAlign.Center
+                        )
                     }
                 } else {
                     val searchData = searchViewModel.searchData.collectAsState().value

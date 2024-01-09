@@ -223,7 +223,7 @@ class DayRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : Repository
         // Insert articles
         val articles = onThisDayList.flatMap { networkOnThisDay ->
             networkOnThisDay.pages.map { article ->
-                article.toDatabaseModel(onThisDayYear = networkOnThisDay.year)
+                article.toDatabaseModel(onThisDayYear = networkOnThisDay.year,)
             }
         }
         val dedupedArticles: List<DatabaseArticle> = articles.distinctBy { it.articleId }

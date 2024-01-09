@@ -40,7 +40,7 @@ interface ArticleDao {
     suspend fun delete(databaseArticle: DatabaseArticle)
 
     @Query("SELECT * FROM $DatabaseArticleTableName")
-    fun getAll(): Flow<DatabaseArticle?>
+    fun getAll(): Flow<List<DatabaseArticle?>>
 
     @Query("SELECT * FROM $DatabaseArticleTableName" +
             " WHERE $DatabaseArticleTableName.id = :id")
