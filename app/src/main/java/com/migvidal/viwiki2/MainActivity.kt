@@ -121,7 +121,7 @@ enum class TopLevelDestination(
 
     companion object {
         fun from(navDestination: NavDestination?): TopLevelDestination? =
-            TopLevelDestination.values().find { it.destination.route == navDestination?.route }
+            entries.find { it.destination.route == navDestination?.route }
     }
 }
 
@@ -194,7 +194,7 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
                     }
                 }
                 NavigationBar {
-                    TopLevelDestination.values().forEach { tld ->
+                    TopLevelDestination.entries.forEach { tld ->
                         val labelText = stringResource(tld.label)
                         val isInCurrentBackStack =
                             currentDestination.isTopLevelDestinationInHierarchy(
