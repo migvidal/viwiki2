@@ -33,6 +33,7 @@ data class UiArticle(
     val normalizedTitle: String?,
     val description: String?,
     val extract: String?,
+    val isSaved: Boolean,
 )
 
 data class UiOnThisDay(

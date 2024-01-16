@@ -19,6 +19,7 @@ fun DatabaseArticle.toUiArticle(
     extract = extract,
     thumbnail = thumbnail,
     fullSizeImage = fullSizeImage,
+    isSaved = this.isSaved,
 )
 
 fun DatabaseArticle.toUiDayArticle(
