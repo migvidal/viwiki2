@@ -3,6 +3,11 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jmailen.kotlinter")
     id("com.google.devtools.ksp")
+    id("androidx.room")
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 android {

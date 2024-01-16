@@ -2,7 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ArticleReadWriteTest">
+      <entry key="All Tests">
         <State />
       </entry>
       <entry key="DayImageReadWriteTest">
@@ -21,11 +21,8 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-01-09T12:15:30.331305Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-01-09T16:58:23.498868Z" />
         </State>
-      </entry>
-      <entry key="insertAndReadArticle()">
-        <State />
       </entry>
     </value>
   </component>

@@ -1,0 +1,280 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "7859fe83a540102fd4ae0883468d051e",
+    "entities": [
+      {
+        "tableName": "image",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "sourceAndId",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "width",
+            "columnName": "width",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "height",
+            "columnName": "height",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "article",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `views` INTEGER, `normalizedTitle` TEXT, `description` TEXT, `extract` TEXT, `thumbnail_id` TEXT, `original_image_id` TEXT, `isFeatured` INTEGER NOT NULL, `isMostRead` INTEGER NOT NULL, `isSaved` INTEGER NOT NULL, `onThisDayYear` INTEGER, PRIMARY KEY(`id`), FOREIGN KEY(`thumbnail_id`) REFERENCES `image`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`original_image_id`) REFERENCES `image`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "articleId",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "views",
+            "columnName": "views",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "normalizedTitle",
+            "columnName": "normalizedTitle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "extract",
+            "columnName": "extract",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "thumbnailId",
+            "columnName": "thumbnail_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "originalImageId",
+            "columnName": "original_image_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isFeatured",
+            "columnName": "isFeatured",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isMostRead",
+            "columnName": "isMostRead",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isSaved",
+            "columnName": "isSaved",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "onThisDayYear",
+            "columnName": "onThisDayYear",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_article_thumbnail_id",
+            "unique": false,
+            "columnNames": [
+              "thumbnail_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_article_thumbnail_id` ON `${TABLE_NAME}` (`thumbnail_id`)"
+          },
+          {
+            "name": "index_article_original_image_id",
+            "unique": false,
+            "columnNames": [
+              "original_image_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_article_original_image_id` ON `${TABLE_NAME}` (`original_image_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "image",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "thumbnail_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "image",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "original_image_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "day_image",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`titleAndId` TEXT NOT NULL, `thumbnail_id` TEXT NOT NULL, `full_size_image_id` TEXT NOT NULL, `description` TEXT NOT NULL, PRIMARY KEY(`titleAndId`), FOREIGN KEY(`thumbnail_id`) REFERENCES `image`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`full_size_image_id`) REFERENCES `image`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "titleAndId",
+            "columnName": "titleAndId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "thumbnailId",
+            "columnName": "thumbnail_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imageId",
+            "columnName": "full_size_image_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "titleAndId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_day_image_thumbnail_id",
+            "unique": false,
+            "columnNames": [
+              "thumbnail_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_day_image_thumbnail_id` ON `${TABLE_NAME}` (`thumbnail_id`)"
+          },
+          {
+            "name": "index_day_image_full_size_image_id",
+            "unique": false,
+            "columnNames": [
+              "full_size_image_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_day_image_full_size_image_id` ON `${TABLE_NAME}` (`full_size_image_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "image",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "thumbnail_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "image",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "full_size_image_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "on_this_day",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`text` TEXT NOT NULL, `year` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "year",
+            "columnName": "year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "onThisDayId",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7859fe83a540102fd4ae0883468d051e')"
+    ]
+  }
+}
