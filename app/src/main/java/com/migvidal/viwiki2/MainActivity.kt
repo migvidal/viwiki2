@@ -58,8 +58,10 @@ import com.migvidal.viwiki2.ui.screens.article_screen.ArticleScreen
 import com.migvidal.viwiki2.ui.screens.article_screen.ArticleViewModel
 import com.migvidal.viwiki2.ui.screens.destinations.ArticleScreenNavWrapperDestination
 import com.migvidal.viwiki2.ui.screens.destinations.Destination
+import com.migvidal.viwiki2.ui.screens.destinations.SavedArticlesScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.SearchScreenDestination
 import com.migvidal.viwiki2.ui.screens.destinations.TodayScreenDestination
+import com.migvidal.viwiki2.ui.screens.saved_articles_screen.SavedArticlesScreen
 import com.migvidal.viwiki2.ui.screens.saved_articles_screen.SavedArticlesViewModel
 import com.migvidal.viwiki2.ui.screens.search_screen.SearchScreen
 import com.migvidal.viwiki2.ui.screens.search_screen.SearchViewModel
@@ -256,6 +258,9 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
                 val articleData = articleViewModel.articleData.collectAsState().value
                 val status = articleViewModel.articleDataStatus.collectAsState().value
                 ArticleScreen(articleData = articleData, articleStatus = status)
+            }
+            composable(SavedArticlesScreenDestination) {
+                SavedArticlesScreen(viewModel = savedArticlesViewModel)
             }
 
         }

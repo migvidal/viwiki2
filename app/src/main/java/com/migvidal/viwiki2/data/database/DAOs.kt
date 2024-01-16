@@ -26,8 +26,10 @@ interface ImageDao {
     @Query("SELECT * FROM $DatabaseImageTableName")
     fun getAll(): Flow<DatabaseImage?>
 
-    @Query("SELECT * FROM $DatabaseImageTableName" +
-            " WHERE $DatabaseImageTableName.id = :id")
+    @Query(
+        "SELECT * FROM $DatabaseImageTableName" +
+                " WHERE $DatabaseImageTableName.id = :id"
+    )
     suspend fun getImageById(id: String): DatabaseImage?
 }
 
@@ -42,8 +44,16 @@ interface ArticleDao {
     @Query("SELECT * FROM $DatabaseArticleTableName")
     fun getAll(): Flow<List<DatabaseArticle?>>
 
-    @Query("SELECT * FROM $DatabaseArticleTableName" +
-            " WHERE $DatabaseArticleTableName.id = :id")
+    @Query(
+        "SELECT * FROM $DatabaseArticleTableName" +
+                " WHERE $DatabaseArticleTableName.isSaved = 1"
+    )
+    fun getSavedArticles(): Flow<List<DatabaseArticle?>>
+
+    @Query(
+        "SELECT * FROM $DatabaseArticleTableName" +
+                " WHERE $DatabaseArticleTableName.id = :id"
+    )
     fun getArticleById(id: Int): DatabaseArticle?
 }
 
@@ -55,20 +65,25 @@ interface FeaturedArticleDao {
     @Delete
     suspend fun delete(featuredArticle: DatabaseArticle)
 
-    @Query("SELECT * FROM $DatabaseArticleTableName" +
-            " WHERE $DatabaseArticleTableName.isFeatured = 1")
+    @Query(
+        "SELECT * FROM $DatabaseArticleTableName" +
+                " WHERE $DatabaseArticleTableName.isFeatured = 1"
+    )
     fun getAll(): Flow<DatabaseArticle?>
 }
+
 @Dao
 interface MostReadArticleListDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg mostReadArticles: DatabaseArticle): List<Long>
+
     @Delete
     fun delete(mostReadArticles: DatabaseArticle)
 
-    @Query("SELECT * FROM $DatabaseArticleTableName" +
-            " WHERE $DatabaseArticleTableName.isMostRead = 1" //1 is 'true' in Sqlite
+    @Query(
+        "SELECT * FROM $DatabaseArticleTableName" +
+                " WHERE $DatabaseArticleTableName.isMostRead = 1" //1 is 'true' in Sqlite
     )
     fun getMostRead(): Flow<List<DatabaseArticle>>
 }
@@ -96,7 +111,9 @@ interface OnThisDayDao {
     @Query("SELECT * FROM $OnThisDayTableName")
     fun getAllOnThisDay(): Flow<List<DatabaseOnThisDay>?>
 
-    @Query("SELECT * FROM $DatabaseArticleTableName" +
-            " WHERE $DatabaseArticleTableName.onThisDayYear = :year")
+    @Query(
+        "SELECT * FROM $DatabaseArticleTableName" +
+                " WHERE $DatabaseArticleTableName.onThisDayYear = :year"
+    )
     suspend fun getArticlesForYear(year: Int): List<DatabaseArticle>?
 }

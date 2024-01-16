@@ -14,7 +14,7 @@ class SavedArticlesRepository(private val viWikiDatabase: ViWikiDatabaseSpec) : 
     private val _dataStatus = MutableStateFlow(Repository.Status.Loading)
     override val dataStatus = _dataStatus.asStateFlow()
 
-    override val data = viWikiDatabase.articleDao.getAll()
+    override val data = viWikiDatabase.articleDao.getSavedArticles()
 
     suspend fun saveArticle(networkArticle: NetworkArticle) {
         val dbArticle = networkArticle.toDatabaseModel(isSaved = true)
