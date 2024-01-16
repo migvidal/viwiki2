@@ -17,14 +17,10 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CloudOff
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -37,6 +33,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -121,36 +118,22 @@ fun ViWikiApp(networkIsActive: Boolean, onCheckNetwork: () -> Unit) {
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = stringResource(id = currentTitleRes))
-                },
-                navigationIcon = {
-                    val notInTopLevel = TopLevelDestination.from(currentDestination) == null
-                    if (notInTopLevel) {
-                        IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = "Go back"
-                            )
-                        }
+            val isArticleSaved: Boolean by rememberSaveable { mutableStateOf(false) }
+            val currentArticle = articleViewModel.articleData.collectAsState().value.query.pages.first()
+
+            CustomTopBar(
+                currentTitleRes = currentTitleRes,
+                currentDestination = currentDestination,
+                navController = navController,
+                onCheckNetwork = onCheckNetwork,
+                dayViewModel = dayViewModel,
+                onSaveArticleClicked = { doSave ->
+                    if (doSave) {
+                        savedArticlesViewModel.saveArticle(currentArticle)
+                    } else {
+                        savedArticlesViewModel.unsaveArticle(currentArticle)
                     }
                 },
-                actions = {
-                    val isTodayScreen =
-                        navController.currentDestination?.route == TopLevelDestination.Today.destination.route
-                    if (isTodayScreen) {
-                        IconButton(onClick = {
-                            onCheckNetwork.invoke()
-                            dayViewModel.refreshDataFromRepository()
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Refresh,
-                                contentDescription = "Refresh"
-                            )
-                        }
-                    }
-                }
             )
         },
         bottomBar = {
